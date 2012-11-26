@@ -25,7 +25,8 @@ void loop(){
   //println(brightness);
   analogWrite(redPin, abs(brightness)); //use absolute value for output
   // change the brightness for next time through the loop:
-  xStep = xStep + radStep;    
+  xStep = xStep + radStep; 
+  Serial.print(brightness);  
   delay(30);                            
 }
 
