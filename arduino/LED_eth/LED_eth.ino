@@ -1,9 +1,13 @@
+const float pi = 3.14;
+
 //LED pinouts
 int redPin = 3; 
 int greenPin = 5; 
 int bluePin = 6;
 int brightness = 0;    // how bright the LED is
 int fadeAmount = 5;    // how many points to fade the LED by
+int xStep = 0;
+int radStep = pi/4; //step amount in radians
 
 // the setup routine runs once when you press reset:
 void setup()  { 
@@ -14,18 +18,14 @@ void setup()  {
 } 
 
 // the loop routine runs over and over again forever:
-void loop()  { 
-  // set the brightness of pin 9:
-  analogWrite(redPin, brightness);    
-
+void loop(){
+  brightness = sin(xStep);
+  //map brightness to RGB values
+  brightness = brightness * 255;
+  //println(brightness);
+  analogWrite(redPin, abs(brightness)); //use absolute value for output
   // change the brightness for next time through the loop:
-  brightness = brightness + fadeAmount;
-
-  // reverse the direction of the fading at the ends of the fade: 
-  if (brightness == 0 || brightness == 255) {
-    fadeAmount = -fadeAmount ; 
-  }     
-  // wait for 30 milliseconds to see the dimming effect    
+  xStep = xStep + radStep;    
   delay(30);                            
 }
 
