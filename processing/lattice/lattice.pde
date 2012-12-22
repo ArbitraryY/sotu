@@ -4,13 +4,13 @@ int grid_pt_width = 100; //the distance between grid points
 int grid_color    = 79; //grid line colors
 int bg_color      = 0; //Background color
 boolean show_grid = false; //whether or not (true/false) to show the grid
-int r_max         = grid_pt_width / 2; //Maximum size of the radius for a given ellipse
-int r_min         = grid_pt_width / 10; //Minimum size of the radius for a given ellipse
+int r_max         = grid_pt_width / 2; //Maximum size of the radius for a given circle
+int r_min         = grid_pt_width / 10; //Minimum size of the radius for a given circle
 int number_of_shapes = ((win_width-grid_pt_width) / grid_pt_width) * ((win_height-grid_pt_width) / grid_pt_width); //Number of shapes in the dot array
 int [][] grid_pos; //array for positions on grid
-String red_fill   = "204,51,0";
+String red_fill   = "204,51,0"; //Red fill color
 int redraw_count = 0;
-int redraw_max  = 37;
+int redraw_max  = 37; //number of times to iterate before drawing final lattice
 
 class GridPoint {
     int x_pos;
