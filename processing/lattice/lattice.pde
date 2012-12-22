@@ -84,7 +84,7 @@ void draw(){
   println(grid_points[plus_position].get_y());
   print("plus_pos = ");
   println(plus_position+1);
-  //Only draw the "redraw_max"th drawing 
+  //Only draw the redraw_max'th drawing 
   if (redraw_count != redraw_max) {
     background(bg_color);
     print("redraw_count = ");
