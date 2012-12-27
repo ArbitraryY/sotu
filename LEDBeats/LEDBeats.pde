@@ -26,7 +26,8 @@ void setup()
    
   minim = new Minim(this);
   
-  song = minim.loadFile("C:\\Users\\nick\\Documents\\Processing\\audio_test\\data\\questionMarksAndOtherDemonicPunctuation.mp3", 2048);
+  //song = minim.loadFile("C:\\Users\\nick\\Documents\\Processing\\audio_test\\data\\questionMarksAndOtherDemonicPunctuation.mp3", 2048);
+  song = minim.loadFile("C:\\Users\\nick\\Documents\\Processing\\audio_test\\data\\aSummersDream.mp3", 2048);
   song.play();
   // a beat detection object that is FREQ_ENERGY mode that 
   // expects buffers the length of song's buffer size
@@ -69,6 +70,11 @@ void draw()
     arduino.digitalWrite(bluePin, Arduino.HIGH);
     arduino.digitalWrite(greenPin, Arduino.HIGH);
   }
+ println("--------------");
+ println(arduino.digitalRead(redPin));
+ println(arduino.digitalRead(greenPin));
+ println(arduino.digitalRead(bluePin));
+ println("--------------");
 }
 
 void stop()
