@@ -8,9 +8,9 @@ AudioPlayer song;
 BeatDetect beat;
 BeatListener bl;
 Arduino arduino;
-int redPin = 11;
-int greenPin = 12;
-int bluePin = 13;
+int redPin = 4;
+int greenPin = 5;
+int bluePin = 6;
 int redOutput = 1;
 int greenOutput = 2;
 int blueOutput = 3;
@@ -20,22 +20,25 @@ String bVal;
 
 void setup()
 {
-  size(512, 200, P3D);
-  //println(Arduino.list());
+  size(500, 500, P3D);
+  println(Arduino.list());
   arduino = new Arduino(this, Arduino.list()[0], 57600);
-  arduino.pinMode(redPin, Arduino.OUTPUT);
-  arduino.pinMode(greenPin, Arduino.OUTPUT);
-  arduino.pinMode(bluePin, Arduino.OUTPUT);
+  arduino.pinMode(redPin, Arduino.INPUT);
+  arduino.pinMode(greenPin, Arduino.INPUT);
+  arduino.pinMode(bluePin, Arduino.INPUT);
+  
+  arduino.analogWrite(redPin, 255);
+  arduino.analogWrite(greenPin, 255);
+  arduino.analogWrite(bluePin, 255);
   //set pins to input mode for debugging
-  arduino.pinMode(redOutput, Arduino.INPUT);
-  arduino.pinMode(greenOutput, Arduino.INPUT);
-  arduino.pinMode(blueOutput, Arduino.INPUT);
-   
+ // arduino.pinMode(redOutput, Arduino.INPUT);
+ // arduino.pinMode(greenOutput, Arduino.INPUT);
+ // arduino.pinMode(blueOutput, Arduino.INPUT);
+  
   minim = new Minim(this);
   
   //song = minim.loadFile("C:\\Users\\nick\\Documents\\Processing\\audio_test\\data\\questionMarksAndOtherDemonicPunctuation.mp3", 2048);
   song = minim.loadFile("C:\\Users\\nick\\Documents\\Processing\\audio_test\\data\\aSummersDream.mp3", 2048);
-  song.play();
   // a beat detection object that is FREQ_ENERGY mode that 
   // expects buffers the length of song's buffer size
   // and samples captured at songs's sample rate
@@ -55,62 +58,57 @@ void draw()
 {
   background(0);
   fill(255);
+  fill(255,0,0);
+  rect(30, 30, 50, 50);
+  textSize(16);
+  fill(0,0,0);
+  text("play",40,55);
+  
   if ( beat.isKick() ) {
-    arduino.digitalWrite(redPin, Arduino.LOW);
-    arduino.digitalWrite(bluePin, Arduino.HIGH);
-    arduino.digitalWrite(greenPin, Arduino.HIGH);
     println("kick");
-    arduino.digitalWrite(redOutput, Arduino.LOW);
-    arduino.digitalWrite(greenOutput, Arduino.HIGH);
-    arduino.digitalWrite(blueOutput, Arduino.HIGH);
+    fill(255,0,0);
+    rect(50,200,400,200);
+    arduino.analogWrite(redPin, 0);
+    arduino.analogWrite(bluePin, 255);
+    arduino.analogWrite(greenPin, 255);
   }
-  else if ( beat.isSnare() ) {
-    arduino.digitalWrite(redPin, Arduino.HIGH);
-    arduino.digitalWrite(bluePin, Arduino.LOW);
-    arduino.digitalWrite(greenPin, Arduino.HIGH);
+/*  else if ( beat.isSnare() ) {
     println("snare");
-    arduino.digitalWrite(redOutput, Arduino.HIGH);
-    arduino.digitalWrite(greenOutput, Arduino.LOW);
-    arduino.digitalWrite(blueOutput, Arduino.HIGH);
-  }
+    fill(0,255,0);
+    rect(50,200,400,200);
+    arduino.analogWrite(redPin, 255);
+    arduino.analogWrite(greenPin, 0);
+    arduino.analogWrite(bluePin, 255);
+  }*/
   else if ( beat.isHat() ) {
-    arduino.digitalWrite(redPin, Arduino.HIGH);
-    arduino.digitalWrite(bluePin, Arduino.HIGH);
-    arduino.digitalWrite(greenPin, Arduino.LOW);
-    
-    arduino.digitalWrite(redOutput, Arduino.HIGH);
-    arduino.digitalWrite(greenOutput, Arduino.HIGH);
-    arduino.digitalWrite(blueOutput, Arduino.LOW);
+    fill(0,0,255);
+    rect(50,200,400,200);
+    arduino.analogWrite(redPin, 255);
+    arduino.analogWrite(greenPin, 255);
+    arduino.analogWrite(bluePin, 0);
     println("hat");
   } else {
-    arduino.digitalWrite(redPin, Arduino.HIGH);
-    arduino.digitalWrite(bluePin, Arduino.HIGH);
-    arduino.digitalWrite(greenPin, Arduino.HIGH);
+    //arduino.analogWrite(redPin, 0);
+    //arduino.analogWrite(bluePin, 0);
+    //arduino.analogWrite(greenPin, 0);
     
-    arduino.digitalWrite(redOutput, Arduino.HIGH);
-    arduino.digitalWrite(greenOutput, Arduino.HIGH);
-    arduino.digitalWrite(blueOutput, Arduino.HIGH);
+    //arduino.digitalWrite(redOutput, Arduino.HIGH);
+    //arduino.digitalWrite(greenOutput, Arduino.HIGH);
+    //arduino.digitalWrite(blueOutput, Arduino.HIGH);
   }
- println("--------------");
- if (arduino.digitalRead(redOutput) == Arduino.HIGH){
-   println("HIGH");
- } else if (arduino.digitalRead(redOutput) == Arduino.LOW){
-   println("LOW");
- }
-  if (arduino.digitalRead(greenOutput) == Arduino.HIGH){
-   println("HIGH");
- } else if (arduino.digitalRead(greenOutput) == Arduino.LOW){
-   println("LOW");
- }
-  if (arduino.digitalRead(blueOutput) == Arduino.HIGH){
-   println("HIGH");
- } else if (arduino.digitalRead(blueOutput) == Arduino.LOW){
-   println("LOW");
- }
- println(arduino.analogRead(redOutput));
- println(arduino.analogRead(greenOutput));
- println(arduino.analogRead(blueOutput));
- println("--------------");
+
+}
+
+void mousePressed() {
+  if(mouseX>30 && mouseX<80) //co-ordinates for button area
+    if(mouseY>30 && mouseY<80)
+      if (song.isPlaying()){  //button function, ie play/pause
+        song.pause();
+      }
+    else{
+      song.play();
+    }
+
 }
 
 void stop()
