@@ -16,24 +16,16 @@ my $client = Net::OpenSoundControl::Client->new(
 		Host => $server_ip, Port => $port)
 		or die "could not start client: $@\n";
 
-#connect to PDE OSC Server
-#$client->send(['/server/connect']);
-
 #Send test OSC messages
+my $mesgVal = 0; #off
 for (0..100) {
-	if ($color eq 'red') {
-		$color = 'blue';
-	    } elsif ($color eq 'blue') {
-		$color = 'green';
+	if ($mesgVal == 0 ) {
+		$mesgVal = 255;
 	    } else {
-		$color = 'red';
+		$mesgVal = 0;
 	    }
 	    $mesg = "/ard/test2";
-	$client->send(["$mesg" ,'i', 255]);
-	#$client->send(["$mesg2", 'f', $_ / 150]);
-	#print "/Main/Volume f $_ / 100 ";
-	print "$mesg\n";
+	$client->send(["$mesg" ,'i', $mesgVal]);
+	print $mesgVal . "\n";
 	sleep(1);
 }
-#disconnect from PDE OSC server
-#$client->send(['/server/disconnect']);

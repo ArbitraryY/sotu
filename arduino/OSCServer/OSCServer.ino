@@ -6,6 +6,8 @@
 #include "OSCClass.h"
 #include "SPI.h"
 
+int redPin = 5;
+
   byte serverMac[] = { 0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED };
   byte serverIp[]  = { 192, 168, 1, 177 };
   int  serverPort  = 9999;
@@ -27,35 +29,21 @@
 void setup() {
   
      Ethernet.begin(serverMac ,serverIp);
- //    Ethernet.begin(serverMac ,serverIp ,gateway ,subnet);
-    
      //setting osc recieve server
      osc.begin(serverPort);
-   
-   
      //for message logging
      Serial.begin(19200);
-     
      //osc message buffer clear
-     osc.flush();
-     
-     
+     osc.flush();  
 }
 
 void loop() {
-
     //osc arrive check
+    //analogWrite(redPin,255);
     if ( osc.available() ) {
-      
         logMessage(&recMes);
-
     }
-
 }
-
-
-
-
 // *********  utility  ***********************************
 
 
@@ -80,27 +68,21 @@ void logMessage(OSCMessage *mes){
     for(int i = 0 ; i < mes->getAddressNum() ; i++){
       
       Serial.print(mes->getAddress(i));
-      
+ 
     }
-    
-    
-    //disp type tags
+   //disp type tags
     Serial.print("  ,");
     for(int i = 0 ; i < mes->getArgNum() ; i++){
-      
       Serial.print(mes->getTypeTag(i));
-      
     }
     Serial.print(" ");
-   
-   
    //disp args
     for(int i = 0 ; i < mes->getArgNum() ; i++){
       
       switch( mes->getTypeTag(i) ){
         
         case 'i': {
-                      
+                      analogWrite(redPin,255);
                       Serial.print( mes->getArgInt(i) );
                   }
           break;
