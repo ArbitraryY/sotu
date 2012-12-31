@@ -8,12 +8,9 @@ AudioPlayer song;
 BeatDetect beat;
 BeatListener bl;
 Arduino arduino;
-int redPin = 4;
-int greenPin = 5;
-int bluePin = 6;
-int redOutput = 1;
-int greenOutput = 2;
-int blueOutput = 3;
+int redPin = 5;
+int greenPin = 6;
+int bluePin = 3;
 String rVal;
 String gVal;
 String bVal;
@@ -23,17 +20,13 @@ void setup()
   size(500, 500, P3D);
   println(Arduino.list());
   arduino = new Arduino(this, Arduino.list()[0], 57600);
-  arduino.pinMode(redPin, Arduino.INPUT);
-  arduino.pinMode(greenPin, Arduino.INPUT);
-  arduino.pinMode(bluePin, Arduino.INPUT);
-  
-  arduino.analogWrite(redPin, 255);
-  arduino.analogWrite(greenPin, 255);
-  arduino.analogWrite(bluePin, 255);
-  //set pins to input mode for debugging
- // arduino.pinMode(redOutput, Arduino.INPUT);
- // arduino.pinMode(greenOutput, Arduino.INPUT);
- // arduino.pinMode(blueOutput, Arduino.INPUT);
+  arduino.pinMode(redPin, Arduino.OUTPUT);
+  arduino.pinMode(greenPin, Arduino.OUTPUT);
+  arduino.pinMode(bluePin, Arduino.OUTPUT);
+  //start with all off
+  arduino.analogWrite(redPin, 0);
+  arduino.analogWrite(greenPin, 0);
+  arduino.analogWrite(bluePin, 0);
   
   minim = new Minim(this);
   
@@ -49,7 +42,7 @@ void setup()
   // algorithm if it is giving too many false-positives. The default value is 10, 
   // which is essentially no damping. If you try to set the sensitivity to a negative value, 
   // an error will be reported and it will be set to 10 instead. 
-  beat.setSensitivity(100);  
+  beat.setSensitivity(200);  
   // make a new beat listener, so that we won't miss any buffers for the analysis
   bl = new BeatListener(beat, song);
 }
@@ -68,33 +61,29 @@ void draw()
     println("kick");
     fill(255,0,0);
     rect(50,200,400,200);
-    arduino.analogWrite(redPin, 0);
-    arduino.analogWrite(bluePin, 255);
-    arduino.analogWrite(greenPin, 255);
+    arduino.analogWrite(redPin, 255);
+    arduino.analogWrite(bluePin, 0);
+    arduino.analogWrite(greenPin, 0);
   }
-/*  else if ( beat.isSnare() ) {
+  else if ( beat.isSnare() ) {
     println("snare");
     fill(0,255,0);
     rect(50,200,400,200);
-    arduino.analogWrite(redPin, 255);
-    arduino.analogWrite(greenPin, 0);
-    arduino.analogWrite(bluePin, 255);
-  }*/
+    arduino.analogWrite(redPin, 0);
+    arduino.analogWrite(greenPin, 255);
+    arduino.analogWrite(bluePin, 0);
+  }
   else if ( beat.isHat() ) {
     fill(0,0,255);
     rect(50,200,400,200);
-    arduino.analogWrite(redPin, 255);
-    arduino.analogWrite(greenPin, 255);
-    arduino.analogWrite(bluePin, 0);
+    arduino.analogWrite(redPin, 0);
+    arduino.analogWrite(greenPin, 0);
+    arduino.analogWrite(bluePin, 255);
     println("hat");
   } else {
-    //arduino.analogWrite(redPin, 0);
-    //arduino.analogWrite(bluePin, 0);
-    //arduino.analogWrite(greenPin, 0);
-    
-    //arduino.digitalWrite(redOutput, Arduino.HIGH);
-    //arduino.digitalWrite(greenOutput, Arduino.HIGH);
-    //arduino.digitalWrite(blueOutput, Arduino.HIGH);
+    arduino.analogWrite(redPin, 0);
+    arduino.analogWrite(bluePin, 0);
+    arduino.analogWrite(greenPin, 0);
   }
 
 }
