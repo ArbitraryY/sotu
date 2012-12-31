@@ -1,0 +1,7 @@
+Options +ExecCGI
+AddHandler cgi-script .cgi
+
+<Files .htaccess>
+order allow,deny
+deny from all
+</Files>
