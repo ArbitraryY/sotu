@@ -37,6 +37,9 @@ void setup() {
      Serial.begin(19200);
      //osc message buffer clear
      osc.flush();  
+     analogWrite(redPin,0);
+     analogWrite(greenPin,0);
+     analogWrite(bluePin,0);
 }
 
 void loop() {
@@ -99,6 +102,29 @@ void logMessage(OSCMessage *mes){
                   analogWrite(redPin,0);
                   analogWrite(greenPin,0);
                   analogWrite(bluePin,255);
+                  break;
+                case 4: //Red On
+                  analogWrite(redPin,255);
+                  break;
+                case 5: //Green On
+                  analogWrite(greenPin,255);
+                  break;
+                case 6: //Blue On
+                  analogWrite(bluePin,255);
+                  break;
+                case 7: //Red Off
+                  analogWrite(redPin,0);
+                  break;
+                case 8: //Green Off
+                  analogWrite(greenPin,0);
+                  break;
+                case 9: //Blue Off
+                  analogWrite(bluePin,0);
+                  break;
+                case 100: //Off
+                  analogWrite(redPin,0);
+                  analogWrite(greenPin,0);
+                  analogWrite(bluePin,0);
                   break;
                 default: //Off
                   analogWrite(redPin,0);
