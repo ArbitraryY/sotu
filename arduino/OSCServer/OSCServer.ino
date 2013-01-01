@@ -7,6 +7,8 @@
 #include "SPI.h"
 
 int redPin = 5;
+int greenPin = 6;
+int bluePin = 3;
 
   byte serverMac[] = { 0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED };
   byte serverIp[]  = { 192, 168, 1, 177 };
@@ -14,13 +16,13 @@ int redPin = 5;
   
 //  byte gateway[]   = { 192, 168, 0, 1 };
 //  byte subnet[]    = { 255, 255, 255, 0 };
-
-
-  byte destIp[]  = { 192, 168, 0, 5};
-  int  destPort = 10000;
+// byte destIp[]  = { 192, 168, 0, 5};
+// int  destPort = 10000;
   
   char *topAddress="/ard";
+  //char *subAddress[3]={ "/ardPin" , "/greenPin" , "/bluePin" };
   char *subAddress[3]={ "/test1" , "/test2" , "/test3" };
+  //char *subAddress[1]={ "/pin"};
   
   OSCMessage recMes;
   
@@ -64,41 +66,56 @@ void logMessage(OSCMessage *mes){
     Serial.print(mes->getPort(),DEC);
     Serial.print("   ");
     
-    //disp adr
-    for(int i = 0 ; i < mes->getAddressNum() ; i++){
-      
-      Serial.print(mes->getAddress(i));
- 
-    }
+   //disp adr
+   for(int i = 0 ; i < mes->getAddressNum() ; i++){
+     Serial.print(mes->getAddress(i));
+   }
+   
    //disp type tags
-    Serial.print("  ,");
-    for(int i = 0 ; i < mes->getArgNum() ; i++){
-      Serial.print(mes->getTypeTag(i));
-    }
-    Serial.print(" ");
+   Serial.print("  ,");
+   for(int i = 0 ; i < mes->getArgNum() ; i++){
+     Serial.print(mes->getTypeTag(i));
+       Serial.print(mes->getArgInt(i));
+   }
+   //Serial.print(" ");
+     
    //disp args
-    for(int i = 0 ; i < mes->getArgNum() ; i++){
-      
+    for(int i = 0 ; i < mes->getArgNum() ; i++){      
       switch( mes->getTypeTag(i) ){
-        
-        case 'i': {
-                      analogWrite(redPin,255);
-                      Serial.print( mes->getArgInt(i) );
-                  }
-          break;
-        
-        case 'f':  {
-                      
+        case 'i': {   
+            if (i == 0) {
+              switch ( mes->getArgInt(0) ){
+                case 1: //Red
+                  analogWrite(redPin,255);
+                  analogWrite(greenPin,0);
+                  analogWrite(bluePin,0);
+                  break;
+                case 2: //Green
+                  analogWrite(redPin,0);
+                  analogWrite(greenPin,255);
+                  analogWrite(bluePin,0);
+                  break;
+                case 3: //Blue
+                  analogWrite(redPin,0);
+                  analogWrite(greenPin,0);
+                  analogWrite(bluePin,255);
+                  break;
+                default: //Off
+                  analogWrite(redPin,0);
+                  analogWrite(greenPin,0);
+                  analogWrite(bluePin,0);
+                  break;
+              }
+           }
+        }
+        break;
+        case 'f':  {      
                       Serial.print( mes->getArgFloat(i) );
                   }
-          break;
-         
+          break;  
       }
-      
-       Serial.print(" ");
-      
+       Serial.print(" "); 
     }
+    Serial.println("");
     
-    Serial.println(""); 
-    
-}
+} //End void Loop()
