@@ -24,7 +24,7 @@ for (1..100) {
 	    } else {
 		$mesgVal = 255;
 	    }
-	    $mesg = "/ard/redPin";
+	    $mesg = "/ard/r";
 	$client->send(["$mesg" ,'i', $mesgVal]);
 	print $mesgVal . "\n";
 	sleep(1);
