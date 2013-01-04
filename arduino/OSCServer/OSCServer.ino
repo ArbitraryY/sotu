@@ -92,6 +92,10 @@ void logMessage(OSCMessage *mes){
      Serial.print(" Value: ");
      Serial.print( mes->getArgInt(0) );//
      //getSubAddress is a character Array of length defined by the second address
+     //String pinModer = mes->getSubAddress();
+     //analogWrite(pinModer,mes->getArgInt(0));
+     // check if subAddress sent:
+     // (r)ed (g)reen (b)lue (r)ed(S)lider (s)equence
      if ( mes->getSubAddress()[0] == 'r' ) {
        analogWrite(redPin,mes->getArgInt(0));
      } 
@@ -102,9 +106,27 @@ void logMessage(OSCMessage *mes){
        analogWrite(bluePin,mes->getArgInt(0));
      } 
      else if ( mes->getSubAddress()[0] == 'r' && mes->getSubAddress()[1] == 'S' ) {
-       Serial.print("helloYes");
        analogWrite(bluePin,mes->getArgInt(0));
-   }
+   } else if ( mes->getSubAddress()[0] == 's' ) {
+       if(mes->getArgInt(0) == 1) {
+         analogWrite(redPin,255);
+         analogWrite(greenPin,0);
+         analogWrite(bluePin,0);
+       } else if(mes->getArgInt(0) == 2) {
+         analogWrite(redPin,0);
+         analogWrite(greenPin,255);
+         analogWrite(bluePin,0);
+       } else if(mes->getArgInt(0) == 3) {
+         analogWrite(redPin,0);
+         analogWrite(greenPin,0);
+         analogWrite(bluePin,255);
+       } else {
+         analogWrite(redPin,0);
+         analogWrite(greenPin,0);
+         analogWrite(bluePin,0);
+       }
+       
+   } 
    
    //disp args
    /*for(int i = 0 ; i < mes->getArgNum() ; i++){      

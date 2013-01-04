@@ -9,9 +9,13 @@ OscP5 oscP5;
 NetAddress arduinoAddress;
 Minim minim;
 AudioPlayer song;
+AudioOutput out;
 BeatDetect beat;
 BeatListener bl;
 Arduino arduino;
+PFont font;
+PImage bg;
+color oscillatorColor = color(0,0,0);
 //for serial only
 //int redPin = 5;
 //int greenPin = 6;
@@ -19,7 +23,10 @@ Arduino arduino;
 
 void setup()
 {
-  size(500, 500, P3D);
+  size(367, 550, P3D);
+  String oscillatorColor = "";
+  bg = loadImage("simonneLive.jpg");
+  font = loadFont("Consolas-48.vlw");
   /*println(Arduino.list());
   arduino = new Arduino(this, Arduino.list()[0], 57600);
   arduino.pinMode(redPin, Arduino.OUTPUT);
@@ -31,9 +38,9 @@ void setup()
   arduino.analogWrite(bluePin, 0);*/
   
   minim = new Minim(this); 
-  
+  out = minim.getLineOut(); 
   //song = minim.loadFile("C:\\Users\\nick\\Documents\\Processing\\audio_test\\data\\questionMarksAndOtherDemonicPunctuation.mp3", 2048);
-  song = minim.loadFile("C:\\Users\\nick\\Documents\\Processing\\audio_test\\data\\aSummersDream.mp3", 2048);
+  song = minim.loadFile("C:\\Users\\nick\\Documents\\Processing\\audio_test\\data\\aSummersDream.mp3");
   // a beat detection object that is FREQ_ENERGY mode that 
   // expects buffers the length of song's buffer size
   // and samples captured at songs's sample rate
@@ -55,19 +62,20 @@ void setup()
 void draw()
 {
   background(0);
-  fill(255);
+  image(bg,0,0);
   fill(255,0,0);
-  rect(30, 30, 50, 50);
-  textSize(16);
-  fill(0,0,0);
-  text("play",40,55);
-  
+  //stop/pause button
+  noStroke();
+  rect(30, 500, 20, 20);
+  textFont(font, 15);
+  fill(100, 255, 0);
+  text(song.getMetaData().author() + " - " + song.getMetaData().title(), 40, 40);
+  //Create OSC Message object
   OscMessage pinMsg = new OscMessage("/ard/s");
   if ( beat.isKick() ) {
     println("kick");
-    fill(255,0,0);
-    rect(50,200,400,200);
-   //send OSC message - send 1 to activate red LED
+    oscillatorColor = color(255,0,0);
+    //send OSC message - send 1 to activate red LED
     pinMsg.add(1);
     //Serial write
     //arduino.analogWrite(redPin, 255);
@@ -76,8 +84,7 @@ void draw()
   }
   else if ( beat.isSnare() ) {
     println("snare");
-    fill(0,255,0);
-    rect(50,200,400,200);
+    oscillatorColor = color(0,255,0);
     //send OSC message - send 2 to activate green LED
     pinMsg.add(2);    
     //Serial write
@@ -87,8 +94,7 @@ void draw()
   }
   else if ( beat.isHat() ) {
     println("hat");
-    fill(0,0,255);
-    rect(50,200,400,200);
+    oscillatorColor = color(0,0,255);
     //send OSC message - send 3 to activate blue LED
     pinMsg.add(3);
     //Serial write
@@ -105,12 +111,17 @@ void draw()
   }
   //send the OSC message to arduino
   oscP5.send(pinMsg, arduinoAddress);
-
+  for(int i = 0; i < out.bufferSize() - 1; i++)
+  {
+    stroke(oscillatorColor);
+    line(i, 240 + song.left.get(i)*150, i+1, 245 + song.left.get(i+1)*150);
+    line(i, 310 + song.right.get(i)*150, i+1, 310 + song.right.get(i+1)*150);
+  }
 }
 
 void mousePressed() {
-  if(mouseX>30 && mouseX<80) //co-ordinates for button area
-    if(mouseY>30 && mouseY<80)
+  if(mouseX>30 && mouseX<50) //co-ordinates for button area
+    if(mouseY>500 && mouseY<520)
       if (song.isPlaying()){  //button function, ie play/pause
         song.pause();
       }
