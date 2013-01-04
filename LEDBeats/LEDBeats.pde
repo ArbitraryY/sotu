@@ -44,7 +44,7 @@ void setup()
   // algorithm if it is giving too many false-positives. The default value is 10, 
   // which is essentially no damping. If you try to set the sensitivity to a negative value, 
   // an error will be reported and it will be set to 10 instead. 
-  beat.setSensitivity(10);  
+  beat.setSensitivity(300);  
   // make a new beat listener, so that we won't miss any buffers for the analysis
   bl = new BeatListener(beat, song);
   
@@ -62,7 +62,7 @@ void draw()
   fill(0,0,0);
   text("play",40,55);
   
-  OscMessage pinMsg = new OscMessage("/ard/test2");
+  OscMessage pinMsg = new OscMessage("/ard/s");
   if ( beat.isKick() ) {
     println("kick");
     fill(255,0,0);
