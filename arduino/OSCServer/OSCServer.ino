@@ -90,7 +90,8 @@ void logMessage(OSCMessage *mes){
      Serial.print( mes->getSubAddress()[0] );//first char in array
      Serial.print( mes->getSubAddress()[1] );//second char in array
      Serial.print(" Value: ");
-     Serial.print( mes->getArgInt(0) );//
+     Serial.print( mes->getArgInt(0) );//first value
+     Serial.print( mes->getArgInt(1) );//second value
      //getSubAddress is a character Array of length defined by the second address
      //String pinModer = mes->getSubAddress();
      //analogWrite(pinModer,mes->getArgInt(0));
@@ -106,8 +107,8 @@ void logMessage(OSCMessage *mes){
        analogWrite(bluePin,mes->getArgInt(0));
      } 
      else if ( mes->getSubAddress()[0] == 'r' && mes->getSubAddress()[1] == 'S' ) {
-       analogWrite(bluePin,mes->getArgInt(0));
-   } else if ( mes->getSubAddress()[0] == 's' ) {
+       analogWrite(redPin,mes->getArgInt(0));
+   } else if ( mes->getSubAddress()[0] == 's' ) {//Processing MP3 Player
        if(mes->getArgInt(0) == 1) {
          analogWrite(redPin,255);
          analogWrite(greenPin,0);
@@ -120,13 +121,21 @@ void logMessage(OSCMessage *mes){
          analogWrite(redPin,0);
          analogWrite(greenPin,0);
          analogWrite(bluePin,255);
-       } else {
-         analogWrite(redPin,0);
-         analogWrite(greenPin,0);
-         analogWrite(bluePin,0);
+       } else if(mes->getArgInt(0) == 4) {//Fade between colors
+         FadeRGB(mes);
+       } else if (mes->getArgInt(0) == 5){ 
+         void(* resetFunc) (void) = 0;
+         resetFunc();
+       } else if(mes->getArgInt(0) == 6) {//All on
+           analogWrite(redPin,255);
+           analogWrite(greenPin,255);
+           analogWrite(bluePin,255);
+       } else {//Off
+           analogWrite(redPin,0);
+           analogWrite(greenPin,0);
+           analogWrite(bluePin,0);
        }
-       
-   } 
+     } 
    
    //disp args
    /*for(int i = 0 ; i < mes->getArgNum() ; i++){      
@@ -189,8 +198,46 @@ void logMessage(OSCMessage *mes){
                   }
           break;  
       }
-       Serial.print(" "); 
     }*/
     Serial.println("");
     
 } //End void Loop()
+
+ //declare reset function @ address 0
+
+//RGB Fade Function
+// OSC Message = /ard/s 4
+void FadeRGB(OSCMessage *mes) {
+  int i = 0;
+  int fadeSpeed = 5;
+  while (i == 0){
+    int j = 0;
+    for (j=0 ; j <=255 ; j++){
+      analogWrite(redPin,j);
+      analogWrite(greenPin,0);
+      analogWrite(bluePin,0);
+            // Serial.print("red: ");
+            // Serial.print(j);
+            // Serial.println(" ");
+      delay(fadeSpeed);
+    }
+    for (j=0 ; j <=255 ; j++){
+      analogWrite(redPin,0);
+      analogWrite(greenPin,j);
+      analogWrite(bluePin,0);
+            // Serial.print("green: ");
+            // Serial.print(j);
+            // Serial.println(" ");
+      delay(fadeSpeed);
+    }
+    for (j=0 ; j <=255 ; j++){
+      analogWrite(redPin,0);
+      analogWrite(greenPin,0);
+      analogWrite(bluePin,j);
+      // Serial.print("blue: ");
+      // Serial.print(j);
+      // Serial.println(" ");
+      delay(fadeSpeed);
+    }
+  }
+}

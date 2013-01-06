@@ -41,17 +41,16 @@ void setup()
   out = minim.getLineOut(); 
   //song = minim.loadFile("C:\\Users\\nick\\Documents\\Processing\\audio_test\\data\\questionMarksAndOtherDemonicPunctuation.mp3", 2048);
   song = minim.loadFile("C:\\Users\\nick\\Documents\\Processing\\audio_test\\data\\aSummersDream.mp3");
-  // a beat detection object that is FREQ_ENERGY mode that 
-  // expects buffers the length of song's buffer size
-  // and samples captured at songs's sample rate
+
   beat = new BeatDetect(song.bufferSize(), song.sampleRate());
+  //beat = new BeatDetect();//for SOUND_ENERGY mode
   // set the sensitivity to 300 milliseconds
   // After a beat has been detected, the algorithm will wait for 300 milliseconds 
   // before allowing another beat to be reported. You can use this to dampen the 
   // algorithm if it is giving too many false-positives. The default value is 10, 
   // which is essentially no damping. If you try to set the sensitivity to a negative value, 
   // an error will be reported and it will be set to 10 instead. 
-  beat.setSensitivity(300);  
+  beat.setSensitivity(10);  
   // make a new beat listener, so that we won't miss any buffers for the analysis
   bl = new BeatListener(beat, song);
   
@@ -69,7 +68,10 @@ void draw()
   rect(30, 500, 20, 20);
   textFont(font, 15);
   fill(100, 255, 0);
+  //Print Artist/SongName to top of window
   text(song.getMetaData().author() + " - " + song.getMetaData().title(), 40, 40);
+  //beat.SOUND_ENERGY();
+  println(beat.isOnset());
   //Create OSC Message object
   OscMessage pinMsg = new OscMessage("/ard/s");
   if ( beat.isKick() ) {
@@ -103,13 +105,19 @@ void draw()
     //arduino.analogWrite(bluePin, 255);
   } else {
    //send OSC message - all Off
-    pinMsg.add(100);
+   // pinMsg.add(100);
     //Serial write
     //arduino.analogWrite(redPin, 0);
     //arduino.analogWrite(bluePin, 0);
     //arduino.analogWrite(greenPin, 0);
   }
   //send the OSC message to arduino
+  //InSOUND_ENERGY mode just check for beat
+/*  if (beat.isOnset()){
+    pinMsg.add(6);
+  } else {
+    pinMsg.add(100);
+  }*/
   oscP5.send(pinMsg, arduinoAddress);
   for(int i = 0; i < out.bufferSize() - 1; i++)
   {
