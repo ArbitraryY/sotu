@@ -103,7 +103,7 @@ void draw()
     //arduino.analogWrite(bluePin, 255);
   } else {
    //send OSC message - all Off
-    pinMsg.add(4);
+    pinMsg.add(100);
     //Serial write
     //arduino.analogWrite(redPin, 0);
     //arduino.analogWrite(bluePin, 0);
@@ -114,8 +114,9 @@ void draw()
   for(int i = 0; i < out.bufferSize() - 1; i++)
   {
     stroke(oscillatorColor);
-    line(i, 240 + song.left.get(i)*150, i+1, 245 + song.left.get(i+1)*150);
-    line(i, 310 + song.right.get(i)*150, i+1, 310 + song.right.get(i+1)*150);
+    //line(i, 240 + song.left.get(i)*250, i+1, 245 + song.left.get(i+1)*250);
+    //line(i, 310 + song.right.get(i)*250, i+1, 310 + song.right.get(i+1)*250);
+    line(i, 310 + song.mix.get(i)*250, i+1, 310 + song.mix.get(i+1)*250);
   }
 }
 
