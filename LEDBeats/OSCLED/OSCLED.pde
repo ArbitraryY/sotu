@@ -20,14 +20,16 @@ color oscillatorColor = color(0,0,0);
 void setup()
 {
   size(367, 550, P3D);
+  frameRate(25);
   String oscillatorColor = "";
-  bg = loadImage("simonneLive.jpg");
-  font = loadFont("Consolas-48.vlw");
+  bg = loadImage("../data/simonneLive.jpg");
+  font = loadFont("../data/Consolas-48.vlw");
   
   minim = new Minim(this); 
   out = minim.getLineOut(); 
   //song = minim.loadFile("C:\\Users\\nick\\Documents\\Processing\\audio_test\\data\\questionMarksAndOtherDemonicPunctuation.mp3", 2048);
   song = minim.loadFile("C:\\Users\\nick\\Documents\\Processing\\audio_test\\data\\aSummersDream.mp3");
+  //song = minim.loadFile("C:\\Users\\nick\\Documents\\Processing\\audio_test\\data\\byeByeBirdie.mp3");
 
   beat = new BeatDetect(song.bufferSize(), song.sampleRate());
  
@@ -102,6 +104,22 @@ void mousePressed() {
     else{
       song.play();
     }
+}
+
+void oscEvent(OscMessage theOscMessage) {
+  /* print the address pattern and the typetag of the received OscMessage */
+  print("### received an osc message.");
+  print(" addrpattern: "+theOscMessage.addrPattern());
+  println(" typetag: "+theOscMessage.typetag());
+  println(" value: " +theOscMessage.get(0).intValue());
+  if (theOscMessage.get(0).intValue() == 1) {
+     song.play();
+     println("hello yess");
+ // } else if (theOscMessage.addrPattern() == "/proc/player" && theOscMessage.get(0).intValue() == 0) {
+ } else if (theOscMessage.get(0).intValue() == 0) {
+    song.pause();
+    println("hello yess");
+  }
 }
 
 void stop()

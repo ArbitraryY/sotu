@@ -17,16 +17,16 @@ my $client = Net::OpenSoundControl::Client->new(
 		or die "could not start client: $@\n";
 
 #Send test OSC messages
-$client->send(["/ard/s" ,'i', 4, 'i', 5]);
+#$client->send(["/ard/s" ,'i', 4, 'i', 5]);
 my $mesgVal = 0; #off
-for (1..100) {
-	if ($mesgVal == 255 ) {
-		$mesgVal = 0;
+for (1..1000000) {
+	if ($mesgVal == 1 ) {
+		$mesgVal = 100;
 	    } else {
-		$mesgVal = 255;
+		$mesgVal = 1;
 	    }
 	    $mesg = "/ard/s";
-	#$client->send(["$mesg" ,'i', $mesgVal]);
+	$client->send(["$mesg" ,'i', $mesgVal]);
 	print $mesgVal . "\n";
-	sleep(1);
+	#sleep(1);
 }
