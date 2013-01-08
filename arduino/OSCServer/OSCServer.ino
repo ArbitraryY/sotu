@@ -200,8 +200,6 @@ void logMessage(OSCMessage *mes){
     
 } //End void Loop()
 
- //declare reset function @ address 0
-
 //RGB Fade Function
 // OSC Message = /ard/s 4
 void FadeRGB(OSCMessage *mes) {
@@ -213,27 +211,18 @@ void FadeRGB(OSCMessage *mes) {
       analogWrite(redPin,j);
       analogWrite(greenPin,0);
       analogWrite(bluePin,0);
-            // Serial.print("red: ");
-            // Serial.print(j);
-            // Serial.println(" ");
       delay(fadeSpeed);
     }
     for (j=0 ; j <=255 ; j++){
       analogWrite(redPin,0);
       analogWrite(greenPin,j);
       analogWrite(bluePin,0);
-            // Serial.print("green: ");
-            // Serial.print(j);
-            // Serial.println(" ");
       delay(fadeSpeed);
     }
     for (j=0 ; j <=255 ; j++){
       analogWrite(redPin,0);
       analogWrite(greenPin,0);
       analogWrite(bluePin,j);
-      // Serial.print("blue: ");
-      // Serial.print(j);
-      // Serial.println(" ");
       delay(fadeSpeed);
     }
   }
