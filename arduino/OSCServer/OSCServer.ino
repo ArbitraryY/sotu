@@ -88,10 +88,6 @@ void logMessage(OSCMessage *mes){
      Serial.print( mes->getSubAddress()[1] );//second char in array
      Serial.print(" Value: ");
      Serial.print( mes->getArgInt(0) );//first value
-     //Serial.print( mes->getArgInt(1) );//second value
-     //getSubAddress is a character Array of length defined by the second address
-     //String pinModer = mes->getSubAddress();
-     //analogWrite(pinModer,mes->getArgInt(0));
      // check if subAddress sent:
      // (r)ed (g)reen (b)lue (r)ed(S)lider (s)equence
      if ( mes->getSubAddress()[0] == 'r' ) {
@@ -133,69 +129,6 @@ void logMessage(OSCMessage *mes){
            analogWrite(bluePin,0);
        }
      } 
-   
-   //disp args
-   /*for(int i = 0 ; i < mes->getArgNum() ; i++){      
-      switch( mes->getTypeTag(i) ){
-        case 'i': {   
-            if (i == 0) {//first element
-              switch ( mes->getArgInt(0) ){
-                case 1: //Red Only
-                  analogWrite(redPin,mes->getArgInt(1));
-                  analogWrite(greenPin,0);
-                  analogWrite(bluePin,0);
-                  break;
-                case 2: //Green Only
-                  analogWrite(redPin,0);
-                  analogWrite(greenPin,255);
-                  analogWrite(bluePin,0);
-                  break;
-                case 3: //Blue Only
-                  analogWrite(redPin,0);
-                  analogWrite(greenPin,0);
-                  analogWrite(bluePin,255);
-                  break;
-                case 4: //Red On
-                  analogWrite(redPin,255);
-                  break;
-                case 5: //Green On
-                  analogWrite(greenPin,255);
-                  break;
-                case 6: //Blue On
-                  analogWrite(bluePin,255);
-                  break;
-                case 7: //Red Off
-                  analogWrite(redPin,0);
-                  break;
-                case 8: //Green Off
-                  analogWrite(greenPin,0);
-                  break;
-                case 9: //Blue Off
-                  analogWrite(bluePin,0);
-                  break;
-                case 10: //Red Slider
-                  analogWrite(redPin,mes->getArgInt(1)*255);
-                  break;
-                case 100: //Off
-                  analogWrite(redPin,0);
-                  analogWrite(greenPin,0);
-                  analogWrite(bluePin,0);
-                  break;
-                default: //Off
-                  analogWrite(redPin,0);
-                  analogWrite(greenPin,0);
-                  analogWrite(bluePin,0);
-                  break;
-              }
-           }
-        }
-        break;
-        case 'f':  {      
-                      Serial.print( mes->getArgFloat(i) );
-                  }
-          break;  
-      }
-    }*/
     Serial.println("");
     
 } //End void Loop()
