@@ -2,11 +2,7 @@ import ddf.minim.*;
 import ddf.minim.analysis.*;
 import processing.serial.*;
 import cc.arduino.*;
-import oscP5.*;
-import netP5.*;
 
-OscP5 oscP5;
-NetAddress arduinoAddress;
 Minim minim;
 AudioPlayer song;
 AudioOutput out;
@@ -17,25 +13,25 @@ PFont font;
 PImage bg;
 color oscillatorColor = color(0,0,0);
 //for serial only
-//int redPin = 5;
-//int greenPin = 6;
-//int bluePin = 3;
+int redPin = 5;
+int greenPin = 6;
+int bluePin = 3;
 
 void setup()
 {
   size(367, 550, P3D);
   String oscillatorColor = "";
-  bg = loadImage("simonneLive.jpg");
-  font = loadFont("Consolas-48.vlw");
-  /*println(Arduino.list());
+  bg = loadImage("../data/simonneLive.jpg");
+  font = loadFont("../data/Consolas-48.vlw");
+  println(Arduino.list());
   arduino = new Arduino(this, Arduino.list()[0], 57600);
   arduino.pinMode(redPin, Arduino.OUTPUT);
   arduino.pinMode(greenPin, Arduino.OUTPUT);
   arduino.pinMode(bluePin, Arduino.OUTPUT);
   //start with all off
-  arduino.analogWrite(redPin, 0);
-  arduino.analogWrite(greenPin, 0);
-  arduino.analogWrite(bluePin, 0);*/
+  arduino.analogWrite(redPin, 255);
+  arduino.analogWrite(greenPin, 255);
+  arduino.analogWrite(bluePin, 0);
   
   minim = new Minim(this); 
   out = minim.getLineOut(); 
@@ -43,19 +39,10 @@ void setup()
   song = minim.loadFile("C:\\Users\\nick\\Documents\\Processing\\audio_test\\data\\aSummersDream.mp3");
 
   beat = new BeatDetect(song.bufferSize(), song.sampleRate());
-  //beat = new BeatDetect();//for SOUND_ENERGY mode
-  // set the sensitivity to 300 milliseconds
-  // After a beat has been detected, the algorithm will wait for 300 milliseconds 
-  // before allowing another beat to be reported. You can use this to dampen the 
-  // algorithm if it is giving too many false-positives. The default value is 10, 
-  // which is essentially no damping. If you try to set the sensitivity to a negative value, 
-  // an error will be reported and it will be set to 10 instead. 
+
   beat.setSensitivity(10);  
   // make a new beat listener, so that we won't miss any buffers for the analysis
   bl = new BeatListener(beat, song);
-  
-  oscP5 = new OscP5(this,10000);
-  arduinoAddress = new NetAddress("192.168.1.177",9999);
 }
 
 void draw()
@@ -70,55 +57,36 @@ void draw()
   fill(100, 255, 0);
   //Print Artist/SongName to top of window
   text(song.getMetaData().author() + " - " + song.getMetaData().title(), 40, 40);
-  //beat.SOUND_ENERGY();
-  println(beat.isOnset());
-  //Create OSC Message object
-  OscMessage pinMsg = new OscMessage("/ard/s");
+
   if ( beat.isKick() ) {
     println("kick");
     oscillatorColor = color(255,0,0);
-    //send OSC message - send 1 to activate red LED
-    pinMsg.add(1);
     //Serial write
-    //arduino.analogWrite(redPin, 255);
-    //arduino.analogWrite(bluePin, 0);
-    //arduino.analogWrite(greenPin, 0);
+    arduino.analogWrite(redPin, 255);
+    arduino.analogWrite(bluePin, 0);
+    arduino.analogWrite(greenPin, 0);
   }
   else if ( beat.isSnare() ) {
     println("snare");
     oscillatorColor = color(0,255,0);
-    //send OSC message - send 2 to activate green LED
-    pinMsg.add(2);    
     //Serial write
-    //arduino.analogWrite(redPin, 0);
-    //arduino.analogWrite(greenPin, 255);
-    //arduino.analogWrite(bluePin, 0);
+    arduino.analogWrite(redPin, 0);
+    arduino.analogWrite(greenPin, 255);
+    arduino.analogWrite(bluePin, 0);
   }
   else if ( beat.isHat() ) {
     println("hat");
     oscillatorColor = color(0,0,255);
-    //send OSC message - send 3 to activate blue LED
-    pinMsg.add(3);
     //Serial write
-    //arduino.analogWrite(redPin, 0);
-    //arduino.analogWrite(greenPin, 0);
-    //arduino.analogWrite(bluePin, 255);
+    arduino.analogWrite(redPin, 0);
+    arduino.analogWrite(greenPin, 0);
+    arduino.analogWrite(bluePin, 255);
   } else {
-   //send OSC message - all Off
-   // pinMsg.add(100);
     //Serial write
-    //arduino.analogWrite(redPin, 0);
-    //arduino.analogWrite(bluePin, 0);
-    //arduino.analogWrite(greenPin, 0);
+    arduino.analogWrite(redPin, 0);
+    arduino.analogWrite(bluePin, 0);
+    arduino.analogWrite(greenPin, 0);
   }
-  //send the OSC message to arduino
-  //InSOUND_ENERGY mode just check for beat
-/*  if (beat.isOnset()){
-    pinMsg.add(6);
-  } else {
-    pinMsg.add(100);
-  }*/
-  oscP5.send(pinMsg, arduinoAddress);
   for(int i = 0; i < out.bufferSize() - 1; i++)
   {
     stroke(oscillatorColor);
