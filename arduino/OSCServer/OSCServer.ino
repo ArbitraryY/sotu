@@ -1,7 +1,3 @@
-// OSCClass simple recieve test Arduino sketch
-// OSCClass version 1.0.1 (Arduino ver0014)
-// Copyright (c) recotana(http://recotana.com).  All right reserved.
-
 #include "Ethernet.h"
 #include "OSCClass.h"
 #include "SPI.h"
@@ -11,7 +7,7 @@ int greenPin = 6;
 int bluePin = 3;
 
   byte serverMac[] = { 0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED };
-  byte serverIp[]  = { 192, 168, 1, 177 };
+  byte serverIp[]  = { 192, 168, 1, 17 };
   int  serverPort  = 9999;
   
 //  byte gateway[]   = { 192, 168, 0, 1 };
@@ -19,8 +15,8 @@ int bluePin = 3;
 // byte destIp[]  = { 192, 168, 0, 5};
 // int  destPort = 10000;
   
-  char *topAddress="/ard";
-  char *subAddress[3]={ "/redPin" , "/greenPin" , "/bluePin" };
+  //char *topAddress="/ard";
+  //char *subAddress[3]={ "/redPin" , "/greenPin" , "/bluePin" };
   //char *subAddress[3]={ "/test1" , "/test2" , "/test3" };
   //char *subAddress[1]={ "/pin"};
   
@@ -36,7 +32,8 @@ void setup() {
      //for message logging
      Serial.begin(19200);
      //osc message buffer clear
-     osc.flush();  
+     osc.flush();
+     //
      analogWrite(redPin,0);
      analogWrite(greenPin,0);
      analogWrite(bluePin,0);
@@ -46,7 +43,7 @@ void loop() {
     //osc arrive check
     //analogWrite(redPin,255);
     if ( osc.available() ) {
-        logMessage(&recMes);
+       logMessage(&recMes);
     }
 }
 // *********  utility  ***********************************
@@ -91,7 +88,7 @@ void logMessage(OSCMessage *mes){
      Serial.print( mes->getSubAddress()[1] );//second char in array
      Serial.print(" Value: ");
      Serial.print( mes->getArgInt(0) );//first value
-     Serial.print( mes->getArgInt(1) );//second value
+     //Serial.print( mes->getArgInt(1) );//second value
      //getSubAddress is a character Array of length defined by the second address
      //String pinModer = mes->getSubAddress();
      //analogWrite(pinModer,mes->getArgInt(0));
