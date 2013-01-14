@@ -30,8 +30,11 @@ void setup()
   //song = minim.loadFile("C:\\Users\\nick\\Documents\\Processing\\audio_test\\data\\questionMarksAndOtherDemonicPunctuation.mp3", 2048);
   song = minim.loadFile("C:\\Users\\nick\\Documents\\Processing\\audio_test\\data\\aSummersDream.mp3");
   //song = minim.loadFile("C:\\Users\\nick\\Documents\\Processing\\audio_test\\data\\byeByeBirdie.mp3");
+  //song = minim.loadFile("C:\\Users\\nick\\Documents\\Processing\\audio_test\\data\\BigMamaThorntonHeartache.mp3");
 
-  beat = new BeatDetect(song.bufferSize(), song.sampleRate());
+ beat = new BeatDetect(song.bufferSize(), song.sampleRate());
+ //for SOUND_ENERGY mode
+ // beat = new BeatDetect();
  
   beat.setSensitivity(10);  
   // make a new beat listener, so that we won't miss any buffers for the analysis
@@ -53,8 +56,12 @@ void draw()
   fill(100, 255, 0);
   //Print Artist/SongName to top of window
   text(song.getMetaData().author() + " - " + song.getMetaData().title(), 40, 40);
-  //beat.SOUND_ENERGY();
-  //println(beat.isOnset());
+  //InSOUND_ENERGY mode just check for beat
+  /*if (beat.isOnset()){
+    pinMsg.add(6);
+  } else {
+    pinMsg.add(100);
+  }*/
   //Create OSC Message object
   OscMessage pinMsg = new OscMessage("/ard/s");
   if ( beat.isKick() ) {
@@ -79,12 +86,6 @@ void draw()
     pinMsg.add(100);
   }
   //send the OSC message to arduino
-  //InSOUND_ENERGY mode just check for beat
-/*  if (beat.isOnset()){
-    pinMsg.add(6);
-  } else {
-    pinMsg.add(100);
-  }*/
   oscP5.send(pinMsg, arduinoAddress);
   for(int i = 0; i < out.bufferSize() - 1; i++)
   {
