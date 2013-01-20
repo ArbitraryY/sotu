@@ -22,9 +22,9 @@ void setup(){
  server.begin(serverPort);
  
  //set callback function
- server.addCallback("/ard/led/red",&red);//turn a color on 
- //server.addCallback("/ard/led/green",&green);//turn a color off 
- //server.addCallback("/ard/led/blue",&blue);//turn a color off
+ server.addCallback("/ard/red",&red);//turn a color on 
+ server.addCallback("/ard/green",&green);//turn a color off 
+ server.addCallback("/ard/blue",&blue);//turn a color off
  //server.addCallback("/ard/led/prog",&prog);//turn a color on 
  //all pins off
  analogWrite(redPin,0);
@@ -39,19 +39,24 @@ void loop(){
 }
 
 void red(OSCMessage *mes){
-  int t;
-  //get 1st argument(int32)
-  t = mes->getArgInt32(0);
-  Serial.println(t);
-  
-}
-void colorOff(OSCMessage *mes){
-  int t;
-  //get 1st argument(int32)
-  t = _mes->getArgInt32(0);
-  Serial.println("ColorOff" + t);
+  int rVal = (int) mes->getArgFloat(0);
+  analogWrite(redPin,rVal);
+  Serial.println(rVal);
+  Serial.println(mes->getOSCAddress());
 }
 
-void logOscAddress(OSCMessage *mes){
+void green(OSCMessage *mes){
+  int gVal = (int) mes->getArgFloat(0);
+  analogWrite(greenPin,gVal);
+  //debug
+  Serial.println(gVal);
   Serial.println(mes->getOSCAddress());
-} 
+}
+
+void blue(OSCMessage *mes){
+  int bVal = (int) mes->getArgFloat(0);
+  analogWrite(bluePin,bVal);
+  //debug
+  Serial.println(bVal);
+  Serial.println(mes->getOSCAddress());
+}
