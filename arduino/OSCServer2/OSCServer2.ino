@@ -22,10 +22,11 @@ void setup(){
  server.begin(serverPort);
  
  //set callback function
- server.addCallback("/ard/red",&red);//turn a color on 
- server.addCallback("/ard/green",&green);//turn a color off 
- server.addCallback("/ard/blue",&blue);//turn a color off
- //server.addCallback("/ard/led/prog",&prog);//turn a color on 
+ server.addCallback("/ard/red",&red); 
+ server.addCallback("/ard/green",&green); 
+ server.addCallback("/ard/blue",&blue);
+ server.addCallback("/ard/player",&player);
+ server.addCallback("/ard/prog",&prog); 
  //all pins off
  analogWrite(redPin,0);
  analogWrite(greenPin,0);
@@ -34,7 +35,7 @@ void setup(){
   
 void loop(){
   if(server.aviableCheck()>0){
-    Serial.println("alive! ");
+  //  Serial.println("alive! ");
   }
 }
 
@@ -59,4 +60,28 @@ void blue(OSCMessage *mes){
   //debug
   Serial.println(bVal);
   Serial.println(mes->getOSCAddress());
+}
+
+void player(OSCMessage *mes){
+  Serial.println(mes->getArgFloat(0));
+  int val=(int) mes->getArgFloat(0);
+  Serial.println(val);
+  //Serial.println("-----------------");
+  if(val == 1) {
+    analogWrite(redPin,255);
+    analogWrite(greenPin,0);
+    analogWrite(bluePin,0);
+  } else if(val == 2) {
+    analogWrite(redPin,0);
+    analogWrite(greenPin,255);
+    analogWrite(bluePin,0);
+  } else if(val == 3) {
+    analogWrite(redPin,0);
+    analogWrite(greenPin,0);
+    analogWrite(bluePin,255);
+  } else {
+    analogWrite(redPin,0);
+    analogWrite(greenPin,0);
+    analogWrite(bluePin,0);
+  }
 }
