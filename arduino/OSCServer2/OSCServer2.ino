@@ -77,8 +77,33 @@ void allOff(OSCMessage *mes){
   analogWrite(redPin,0);
   analogWrite(greenPin,0);
   analogWrite(bluePin,0);
+  while (int i = 0) {
+  }
 }
 
 void prog(OSCMessage *mes){
+  int progNum = (int)mes->getArgFloat(0);
+  if (progNum == 1) {
+    do{
+     int r = random(0,255);
+     int g = random(0,255);
+     int b = random(0,255);
+     analogWrite(redPin,r);
+     analogWrite(greenPin,g);
+     analogWrite(bluePin,b);
+     delay(2000);
+    } while (progNum != 0);
+  } 
+  else if (progNum == 2) {
+    int r = random(0,255);
+    int g = random(0,255);
+    int b = random(0,255);
+    analogWrite(redPin,r);
+    analogWrite(greenPin,g);
+    analogWrite(bluePin,b);
+  } else if (progNum == 100) {
+    allOff(mes);
+  } else {
   
+  }
 }
