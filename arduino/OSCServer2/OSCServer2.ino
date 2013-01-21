@@ -55,7 +55,8 @@ void blue(OSCMessage *mes){
 }
 
 void player(OSCMessage *mes){
-  int val=(int) mes->getArgFloat(0);
+  //int val=(int) mes->getArgFloat(0);
+  int val=mes->getArgInt32(0);
   Serial.println(val);
   if(val == 1) {
     analogWrite(redPin,255);
@@ -74,4 +75,8 @@ void player(OSCMessage *mes){
     analogWrite(greenPin,0);
     analogWrite(bluePin,0);
   }
+}
+
+void prog(OSCMessage *mes){
+  
 }
