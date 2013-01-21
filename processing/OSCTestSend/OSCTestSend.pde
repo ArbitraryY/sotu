@@ -14,12 +14,12 @@ void setup(){
 }
 
 void draw (){
-  OscMessage pinMsg = new OscMessage("/ard/s");
+  OscMessage pinMsg = new OscMessage("/ard/red");
   if (flag == 0) {
-    pinMsg.add(1);
+    pinMsg.add(255.0);
     flag = 1;
   } else {
-    pinMsg.add(100);
+    pinMsg.add(0.0);
     flag = 0;
   }
   println(pinMsg.addrPattern());
