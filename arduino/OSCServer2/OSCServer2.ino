@@ -42,31 +42,21 @@ void loop(){
 void red(OSCMessage *mes){
   int rVal = (int) mes->getArgFloat(0);
   analogWrite(redPin,rVal);
-  Serial.println(rVal);
-  Serial.println(mes->getOSCAddress());
 }
 
 void green(OSCMessage *mes){
   int gVal = (int) mes->getArgFloat(0);
   analogWrite(greenPin,gVal);
-  //debug
-  Serial.println(gVal);
-  Serial.println(mes->getOSCAddress());
 }
 
 void blue(OSCMessage *mes){
   int bVal = (int) mes->getArgFloat(0);
   analogWrite(bluePin,bVal);
-  //debug
-  Serial.println(bVal);
-  Serial.println(mes->getOSCAddress());
 }
 
 void player(OSCMessage *mes){
-  Serial.println(mes->getArgFloat(0));
   int val=(int) mes->getArgFloat(0);
   Serial.println(val);
-  //Serial.println("-----------------");
   if(val == 1) {
     analogWrite(redPin,255);
     analogWrite(greenPin,0);
