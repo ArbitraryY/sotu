@@ -68,22 +68,22 @@ void draw()
     println("kick");
     oscillatorColor = color(255,0,0);
     //send OSC message - send 1 to activate red LED
-    pinMsg.add(1.0);
+    pinMsg.add(1);
   }
   else if ( beat.isSnare() ) {
     println("snare");
     oscillatorColor = color(0,255,0);
     //send OSC message - send 2 to activate green LED
-    pinMsg.add(2.0);    
+    pinMsg.add(2);    
   }
   else if ( beat.isHat() ) {
     println("hat");
     oscillatorColor = color(0,0,255);
     //send OSC message - send 3 to activate blue LED
-    pinMsg.add(3.0);
+    pinMsg.add(3);
   } else {
    //send OSC message - all Off
-    pinMsg.add(100.0);
+    pinMsg.add(100);
   }
   //send the OSC message to arduino
   println(pinMsg);
