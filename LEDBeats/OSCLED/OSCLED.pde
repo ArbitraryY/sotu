@@ -63,29 +63,30 @@ void draw()
     pinMsg.add(100);
   }*/
   //Create OSC Message object
-  OscMessage pinMsg = new OscMessage("/ard/s");
+  OscMessage pinMsg = new OscMessage("/ard/player");
   if ( beat.isKick() ) {
     println("kick");
     oscillatorColor = color(255,0,0);
     //send OSC message - send 1 to activate red LED
-    pinMsg.add(1);
+    pinMsg.add(1.0);
   }
   else if ( beat.isSnare() ) {
     println("snare");
     oscillatorColor = color(0,255,0);
     //send OSC message - send 2 to activate green LED
-    pinMsg.add(2);    
+    pinMsg.add(2.0);    
   }
   else if ( beat.isHat() ) {
     println("hat");
     oscillatorColor = color(0,0,255);
     //send OSC message - send 3 to activate blue LED
-    pinMsg.add(3);
+    pinMsg.add(3.0);
   } else {
    //send OSC message - all Off
-    pinMsg.add(100);
+    pinMsg.add(100.0);
   }
   //send the OSC message to arduino
+  println(pinMsg);
   oscP5.send(pinMsg, arduinoAddress);
   for(int i = 0; i < out.bufferSize() - 1; i++)
   {
