@@ -25,6 +25,7 @@ void setup(){
  server.addCallback("/ard/red",&red); 
  server.addCallback("/ard/green",&green); 
  server.addCallback("/ard/blue",&blue);
+ server.addCallback("/ard/allOff",&allOff);
  server.addCallback("/ard/player",&player);
  server.addCallback("/ard/prog",&prog); 
  //all pins off
@@ -55,26 +56,27 @@ void blue(OSCMessage *mes){
 }
 
 void player(OSCMessage *mes){
-  //int val=(int) mes->getArgFloat(0);
-  int val=mes->getArgInt32(0);
-  Serial.println(val);
-  if(val == 1) {
+  if(mes->getArgInt32(0) == 1) {
     analogWrite(redPin,255);
     analogWrite(greenPin,0);
     analogWrite(bluePin,0);
-  } else if(val == 2) {
+  } else if(mes->getArgInt32(0) == 2) {
     analogWrite(redPin,0);
     analogWrite(greenPin,255);
     analogWrite(bluePin,0);
-  } else if(val == 3) {
+  } else if(mes->getArgInt32(0) == 3) {
     analogWrite(redPin,0);
     analogWrite(greenPin,0);
     analogWrite(bluePin,255);
   } else {
-    analogWrite(redPin,0);
-    analogWrite(greenPin,0);
-    analogWrite(bluePin,0);
+    allOff(mes);
   }
+}
+
+void allOff(OSCMessage *mes){
+  analogWrite(redPin,0);
+  analogWrite(greenPin,0);
+  analogWrite(bluePin,0);
 }
 
 void prog(OSCMessage *mes){
