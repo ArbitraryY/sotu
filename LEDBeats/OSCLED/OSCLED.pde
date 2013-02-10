@@ -27,9 +27,9 @@ void setup()
   
   minim = new Minim(this); 
   out = minim.getLineOut(); 
-  //song = minim.loadFile("C:\\Users\\nick\\Documents\\Processing\\audio_test\\data\\questionMarksAndOtherDemonicPunctuation.mp3", 2048);
-  song = minim.loadFile("C:\\Users\\nick\\Documents\\Processing\\audio_test\\data\\aSummersDream.mp3");
-  //song = minim.loadFile("C:\\Users\\nick\\Documents\\Processing\\audio_test\\data\\byeByeBirdie.mp3");
+  
+  //song = minim.loadFile("C:\\Users\\nick\\Documents\\Processing\\audio_test\\data\\aSummersDream.mp3");
+  song = minim.loadFile("C:\\Users\\nick\\Documents\\Processing\\audio_test\\data\\RedSkyAtNight.mp3");
   //song = minim.loadFile("C:\\Users\\nick\\Documents\\Processing\\audio_test\\data\\BigMamaThorntonHeartache.mp3");
 
  beat = new BeatDetect(song.bufferSize(), song.sampleRate());
