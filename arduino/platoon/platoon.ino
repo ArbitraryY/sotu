@@ -1,61 +1,58 @@
-const float pi = 3.14;
-
 //LED pinouts
 int redPin = 3; 
 int greenPin = 5; 
 int bluePin = 6;
 const int pwPin = 10;
-double pulse, inches, cm;
+double pulse, d; 
+//define the range boundaries (lower/upper) for each of the 3 ranges
+double ranges[] = {10.0,16.0,17.0,47.0,48.0,70.0};
 
-// the setup routine runs once when you press reset:
 void setup()  { 
   Serial.begin(19200);  
 } 
-
-// the loop routine runs over and over again forever:
 void loop(){
+  //investigate moving this to the setup loop to only do once
   pinMode(pwPin, INPUT);
   pulse = pulseIn(pwPin, HIGH);
-  inches = pulse/147;
-  cm = inches * 2.54;
+  d = pulse/147;
+  //cm = inches * 2.54;
+  Serial.println(d);
+  if (d >= ranges[0] && d <= ranges[1]) {
+    int arraySize = 6;
+    int LED1_RG1_RED[]   = {28,40,0,40,123,67};
+    int LED1_RG1_GREEN[] = {30,93,0,93,35,47};
+    int LED1_RG1_BLUE[]  = {68,144,0,144,107,103};
+    do { 
+      //recalculate distance
+      //write to analog pins
+      for (int i = 0 ; i <= arraySize ; i++) {
+        pulse = pulseIn(pwPin, HIGH);
+        d = pulse/147;
+        Serial.println("in range 1");
+        Serial.println(d);
+        Serial.println("----------------");
+        Serial.println(ranges[0]);
+        Serial.println(ranges[1]);
+        if (d < ranges[0] || d > ranges[1]){
+          //turn strip off and exit
+          analogWrite(redPin, 0); 
+          analogWrite(greenPin, 0);
+          analogWrite(bluePin, 0);
+          break;
+        }
+        
+        analogWrite(redPin, LED1_RG1_RED[i]); 
+        analogWrite(greenPin, LED1_RG1_GREEN[i]);
+        analogWrite(bluePin, LED1_RG1_BLUE[i]);
+        delay(500);
+      }
+    } while (d >= ranges[0] && d <= ranges[1]);
+  } else if (d >= ranges[2] && d <= ranges[3]) {
   
   
-  //int randGreen = random(0,255);
-  //int randBlue = random(0,255);
-  //int randRed = random(0,255);
+  } else if (d >= ranges[4] && d <= ranges[5]) {
   
-  if (inches > 10.0 && inches < 34.0) {
-    analogWrite(redPin, 255); 
-    analogWrite(greenPin, 0);
-    analogWrite(bluePin, 0);
-  } else if (inches >= 34.0 && inches < 67.0) {
-    analogWrite(redPin, 0); 
-    analogWrite(greenPin, 255);
-    analogWrite(bluePin, 0);
-  } else if (inches >= 67.0 && inches < 101.0) {
-    analogWrite(redPin, 0); 
-    analogWrite(greenPin, 0);
-    analogWrite(bluePin, 255);
   } else {
-    analogWrite(redPin, 0); 
-    analogWrite(greenPin, 0);
-    analogWrite(bluePin, 0);
+    //do nothing here
   }
-  
-  
-  Serial.print(inches);
-  Serial.print("in, ");
-  Serial.print(cm);
-  Serial.print("cm");
-  Serial.println();
-  /*Serial.print("int(abs(blueBrightness)) = ");
-  Serial.println(int(abs(randBlue)));
-  Serial.print("int(abs(greenBrightness)) = ");
-  Serial.println(int(abs(randGreen)));
-  Serial.print("int(abs(redBrightness)) = ");
-  Serial.println(int(abs(randRed)));*/
-  Serial.println("------------------------");           
-
-  delay(500);  
 }
-
