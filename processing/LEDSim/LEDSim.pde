@@ -10,7 +10,6 @@ void setup(){
 }
 void draw(){
   //calculate the differences between each of the elements
-  rect(30,20,100,100);
   int diffs[] = {};
   for (int i=0 ; i<arraySize-1 ; i++){
     int rDiff = r[i+1] - r[i];
@@ -54,6 +53,7 @@ void draw(){
     println("-------------------");
     for(int j = 0 ; j<gradStep ; j++){
       fill(rHold,gHold,bHold);
+      rect(30,20,100,100);
       //check for +/-
       if (plusMinus[0] > 0){
         rHold += steps[0];
@@ -73,7 +73,7 @@ void draw(){
       println(rHold);
       println(gHold);
       println(bHold);
-      delay(50);
+      delay(1000);
     }
     println("-------------------");
     //go to last color
