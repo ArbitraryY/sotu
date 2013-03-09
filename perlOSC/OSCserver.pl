@@ -17,7 +17,7 @@ sub ledAction {
     print "Value:" . "$oscValue\n\n";
    
     #parse color from OSC address
-    $oscAddress =~ m/\/ard\/(\w+)/;
+    $oscAddress =~ m/\/led\/(\w+)/;
     my $color = $1;
     #print "Color: " . $color . "\n";
     #hash of colors and corresponding GPIO on RPi
