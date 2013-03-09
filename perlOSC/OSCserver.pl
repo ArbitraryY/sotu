@@ -17,14 +17,20 @@ sub ledAction {
     print "Value:" . "$oscValue\n\n";
    
     #parse color from OSC address
-    my $oscAddress =~ m/ard\/(\w+)/;
-    print "Color: " . $1 . "\n";
+    $oscAddress =~ m/\/ard\/(\w+)/;
+    my $color = $1;
+    #print "Color: " . $color . "\n";
     #hash of colors and corresponding GPIO on RPi
     my %ledGPIO = (
-		"red"   => "5", #GPIO 23
-		"green" => "2", #     18
-		"blue"  => "6", #     24
-	       );    
+		red   => "5", #GPIO 23
+		green => "2", #     18
+		blue  => "6", #     24
+	       );
+    #print the GPIO color from hash map
+    #print "GPIO value: " . $ledGPIO{$color} . "\n";
+
+    #write to device file
+    system("echo \"$ledGPIO{$color}=$oscValue\" > /dev/pi-blaster"); 
 }
 
 my $server =

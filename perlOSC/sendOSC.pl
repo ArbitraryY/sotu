@@ -20,11 +20,12 @@ my $client = Net::OpenSoundControl::Client->new(
 #$client->send(["/ard/red" ,'i', 255,]);
 
 my $mesgVal = 0; #off
-for (1..1000000) {
-	if ($mesgVal == 0.0 ) {
-		$mesgVal = 255.0;
-	    } else {
-		$mesgVal = 0.0;
+for(;;){
+#for (1..1000000) {
+	if ($mesgVal == 0 ) {
+ 		$mesgVal = 1;
+       } else {
+		$mesgVal = 0;
 	    }
 	    $mesg = "/ard/red";
 	$client->send(["$mesg" ,'i', $mesgVal]);
