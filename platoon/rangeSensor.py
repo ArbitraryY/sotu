@@ -1,21 +1,18 @@
 #!/usr/bin/python
 
-# Import required Python libraries
 import RPi.GPIO as GPIO
 import time as time
  
-# Use BCM GPIO references
-# instead of physical pin numbers
 GPIO.setmode(GPIO.BCM)
  
-# Define GPIO to use on Pi
+# Define GPIO to use for PWM
 GPIO_PWM =22; 
  
 # Set pin as input
-GPIO.setup(GPIO_PWM,GPIO.IN)      # Echo
+GPIO.setup(GPIO_PWM,GPIO.IN) 
  
 def measure():
-  # This function measures a distance
+  # Measures a distance (time it takes to go from 0 --> or 1 --> 0)
   
   start = time.time()
   while GPIO.input(GPIO_PWM)==0:
@@ -24,15 +21,14 @@ def measure():
   while GPIO.input(GPIO_PWM)==1:
     stop = time.time()
 
-  elapsed = stop-start
+  elapsedTime = stop-start
   #distance = (elapsed * 34300)/2 #speed of sound in cm/sec
-  distance = (elapsed * 13512)/2 #speed of sound in in/sec
+  distance = (elapsedTime * 13512)/2 #speed of sound in in/sec
 
   return distance
 
 def measureAvg():
-  # This function takes 3 measurements and
-  # returns the average.
+  # Take 3 measurements and return the average. Should make for more reliable readings
 
   distance1=measure()
   time.sleep(0.1)
@@ -50,12 +46,13 @@ try:
   # Loop until users quits with CTRL-C
   while True :
  
-    # Read PIR state
+    # Read and print sensor state
     Current_State = GPIO.input(GPIO_PWM)
     print Current_State 
     #Call distance Avg function
     distance = measure()
     print "Distance : %.1f" % distance
+    # time between measurments
     time.sleep(1)
 
 except KeyboardInterrupt:
