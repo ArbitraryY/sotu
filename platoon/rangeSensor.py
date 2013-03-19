@@ -3,8 +3,6 @@
 Documentation for this module
 
 """
-
-
 from __future__ import division
 import RPi.GPIO as GPIO
 import time as time
@@ -112,6 +110,13 @@ try:
 	#check which range we are in
 	if distance >= ranges[0] and distance <= ranges[1]:
 		print "in range 1 yo"
+		for c in range(len(RNG_1_LED_1)-1):
+        		#loop within each subarray
+        		for a in range(len(RNG_1_LED_1[c])):
+                		#pass GPIO pin to which manipulate
+                		fadeLED(GPIO_PINS_LED_1[a],RNG_1_LED_1[c][a],RNG_1_LED_1[c+1][a]);
+        		print "--------------------"
+
 	elif distance >= ranges[2] and distance <= ranges[3]:
 		print "in range 2 yo"
 	elif distance >= ranges[4] and distance <= ranges[5]:
@@ -124,6 +129,9 @@ try:
     	time.sleep(1)
 
 except KeyboardInterrupt:
-  print "  Quit"
-  # Reset GPIO settings
-  GPIO.cleanup()
+	for gpioVal in GPIO_PINS_LED_1:
+        	os.system("echo \"{0}=0\" > /dev/pi-blaster" .format(gpioVal))
+
+		print "  Quit"
+  	# Reset GPIO settings
+  	GPIO.cleanup()
