@@ -11,9 +11,9 @@ import time
 import os
 
 # Define GPIO to use for range Sensor
-GPIO_RS =22; 
+GPIO_RS =4; 
 #define the GPIO pins, r = 5, g = 2, b = 6
-GPIO_PINS_LED_1 = [5,2,6]
+GPIO_PINS_LED_1 = [1,4,6]
 #GPIO_PINS_LED_2 = [5,2,6]
 
 #set mode to BCM so PWM
@@ -32,6 +32,12 @@ STEP = 0.03
 # define LED RGB colors
 RNG_1_LED_1 = [ [28,30,68],[40,93,144],[255,255,255],[40,93,144],[123,32,144],[67,47,103] ]
 RNG_1_LED_2 = [ [150,44,37],[32,69,97],[121,65,137],[121,65,137],[238,68,79] ]
+
+#RNG_2_LED_1 = [ [0,0,0],[32,69,97],[121,65,137],[121,65,137],[238,68,79] ]
+#RNG_2_LED_2 = [ [150,44,37],[32,69,97],[121,65,137],[121,65,137],[238,68,79] ]
+
+#RNG_3_LED_1 = [ [150,44,37],[32,69,97],[121,65,137],[121,65,137],[238,68,79] ]
+#RNG_3_LED_2 = [ [150,44,37],[32,69,97],[121,65,137],[121,65,137],[238,68,79] ]
 
 #define ranges
 ranges=[10.0,16.0,17.0,47.0,48.0,70.0];
@@ -109,7 +115,9 @@ try:
     	print "Distance : %.1f" % distance
 	#check which range we are in
 	if distance >= ranges[0] and distance <= ranges[1]:
-		print "in range 1 yo"
+		print "------------Range 1-----------"
+		#set LED to initial value
+		
 		for c in range(len(RNG_1_LED_1)-1):
         		#loop within each subarray
         		for a in range(len(RNG_1_LED_1[c])):
@@ -118,9 +126,9 @@ try:
         		print "--------------------"
 
 	elif distance >= ranges[2] and distance <= ranges[3]:
-		print "in range 2 yo"
+		print "------------Range 2-----------"
 	elif distance >= ranges[4] and distance <= ranges[5]:
-		print "in range 3 yo"
+		print "------------Range 3-----------"
 	else:
 		print "not in range"
 
