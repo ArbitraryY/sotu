@@ -22,9 +22,12 @@ sub ledAction {
     #print "Color: " . $color . "\n";
     #hash of colors and corresponding GPIO on RPi
     my %ledGPIO = (
-		red   => "2", #GPIO 23
-		green => "4", #     18
-		blue  => "6", #     24
+		red1   => "2", #GPIO 23
+		green1 => "5", #     18
+		blue1  => "7", #     24
+		red2   => "1", #     24
+		green2 => "4", #     24
+		blue2  => "6", #     24
 	       );
     #print the GPIO color from hash map
     #print "GPIO value: " . $ledGPIO{$color} . "\n";
