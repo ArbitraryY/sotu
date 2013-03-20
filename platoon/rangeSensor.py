@@ -61,12 +61,21 @@ def measureAvg():
 	"""Take 3 measurements and returns the average
 	"""
 	distance1=measure()
-  	time.sleep(0.1)
+  	time.sleep(0.15)
   	distance2=measure()
-  	time.sleep(0.1)
+  	time.sleep(0.15)
   	distance3=measure()
-  	distance = distance1 + distance2 + distance3
-  	distance = distance / 3
+  	time.sleep(0.15)
+  	distance4=measure()
+  	time.sleep(0.15)
+  	distance5=measure()
+  	time.sleep(0.15)
+  	distance6=measure()
+  	time.sleep(0.15)
+  	distance7=measure()
+  	time.sleep(0.15)
+  	distance = distance1 + distance2 + distance3 + distance4 + distance5 + distance6 + distance7
+  	distance = distance / 7
   	return distance
 
 def fadeLED( gpio, startVal, stopVal, lower, upper ):
