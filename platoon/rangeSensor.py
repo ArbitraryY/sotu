@@ -19,15 +19,19 @@ GPIO_PINS_LED_2 = [1,4,6]
 #set mode to BCM so PWM
 GPIO.setmode(GPIO.BCM)
  
-# Set pin as input
+# Set range sensor pin as an input. Need thisin order to overtake the setting
+# from pi-blaster which sets all GPIO pins to input
 GPIO.setup(GPIO_RS,GPIO.IN) 
  
 #define global step size for fading theough colors
 global FADESPEED
 global STEP
 
-FADESPEED = 0.01 #Increase to slow down LED color changes
-STEP = 0.05 
+#Increase to slow down LED color changes
+FADESPEED = 0.01
+#step size to jump to the next RGB value when fading.  Increasing this will
+#will slow down the fade
+STEP = 0.02
 
 # define LED RGB colors
 RNG_1_LED_1 = [ [28,30,68],[40,93,144],[255,255,255],[40,93,144],[123,32,144],[67,47,103] ]
