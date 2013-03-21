@@ -3,10 +3,10 @@
 Documentation for this module
 
 """
-from __future__ import division
+from __future__ import division #needed for division of integers --> floats
+#from subprocess import call
+#import numpy
 import RPi.GPIO as GPIO
-import time as time
-from subprocess import call
 import time
 import os
 
@@ -26,8 +26,8 @@ GPIO.setup(GPIO_RS,GPIO.IN)
 global FADESPEED
 global STEP
 
-FADESPEED = 0.01 #Increase to slow down
-STEP = 0.03
+FADESPEED = 0.01 #Increase to slow down LED color changes
+STEP = 0.05 
 
 # define LED RGB colors
 RNG_1_LED_1 = [ [28,30,68],[40,93,144],[255,255,255],[40,93,144],[123,32,144],[67,47,103] ]
@@ -41,6 +41,11 @@ RNG_1_LED_2 = [ [150,44,37],[32,69,97],[121,65,137],[121,65,137],[238,68,79] ]
 
 #define ranges
 ranges=[10.0,16.0,17.0,47.0,48.0,70.0];
+
+#This variable holds the global type of average when taking range measurements
+#Options are aMean (arithmetic Mean), median, iquart (interquartile average)
+global AVGTYPE 
+AVGTYPE = 'median'
 
 #----------------------Funcs-----------------------------------------
 def measure():
@@ -57,26 +62,42 @@ def measure():
   	distance = (elapsedTime * 13512)/2 #speed of sound in in/sec
 	return distance
 
-def measureAvg():
-	"""Take 3 measurements and returns the average
+def measureAvg(avgType):
+	"""Arguements:
+	AVGTYPE - Which average algorithm to use (aMean|median|iquart)
 	"""
-	distance1=measure()
-  	time.sleep(0.15)
-  	distance2=measure()
-  	time.sleep(0.15)
-  	distance3=measure()
-  	time.sleep(0.15)
-  	distance4=measure()
-  	time.sleep(0.15)
-  	distance5=measure()
-  	time.sleep(0.15)
-  	distance6=measure()
-  	time.sleep(0.15)
-  	distance7=measure()
-  	time.sleep(0.15)
-  	distance = distance1 + distance2 + distance3 + distance4 + distance5 + distance6 + distance7
-  	distance = distance / 7
-  	return distance
+	#Number of measurements to take.  Use a multiple of 4 if using the
+	#interquartile mean
+	numMeasures = 3;
+	dataPoints = []
+	#take numMeasures # of measurements and put into array for avg calculations
+	for num in range(0,numMeasures):
+		distance=measure()
+		time.sleep(0.01)
+		dataPoints.append(distance)
+	avg = 0
+	#calculate the Arithmetic Mean
+	if avgType == 'aMean':
+		for i in range(0,numMeasures):
+			avg += dataPoints[i]
+			print avg
+		avg = avg / numMeasures 	
+	#calculate the Median
+	elif avgType == 'median':
+		#calculate the median
+		theValues = sorted(dataPoints)
+                if len(theValues) % 2 == 1:
+			print int((len(theValues)+1)/2-1)
+                        avg = theValues[int((len(theValues)+1)/2-1)]
+                else:
+                        lower = theValues[int(len(theValues)/2-1)]
+                        upper = theValues[int(len(theValues)/2)]
+                        avg = (float(lower + upper)) / 2
+	elif avgType == 'iquart':
+		print "iquart calc"	
+  	else:
+		print "not a valid Averaging option"
+	return avg
 
 def fadeLED( gpio, startVal, stopVal, lower, upper ):
         """This function takes the following arguements
@@ -103,7 +124,8 @@ def fadeLED( gpio, startVal, stopVal, lower, upper ):
                         currentVal = currentVal + STEP;
                         time.sleep(FADESPEED)
     			#take a distance measurment and check if out of range
-			distance = measure()
+			distance = measureAvg(AVGTYPE)
+			#distance = measure()
 			print "distance in loop addition loop: %.3f" % distance
 			if distance < lower or distance > upper:
 				allOff();
@@ -115,7 +137,8 @@ def fadeLED( gpio, startVal, stopVal, lower, upper ):
                         currentVal = currentVal - STEP;
                         time.sleep(FADESPEED)
     			#take a distance measurment
-			distance = measure()
+			distance = measureAvg(AVGTYPE)
+			#distance = measure()
 			print "distance in loop subtracting loop: %.3f" % distance
 			if distance < lower or distance > upper:
 				allOff();
@@ -123,13 +146,34 @@ def fadeLED( gpio, startVal, stopVal, lower, upper ):
                         #print currentVal
         return;
 
-def allOff():
-	"""This function turns all the LEDs off
+def setColor(ledStripNum,R,G,B):
 	"""
-	for gpioVal in GPIO_PINS_LED_1:
-        	os.system("echo \"{0}=0\" > /dev/pi-blaster" .format(gpioVal))
-	for gpioVal in GPIO_PINS_LED_2:
-        	os.system("echo \"{0}=0\" > /dev/pi-blaster" .format(gpioVal))
+	Set RGB color passed to it
+	LEDstrip: Which strip? (1|2)
+	R,G,B - color values to set 
+	"""
+	#calculate analog to digitial value
+	R = R / 255
+	G = G / 255
+	B = B / 255
+	#Put RGB values into an array
+	RGB = [R,G,B]
+	#check which strip we want to do stuff to
+	if ledStripNum == 1:
+		gpioPinsList = GPIO_PINS_LED_1
+	elif ledStripNum == 2:
+		gpioPinsList = GPIO_PINS_LED_2
+	i = 0
+	for gpioVal in gpioPinsList:
+        	os.system("echo \"{0}={1}\" > /dev/pi-blaster" .format(gpioVal, RGB[i]))
+		print gpioVal, RGB[i]
+		i += 1
+
+def allOff():
+	"""Turn all LEDs off
+	"""
+	setColor(1,0,0,0)
+	setColor(2,0,0,0)
 	
 	
 
@@ -145,21 +189,30 @@ try:
     	Current_State = GPIO.input(GPIO_RS)
     	print Current_State 
     	#take a distance measurment
-	distance = measure()
-    	print "Distance : %.1f" % distance
+	distance = measureAvg(AVGTYPE)
+    	print "Average Distance : %.1f" % distance
 	#check which range we are in
 	#if distance >= ranges[0] and distance <= ranges[1]:
 	i = 0
 	j = 0
+	#set initial LED colors fadeIn function will replace this when written
+	if distance >= ranges[0] and distance <= ranges[1]:
+		#setColor(GPIO_PINS_LED_1[0],RNG_1_LED_1[i][0])
+		setColor(1,RNG_1_LED_1[0][0],RNG_1_LED_1[0][1],RNG_1_LED_1[0][2])
+		setColor(2,RNG_1_LED_2[0][0],RNG_1_LED_2[0][1],RNG_1_LED_2[0][2])
+	#elif distance >= ranges[2] and distance <= ranges[3]:
+	#elif distance >= ranges[4] and distance <= ranges[5]:
+	
 	while distance >= ranges[0] and distance <= ranges[1]:
 		print "------------Range 1-----------"
 		#set LED to initial value
 		
+			
 		#determine the number of colors in each array	
 		LED_1_COLORS_LENGTH = len(RNG_1_LED_1)
 		LED_2_COLORS_LENGTH = len(RNG_1_LED_2)
 		#measure distance again and exit loop if out of range
-		distance = measure()
+		distance = measureAvg(AVGTYPE)
 		print "distance in loop: %.3f" % distance
 		if distance < ranges[0] or distance > ranges[1]:
 			allOff()
@@ -176,6 +229,7 @@ try:
 		i = i + 1
 		j = j + 1
 		#check if array dimensions have gone out of range
+		#if they have reset them to zero so colors will loop
 		if i > LED_1_COLORS_LENGTH - 2:
 			i = 0
 		if j > LED_2_COLORS_LENGTH - 2:
@@ -202,14 +256,10 @@ try:
 	'''
 
     # time between measurments
-    	time.sleep(1)
+    	time.sleep(0.01)
 
 except KeyboardInterrupt:
-	for gpioVal in GPIO_PINS_LED_1:
-        	os.system("echo \"{0}=0\" > /dev/pi-blaster" .format(gpioVal))
-	for gpioVal in GPIO_PINS_LED_2:
-        	os.system("echo \"{0}=0\" > /dev/pi-blaster" .format(gpioVal))
-
-		print "  Quit"
+	allOff()
+	print "  Quit"
   	# Reset GPIO settings
   	GPIO.cleanup()
