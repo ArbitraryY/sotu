@@ -10,7 +10,7 @@ void setup() {
   // Print a message to the LCD.
   lcd.print("  Vive l'esprit");
   lcd.setCursor(0, 1);
-  lcd.print("   ArbitraryY+");
+  lcd.print("      Ay+       ");
 }
 
 void loop() {
