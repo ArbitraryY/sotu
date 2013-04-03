@@ -10,6 +10,7 @@ import RPi.GPIO as GPIO
 import time
 import os
 import rsDistance
+import LED
 
 # Define GPIO to use for range Sensor
 GPIO_RS =4; 
@@ -34,15 +35,21 @@ FADESPEED = 0.01
 #will slow down the fade
 STEP = 0.02
 
-# define LED RGB colors
-RNG_1_LED_1 = [ [28,30,68],[40,93,144],[255,255,255],[40,93,144],[123,32,144],[67,47,103] ]
-RNG_1_LED_2 = [ [150,44,37],[32,69,97],[121,65,137],[121,65,137],[238,68,79] ]
+# define Analog LED RGB colors
+RNG_1_LED_1_ANALOG = [ [28,30,68],[40,93,144],[255,255,255],[40,93,144],[123,32,144],[67,47,103] ]
+RNG_1_LED_2_ANALOG = [ [150,44,37],[32,69,97],[121,65,137],[121,65,137],[238,68,79] ]
+#RNG_2_LED_1_ANALOG = [ [0,0,0],[32,69,97],[121,65,137],[121,65,137],[238,68,79] ]
+#RNG_2_LED_2_ANALOG = [ [150,44,37],[32,69,97],[121,65,137],[121,65,137],[238,68,79] ]
+#RNG_3_LED_1_ANALOG = [ [150,44,37],[32,69,97],[121,65,137],[121,65,137],[238,68,79] ]
+#RNG_3_LED_2_ANALOG = [ [150,44,37],[32,69,97],[121,65,137],[121,65,137],[238,68,79] ]
 
-#RNG_2_LED_1 = [ [0,0,0],[32,69,97],[121,65,137],[121,65,137],[238,68,79] ]
-#RNG_2_LED_2 = [ [150,44,37],[32,69,97],[121,65,137],[121,65,137],[238,68,79] ]
-
-#RNG_3_LED_1 = [ [150,44,37],[32,69,97],[121,65,137],[121,65,137],[238,68,79] ]
-#RNG_3_LED_2 = [ [150,44,37],[32,69,97],[121,65,137],[121,65,137],[238,68,79] ]
+#Convert Analog RGB values to Digital
+RNG_1_LED_1 = LED.analogToDigital(RNG_1_LED_1_ANALOG)
+RNG_1_LED_2 = LED.analogToDigital(RNG_1_LED_2_ANALOG)
+#RNG_2_LED_1 = analogToDigital(RNG_1_LED_2_ANALOG)
+#RNG_2_LED_2 = analogToDigital(RNG_1_LED_2_ANALOG)
+#RNG_3_LED_1 = analogToDigital(RNG_1_LED_2_ANALOG)
+#RNG_3_LED_2 = analogToDigital(RNG_1_LED_2_ANALOG)
 
 #define ranges
 ranges=[10.0,16.0,17.0,47.0,48.0,70.0];
@@ -64,8 +71,10 @@ def fadeLED( gpio, startVal, stopVal, lower, upper ):
 			    This is needed to fade out from whatever state the LEDs are currently at  
         """
         #convert passed values into usable format for pi-blaster (i.e 0 - 1)
-        RGBstartVal = startVal / 255
-        RGBstopVal = stopVal / 255
+        #RGBstartVal = startVal / 255
+        RGBstartVal = startVal
+        #RGBstopVal = stopVal / 255
+        RGBstopVal = stopVal
 	#this variable will be returned as a check whether or not someone is in/out
 	# of range
 	rangeVal = 1;	
@@ -80,7 +89,6 @@ def fadeLED( gpio, startVal, stopVal, lower, upper ):
                         time.sleep(FADESPEED)
     			#take a distance measurment and check if out of range
 			distance = rsDistance.measureAvg()
-			#distance = rsDistance.arduinoMeasure()
 			print "distance in loop addition loop: %.3f" % distance
 			if distance < lower or distance > upper:
 				allOff();
@@ -94,7 +102,6 @@ def fadeLED( gpio, startVal, stopVal, lower, upper ):
                         time.sleep(FADESPEED)
     			#take a distance measurment
 			distance = rsDistance.measureAvg()
-			#distance = rsDistance.arduinoMeasure()
 			print "distance in loop subtracting loop: %.3f" % distance
 			if distance < lower or distance > upper:
 				allOff();
@@ -102,12 +109,34 @@ def fadeLED( gpio, startVal, stopVal, lower, upper ):
 				break
         return rangeVal, currentVal;
 
-def fadeOutLED(currentColors):
+def fadeOutLED(currentColors):	
 	print "Fading out here"
-	for color in currentColors:
-		print color
-	time.sleep(10)	
-	
+	print currentColors
+	i = 1/255
+	if currentColors[0] > i:
+		currentColors[0] =- i
+	if currentColors[1] > i:
+		currentColors[1] =- i
+	if currentColors[2] > i:
+		currentColors[2] =- i
+	if currentColors[3] > i:
+		currentColors[3] =- i
+	if currentColors[4] > i:
+		currentColors[4] =- i
+	if currentColors[5] > i:
+		currentColors[5] =- i
+		
+	'''
+	while 0 currentColors[0] and currentColors[0]
+		for j in range(len(currentColors)):
+			if currentColors[j] > i:
+				currentColors[j] =- 0.1
+				print currentColors[j]
+	'''		
+	setColor(1,currentColors[0],currentColors[2],currentColors[4])
+	setColor(2,currentColors[1],currentColors[3],currentColors[5])
+	print currentColors
+	time.sleep(10)
 
 def setColor(ledStripNum,R,G,B):
 	"""
@@ -116,9 +145,9 @@ def setColor(ledStripNum,R,G,B):
 	R,G,B - color values to set 
 	"""
 	#calculate analog to digitial value
-	R = R / 255
-	G = G / 255
-	B = B / 255
+	#R = R / 255
+	#G = G / 255
+	#B = B / 255
 	#Put RGB values into an array
 	RGB = [R,G,B]
 	#check which strip we want to do stuff to
@@ -147,12 +176,8 @@ try:
  
   # Loop until users quits with CTRL-C
   while True : 
-    	# Read and print sensor state
-    	Current_State = GPIO.input(GPIO_RS)
-    	print Current_State 
     	#take a distance measurment
 	distance = rsDistance.measureAvg()
-	#distance = rsDistance.arduinoMeasure()
     	print "Average Distance : %.1f" % distance
 	#check which range we are in
 	#if distance >= ranges[0] and distance <= ranges[1]:
@@ -163,17 +188,11 @@ try:
 		#setColor(GPIO_PINS_LED_1[0],RNG_1_LED_1[i][0])
 		setColor(1,RNG_1_LED_1[0][0],RNG_1_LED_1[0][1],RNG_1_LED_1[0][2])
 		setColor(2,RNG_1_LED_2[0][0],RNG_1_LED_2[0][1],RNG_1_LED_2[0][2])
-		#set current values for each LED color
-		'''
-		currentRedVal1   = RNG_1_LED_1[0][0]
-		currentRedVal2   = RNG_1_LED_2[0][0]
-		currentBlueVal1  = RNG_1_LED_1[0][1]
-		currentBlueVal2  = RNG_1_LED_2[0][1]
-		currentGreenVal1 = RNG_1_LED_1[0][2]
-		currentGreenVal2 = RNG_1_LED_2[0][2]
-		'''
 		#Holds all currently set colors.  This will be passed to fadeIn/Out functions
 		currentColors = [RNG_1_LED_1[0][0],RNG_1_LED_2[0][0],RNG_1_LED_1[0][1],RNG_1_LED_2[0][1],RNG_1_LED_1[0][2],RNG_1_LED_2[0][2]]
+		print 'In initial Color Define range'
+		print currentColors
+		time.sleep(30)
 		#fadeInLed(currentColors)
 	#elif distance >= ranges[2] and distance <= ranges[3]:
 	#elif distance >= ranges[4] and distance <= ranges[5]:
@@ -186,7 +205,6 @@ try:
 		LED_2_COLORS_LENGTH = len(RNG_1_LED_2)
 		#measure distance again and exit loop if out of range
 		distance = rsDistance.measureAvg()
-		#distance = rsDistance.arduinoMeasure()
 		print "distance in loop: %.3f" % distance
 		if distance < ranges[0] or distance > ranges[1]:
 			allOff()
@@ -224,8 +242,8 @@ try:
 		else:
 			#fadeOutLED(currentRedVal1, currentRedVal2, currentBlueVal1, currentBlueVal2, currentGreenVal1, currentGreenVal2)
 			fadeOutLED(currentColors)
-		i = i + 1
-		j = j + 1
+		i =+ 1
+		j =+ 1
 		#check if array dimensions have gone out of range
 		#if they have reset them to zero so colors will loop
 		if i > LED_1_COLORS_LENGTH - 2:
@@ -236,6 +254,9 @@ try:
 		#print LED_1_COLORS_LENGTH, LED_2_COLORS_LENGTH
 		#print currentRedVal1, currentRedVal2, currentBlueVal1, currentBlueVal2, currentGreenVal1, currentGreenVal2
 		#time.sleep(5)
+		print 'At end of one fade'
+		print currentColors
+		time.sleep(30)
 
 	'''
 	elif distance >= ranges[2] and distance <= ranges[3]:
