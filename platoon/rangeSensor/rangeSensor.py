@@ -58,6 +58,10 @@ def fadeLED( gpio, startVal, stopVal, lower, upper ):
 
         If the stop value is higher need to increment to get there.
         If the stop value is lower need to decrement to get there
+
+	Returns rangeVal: (0|1) if user is out/in range
+		currentVal: Returns the value of the current RGB setting
+			    This is needed to fade out from whatever state the LEDs are currently at  
         """
         #convert passed values into usable format for pi-blaster (i.e 0 - 1)
         RGBstartVal = startVal / 255
@@ -79,7 +83,6 @@ def fadeLED( gpio, startVal, stopVal, lower, upper ):
 			#distance = rsDistance.arduinoMeasure()
 			print "distance in loop addition loop: %.3f" % distance
 			if distance < lower or distance > upper:
-				#fadeOut();
 				allOff();
 				rangeVal = 0;
 				break
@@ -94,11 +97,17 @@ def fadeLED( gpio, startVal, stopVal, lower, upper ):
 			#distance = rsDistance.arduinoMeasure()
 			print "distance in loop subtracting loop: %.3f" % distance
 			if distance < lower or distance > upper:
-				#fadeOut();
 				allOff();
 				rangeVal = 0;
 				break
-        return rangeVal;
+        return rangeVal, currentVal;
+
+def fadeOutLED(currentColors):
+	print "Fading out here"
+	for color in currentColors:
+		print color
+	time.sleep(10)	
+	
 
 def setColor(ledStripNum,R,G,B):
 	"""
@@ -124,12 +133,11 @@ def setColor(ledStripNum,R,G,B):
 		i += 1
 
 def allOff():
-	"""Turn all LEDs off
+	"""
+	Turn all LEDs off
 	"""
 	setColor(1,0,0,0)
 	setColor(2,0,0,0)
-	
-	
 
 #-------------------End Funcs -----------------------------------------
 
@@ -155,8 +163,21 @@ try:
 		#setColor(GPIO_PINS_LED_1[0],RNG_1_LED_1[i][0])
 		setColor(1,RNG_1_LED_1[0][0],RNG_1_LED_1[0][1],RNG_1_LED_1[0][2])
 		setColor(2,RNG_1_LED_2[0][0],RNG_1_LED_2[0][1],RNG_1_LED_2[0][2])
+		#set current values for each LED color
+		'''
+		currentRedVal1   = RNG_1_LED_1[0][0]
+		currentRedVal2   = RNG_1_LED_2[0][0]
+		currentBlueVal1  = RNG_1_LED_1[0][1]
+		currentBlueVal2  = RNG_1_LED_2[0][1]
+		currentGreenVal1 = RNG_1_LED_1[0][2]
+		currentGreenVal2 = RNG_1_LED_2[0][2]
+		'''
+		#Holds all currently set colors.  This will be passed to fadeIn/Out functions
+		currentColors = [RNG_1_LED_1[0][0],RNG_1_LED_2[0][0],RNG_1_LED_1[0][1],RNG_1_LED_2[0][1],RNG_1_LED_1[0][2],RNG_1_LED_2[0][2]]
+		#fadeInLed(currentColors)
 	#elif distance >= ranges[2] and distance <= ranges[3]:
 	#elif distance >= ranges[4] and distance <= ranges[5]:
+	
 	rangeVal = 1;	
 	while distance >= ranges[0] and distance <= ranges[1]:
 		print "------------Range 1-----------"
@@ -172,19 +193,37 @@ try:
 			break	
 		#fade red LEDs
 		if(rangeVal):
-			rangeVal = fadeLED(GPIO_PINS_LED_1[0],RNG_1_LED_1[i][0],RNG_1_LED_1[i+1][0],ranges[0],ranges[1]);
+			rangeVal, currentColors[0] = fadeLED(GPIO_PINS_LED_1[0],RNG_1_LED_1[i][0],RNG_1_LED_1[i+1][0],ranges[0],ranges[1])
+		else:
+			#fadeOutLED(currentRedVal1, currentRedVal2, currentBlueVal1, currentBlueVal2, currentGreenVal1, currentGreenVal2)
+			fadeOutLED(currentColors)
 		if(rangeVal):
-			rangeVal = fadeLED(GPIO_PINS_LED_2[0],RNG_1_LED_2[j][0],RNG_1_LED_2[j+1][0],ranges[0],ranges[1]);	
+			rangeVal, currentColors[1] = fadeLED(GPIO_PINS_LED_2[0],RNG_1_LED_2[j][0],RNG_1_LED_2[j+1][0],ranges[0],ranges[1])
+		else:
+			#fadeOutLED(currentRedVal1, currentRedVal2, currentBlueVal1, currentBlueVal2, currentGreenVal1, currentGreenVal2)
+			fadeOutLED(currentColors)
 		#fade green LEDs
 		if(rangeVal):
-			rangeVal = fadeLED(GPIO_PINS_LED_1[1],RNG_1_LED_1[i][1],RNG_1_LED_1[i+1][1],ranges[0],ranges[1]);
+			rangeVal, currentColors[2] = fadeLED(GPIO_PINS_LED_1[1],RNG_1_LED_1[i][1],RNG_1_LED_1[i+1][1],ranges[0],ranges[1])
+		else:
+			#fadeOutLED(currentRedVal1, currentRedVal2, currentBlueVal1, currentBlueVal2, currentGreenVal1, currentGreenVal2)
+			fadeOutLED(currentColors)
 		if(rangeVal):
-			rangeVal = fadeLED(GPIO_PINS_LED_2[1],RNG_1_LED_2[j][1],RNG_1_LED_2[j+1][1],ranges[0],ranges[1]);	
+			rangeVal, currentColors[3] = fadeLED(GPIO_PINS_LED_2[1],RNG_1_LED_2[j][1],RNG_1_LED_2[j+1][1],ranges[0],ranges[1])	
+		else:
+			#fadeOutLED(currentRedVal1, currentRedVal2, currentBlueVal1, currentBlueVal2, currentGreenVal1, currentGreenVal2)
+			fadeOutLED(currentColors)
 		#fade blue LEDs
 		if(rangeVal):
-			rangeVal = fadeLED(GPIO_PINS_LED_1[2],RNG_1_LED_1[i][2],RNG_1_LED_1[i+1][2],ranges[0],ranges[1]);
+			rangeVal, currentColors[4] = fadeLED(GPIO_PINS_LED_1[2],RNG_1_LED_1[i][2],RNG_1_LED_1[i+1][2],ranges[0],ranges[1])
+		else:
+			#fadeOutLED(currentRedVal1, currentRedVal2, currentBlueVal1, currentBlueVal2, currentGreenVal1, currentGreenVal2)
+			fadeOutLED(currentColors)
 		if(rangeVal):
-			rangeVal = fadeLED(GPIO_PINS_LED_2[2],RNG_1_LED_2[j][2],RNG_1_LED_2[j+1][2],ranges[0],ranges[1]);	
+			rangeVal, currentColors[5] = fadeLED(GPIO_PINS_LED_2[2],RNG_1_LED_2[j][2],RNG_1_LED_2[j+1][2],ranges[0],ranges[1])	
+		else:
+			#fadeOutLED(currentRedVal1, currentRedVal2, currentBlueVal1, currentBlueVal2, currentGreenVal1, currentGreenVal2)
+			fadeOutLED(currentColors)
 		i = i + 1
 		j = j + 1
 		#check if array dimensions have gone out of range
@@ -193,8 +232,10 @@ try:
 			i = 0
 		if j > LED_2_COLORS_LENGTH - 2:
 			j = 0
-		print i , j
-		print LED_1_COLORS_LENGTH, LED_2_COLORS_LENGTH
+		#print i , j
+		#print LED_1_COLORS_LENGTH, LED_2_COLORS_LENGTH
+		#print currentRedVal1, currentRedVal2, currentBlueVal1, currentBlueVal2, currentGreenVal1, currentGreenVal2
+		#time.sleep(5)
 
 	'''
 	elif distance >= ranges[2] and distance <= ranges[3]:
