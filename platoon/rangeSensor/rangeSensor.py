@@ -3,12 +3,15 @@
 Documentation for this module
 
 """
-from __future__ import division #needed for division of integers --> floats
+#from __future__ import division #needed for division of integers --> floats
+from decimal import *
 import RPi.GPIO as GPIO
 import time
 import os
 import rsDistance
 import LED
+
+getcontext().prec = 2
 
 # Define GPIO to use for range Sensor
 #GPIO_RS =4; 
@@ -28,10 +31,10 @@ global FADESPEED
 global STEP
 
 #Increase to slow down LED color changes
-FADESPEED = 0.00
-#step size to jump to the next RGB value when fading.  Increasing this will
-#will slow down the fade
-STEP = 0.01
+FADESPEED = Decimal(0.02)
+#step size to jump to the next RGB value when fading.
+#decreasing this will slow down the fade
+STEP = Decimal(0.01)
 
 # define Analog LED RGB colors
 RNG_1_LED_1_ANALOG = [ [28,30,68],[40,93,144],[255,255,255],[40,93,144],[123,32,144],[67,47,103] ]
@@ -49,62 +52,62 @@ RNG_1_LED_2 = LED.analogToDigital(RNG_1_LED_2_ANALOG)
 #RNG_3_LED_1 = analogToDigital(RNG_1_LED_2_ANALOG)
 #RNG_3_LED_2 = analogToDigital(RNG_1_LED_2_ANALOG)
 
+print RNG_1_LED_1
+
+print RNG_1_LED_1
+
+#time.sleep(300)
+
 #define ranges
 ranges=[10.0,16.0,17.0,47.0,48.0,70.0];
 
 #----------------------Funcs-----------------------------------------
 def fadeLED( gpio, startVal, stopVal, lower, upper ):
-        """This function takes the following arguments
-        gpio: value of the RPi GPIO pin that will be updated
-        startVal: RGB value that the fade will start from
-        stopVal: RGB value that the fade will stop at
-	    lower: Lower bound of the current range
-	    upper: Upper bound of the current range 
-
-        If the stop value is higher need to increment to get there.
-        If the stop value is lower need to decrement to get there
-
-	    Returns rangeVal: (0|1) if user is out/in range
-		currentVal: Returns the value of the current RGB setting
-		This is needed to fade out from whatever state the LEDs are currently at  
-        """
+    """This function takes the following arguments
+    gpio: value of the RPi GPIO pin that will be updated
+    startVal: RGB value that the fade will start from
+    stopVal: RGB value that the fade will stop at
+    lower: Lower bound of the current range
+    upper: Upper bound of the current range 
+    
+    If the stop value is higher need to increment to get there.
+    If the stop value is lower need to decrement to get there
+    
+    Returns rangeVal: (0|1) if user is out/in range
+    currentVal: Returns the value of the current RGB setting
+    This is needed to fade out from whatever state the LEDs are currently at  
+    """
 	#this variable will be returned as a check whether or not someone is in/out
 	#of range
-	rangeVal = 1;	
-        #set the current LED values to the start value
-        currentVal = startVal
-        if startVal < stopVal:
-            while currentVal < stopVal:
-                os.system("echo \"{0}={1}\" > /dev/pi-blaster" .format(gpio,currentVal))
-                currentVal = currentVal + STEP;
-                time.sleep(FADESPEED)
-                #take a distance measurement and check if out of range
-                distance = rsDistance.measureAvg()
-                #print "distance in loop addition loop: %.3f" % distance
-                if distance < lower or distance > upper:
-                    #LED.allOff();
-                    rangeVal = 0;
-                    print 'currentVal in fade'
-                    print currentVal
-                    #if user exits range return the current value to populate
-                    #the currentColors array.  Need this for proper fade out
-                    return rangeVal, currentVal
-        elif startVal > stopVal:
-            while currentVal > stopVal:
-                os.system("echo \"{0}={1}\" > /dev/pi-blaster" .format(gpio,currentVal))
-                currentVal = currentVal - STEP;
-                time.sleep(FADESPEED)
-                #take a distance measurement
-                distance = rsDistance.measureAvg()
-                #print "distance in loop subtracting loop: %.3f" % distance
-                if distance < lower or distance > upper:
-                    print 'currentVal in fade'
-                    print currentVal
-                    #LED.allOff();
-                    rangeVal = 0;
-                    return rangeVal, currentVal
-        
-        return rangeVal, currentVal;
+    rangeVal = 1;
+    #set the current LED values to the start value
+    currentVal = startVal
+    if startVal < stopVal:
+        while currentVal < stopVal:
+            os.system("echo \"{0}={1}\" > /dev/pi-blaster" .format(gpio,currentVal))
+            currentVal = currentVal + STEP;
+            time.sleep(FADESPEED)
+            #take a distance measurement and check if out of range
+            distance = rsDistance.measureAvg()
+            #print "distance in loop addition loop: %.3f" % distance
+            if distance < lower or distance > upper:
+                rangeVal = 0;
+                #if user exits range return the current value to populate
+                #the currentColors array.  Need this for proper fade out
+                return rangeVal, currentVal
+    elif startVal > stopVal:
+        while currentVal > stopVal:
+            os.system("echo \"{0}={1}\" > /dev/pi-blaster" .format(gpio,currentVal))
+            currentVal = currentVal - STEP;
+            time.sleep(FADESPEED)
+            #take a distance measurement
+            distance = rsDistance.measureAvg()
+            #print "distance in loop subtracting loop: %.3f" % distance
+            if distance < lower or distance > upper:
+                rangeVal = 0;
+                return rangeVal, currentVal
+    
+    return rangeVal, currentVal;
 '''
 def #fadeOutLED(currentColors):	
 	print "Fading out here"
@@ -151,6 +154,8 @@ try:
             #Holds all currently set colors.  This will be passed to fadeIn/Out functions
             currentColors = [RNG_1_LED_1[0][0],RNG_1_LED_2[0][0],RNG_1_LED_1[0][1],RNG_1_LED_2[0][1],RNG_1_LED_1[0][2],RNG_1_LED_2[0][2]]
             print 'In initial Color Define range'
+            print currentColors
+            #time.sleep(300)
             #fadeInLed(currentColors)
         #elif distance >= ranges[2] and distance <= ranges[3]:
         #elif distance >= ranges[4] and distance <= ranges[5]:
@@ -206,7 +211,7 @@ try:
             
             print 'At end of one fade'
             print currentColors
-            time.sleep(3000)
+            #time.sleep(3000)
 	'''
 	elif distance >= ranges[2] and distance <= ranges[3]:
 		print "------------Range 2-----------"
