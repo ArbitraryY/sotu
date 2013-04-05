@@ -30,7 +30,8 @@ def arduinoMeasure():
 	while pin0.read() is None:
         	print "passing"
         	pass
-	distance = (pin0.read()*1024)/2
+	#distance = (pin0.read()*1024)/2
+	distance = (pin0.read()*1023)/2
 	#print "distance: %.f" % distance
 	#board.pass_time(3)
         return distance
