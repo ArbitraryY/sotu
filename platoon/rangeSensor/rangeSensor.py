@@ -54,32 +54,27 @@ ranges=[10.0,16.0,17.0,47.0,48.0,70.0];
 
 #----------------------Funcs-----------------------------------------
 def fadeLED( gpio, startVal, stopVal, lower, upper ):
-        """This function takes the following arguements
+        """This function takes the following arguments
         gpio: value of the RPi GPIO pin that will be updated
         startVal: RGB value that the fade will start from
         stopVal: RGB value that the fade will stop at
-	lower: Lower bound of the current range
-	upper: Upper bound of the current range 
+	    lower: Lower bound of the current range
+	    upper: Upper bound of the current range 
 
         If the stop value is higher need to increment to get there.
         If the stop value is lower need to decrement to get there
 
-	Returns rangeVal: (0|1) if user is out/in range
+	    Returns rangeVal: (0|1) if user is out/in range
 		currentVal: Returns the value of the current RGB setting
-			    This is needed to fade out from whatever state the LEDs are currently at  
+		This is needed to fade out from whatever state the LEDs are currently at  
         """
-        #convert passed values into usable format for pi-blaster (i.e 0 - 1)
-        #RGBstartVal = startVal / 255
-        RGBstartVal = startVal
-        #RGBstopVal = stopVal / 255
-        RGBstopVal = stopVal
 	#this variable will be returned as a check whether or not someone is in/out
 	#of range
 	rangeVal = 1;	
         #set the current LED values to the start value
-        currentVal = RGBstartVal
-        if RGBstartVal < RGBstopVal:
-                while currentVal < RGBstopVal:
+        currentVal = startVal
+        if startVal < stopVal:
+                while currentVal < stopVal:
                         os.system("echo \"{0}={1}\" > /dev/pi-blaster" .format(gpio,currentVal))
                         currentVal = currentVal + STEP;
                         time.sleep(FADESPEED)
@@ -91,8 +86,8 @@ def fadeLED( gpio, startVal, stopVal, lower, upper ):
 				rangeVal = 0;
 				break
                         print currentVal
-        elif RGBstartVal > RGBstopVal:
-                 while currentVal > RGBstopVal:
+        elif startVal > stopVal:
+                 while currentVal > stopVal:
                         os.system("echo \"{0}={1}\" > /dev/pi-blaster" .format(gpio,currentVal))
                         currentVal = currentVal - STEP;
                         time.sleep(FADESPEED)
