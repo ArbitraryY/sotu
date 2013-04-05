@@ -4,8 +4,6 @@ Documentation for this module
 
 """
 from __future__ import division #needed for division of integers --> floats
-#from subprocess import call
-#import numpy
 import RPi.GPIO as GPIO
 import time
 import os
