@@ -28,10 +28,10 @@ global FADESPEED
 global STEP
 
 #Increase to slow down LED color changes
-FADESPEED = 0.01
+FADESPEED = 0.00
 #step size to jump to the next RGB value when fading.  Increasing this will
 #will slow down the fade
-STEP = 0.02
+STEP = 0.01
 
 # define Analog LED RGB colors
 RNG_1_LED_1_ANALOG = [ [28,30,68],[40,93,144],[255,255,255],[40,93,144],[123,32,144],[67,47,103] ]
@@ -74,31 +74,36 @@ def fadeLED( gpio, startVal, stopVal, lower, upper ):
         #set the current LED values to the start value
         currentVal = startVal
         if startVal < stopVal:
-                while currentVal < stopVal:
-                        os.system("echo \"{0}={1}\" > /dev/pi-blaster" .format(gpio,currentVal))
-                        currentVal = currentVal + STEP;
-                        time.sleep(FADESPEED)
-    			#take a distance measurment and check if out of range
-			distance = rsDistance.measureAvg()
-			#print "distance in loop addition loop: %.3f" % distance
-			if distance < lower or distance > upper:
-				LED.allOff();
-				rangeVal = 0;
-				break
-                        print currentVal
+            while currentVal < stopVal:
+                os.system("echo \"{0}={1}\" > /dev/pi-blaster" .format(gpio,currentVal))
+                currentVal = currentVal + STEP;
+                time.sleep(FADESPEED)
+                #take a distance measurement and check if out of range
+                distance = rsDistance.measureAvg()
+                #print "distance in loop addition loop: %.3f" % distance
+                if distance < lower or distance > upper:
+                    #LED.allOff();
+                    rangeVal = 0;
+                    print 'currentVal in fade'
+                    print currentVal
+                    #if user exits range return the current value to populate
+                    #the currentColors array.  Need this for proper fade out
+                    return rangeVal, currentVal
         elif startVal > stopVal:
-                 while currentVal > stopVal:
-                        os.system("echo \"{0}={1}\" > /dev/pi-blaster" .format(gpio,currentVal))
-                        currentVal = currentVal - STEP;
-                        time.sleep(FADESPEED)
-    			#take a distance measurment
-			distance = rsDistance.measureAvg()
-			#print "distance in loop subtracting loop: %.3f" % distance
-			if distance < lower or distance > upper:
-				LED.allOff();
-				rangeVal = 0;
-				break
-			print currentVal
+            while currentVal > stopVal:
+                os.system("echo \"{0}={1}\" > /dev/pi-blaster" .format(gpio,currentVal))
+                currentVal = currentVal - STEP;
+                time.sleep(FADESPEED)
+                #take a distance measurement
+                distance = rsDistance.measureAvg()
+                #print "distance in loop subtracting loop: %.3f" % distance
+                if distance < lower or distance > upper:
+                    print 'currentVal in fade'
+                    print currentVal
+                    #LED.allOff();
+                    rangeVal = 0;
+                    return rangeVal, currentVal
+        
         return rangeVal, currentVal;
 '''
 def #fadeOutLED(currentColors):	
@@ -127,115 +132,81 @@ def #fadeOutLED(currentColors):
 #-------------------End Funcs -----------------------------------------
 
 try:
- 
-  print "Waiting for sensor to settle ..."
- 
-  # Loop until users quits with CTRL-C
-  while True : 
-	i = 0
-	j = i + 1
-	k = 0
-	m = k + 1
-    	#take a distance measurment
-	distance = rsDistance.measureAvg()
-    	print "Average Distance : %.1f" % distance
-	#check which range we are in
-	#set initial LED colors fadeIn function will replace this when written
-	if distance >= ranges[0] and distance <= ranges[1]:
-		#setColor(GPIO_PINS_LED_1[0],RNG_1_LED_1[i][0])
-		LED.setColor(1,RNG_1_LED_1[0][0],RNG_1_LED_1[0][1],RNG_1_LED_1[0][2])
-		LED.setColor(2,RNG_1_LED_2[0][0],RNG_1_LED_2[0][1],RNG_1_LED_2[0][2])
-		#Holds all currently set colors.  This will be passed to fadeIn/Out functions
-		currentColors = [RNG_1_LED_1[0][0],RNG_1_LED_2[0][0],RNG_1_LED_1[0][1],RNG_1_LED_2[0][1],RNG_1_LED_1[0][2],RNG_1_LED_2[0][2]]
-		print 'In initial Color Define range'
-		#fadeInLed(currentColors)
-	#elif distance >= ranges[2] and distance <= ranges[3]:
-	#elif distance >= ranges[4] and distance <= ranges[5]:
-	
-	rangeVal = 1;	
-	while distance >= ranges[0] and distance <= ranges[1]:
-		print "------------Range 1-----------"
-		#determine the number of colors in each array	
-		LED_1_COLORS_LENGTH = len(RNG_1_LED_1)
-		LED_2_COLORS_LENGTH = len(RNG_1_LED_2)
-		#measure distance again and exit loop if out of range
-		distance = rsDistance.measureAvg()
-		print "distance in loop: %.3f" % distance
-		if distance < ranges[0] or distance > ranges[1]:
-			LED.allOff()
-			##fadeOutLED(currentColors)
-			break	
-		#fade red LEDs
-		if(rangeVal):
-			#rangeVal, currentColors[0] = fadeLED(GPIO_PINS_LED_1[0],RNG_1_LED_1[i][0],RNG_1_LED_1[i+1][0],ranges[0],ranges[1])
-			rangeVal, currentColors[0] = fadeLED(GPIO_PINS_LED_1[0],RNG_1_LED_1[i][0],RNG_1_LED_1[j][0],ranges[0],ranges[1])
-		#else:
-			##fadeOutLED(currentRedVal1, currentRedVal2, currentBlueVal1, currentBlueVal2, currentGreenVal1, currentGreenVal2)
-			#fadeOutLED(currentColors)
-		if(rangeVal):
-			#rangeVal, currentColors[1] = fadeLED(GPIO_PINS_LED_2[0],RNG_1_LED_2[j][0],RNG_1_LED_2[j+1][0],ranges[0],ranges[1])
-			rangeVal, currentColors[1] = fadeLED(GPIO_PINS_LED_2[0],RNG_1_LED_2[k][0],RNG_1_LED_2[m][0],ranges[0],ranges[1])
-		#else:
-			##fadeOutLED(currentRedVal1, currentRedVal2, currentBlueVal1, currentBlueVal2, currentGreenVal1, currentGreenVal2)
-			#fadeOutLED(currentColors)
-		#fade green LEDs
-		if(rangeVal):
-			#rangeVal, currentColors[2] = fadeLED(GPIO_PINS_LED_1[1],RNG_1_LED_1[i][1],RNG_1_LED_1[i+1][1],ranges[0],ranges[1])
-			rangeVal, currentColors[2] = fadeLED(GPIO_PINS_LED_1[1],RNG_1_LED_1[i][1],RNG_1_LED_1[j][1],ranges[0],ranges[1])
-		#else:
-			##fadeOutLED(currentRedVal1, currentRedVal2, currentBlueVal1, currentBlueVal2, currentGreenVal1, currentGreenVal2)
-			#fadeOutLED(currentColors)
-		if(rangeVal):
-			#rangeVal, currentColors[3] = fadeLED(GPIO_PINS_LED_2[1],RNG_1_LED_2[j][1],RNG_1_LED_2[j+1][1],ranges[0],ranges[1])	
-			rangeVal, currentColors[3] = fadeLED(GPIO_PINS_LED_2[1],RNG_1_LED_2[k][1],RNG_1_LED_2[m][1],ranges[0],ranges[1])	
-		#else:
-			##fadeOutLED(currentRedVal1, currentRedVal2, currentBlueVal1, currentBlueVal2, currentGreenVal1, currentGreenVal2)
-			#fadeOutLED(currentColors)
-		#fade blue LEDs
-		if(rangeVal):
-			#rangeVal, currentColors[4] = fadeLED(GPIO_PINS_LED_1[2],RNG_1_LED_1[i][2],RNG_1_LED_1[i+1][2],ranges[0],ranges[1])
-			rangeVal, currentColors[4] = fadeLED(GPIO_PINS_LED_1[2],RNG_1_LED_1[i][2],RNG_1_LED_1[j][2],ranges[0],ranges[1])
-		#else:
-			##fadeOutLED(currentRedVal1, currentRedVal2, currentBlueVal1, currentBlueVal2, currentGreenVal1, currentGreenVal2)
-			#fadeOutLED(currentColors)
-		if(rangeVal):
-			#rangeVal, currentColors[5] = fadeLED(GPIO_PINS_LED_2[2],RNG_1_LED_2[j][2],RNG_1_LED_2[j+1][2],ranges[0],ranges[1])	
-			rangeVal, currentColors[5] = fadeLED(GPIO_PINS_LED_2[2],RNG_1_LED_2[k][2],RNG_1_LED_2[m][2],ranges[0],ranges[1])	
-		#else:
-			##fadeOutLED(currentRedVal1, currentRedVal2, currentBlueVal1, currentBlueVal2, currentGreenVal1, currentGreenVal2)
-			#fadeOutLED(currentColors)
-		
-		#print 'before'
-		#print i, j, k, m
-		#time.sleep(5)
-		#Color rotation logic
-		if i < (LED_1_COLORS_LENGTH - 1):
-			i = i + 1
-		elif i == (LED_1_COLORS_LENGTH - 1):
-			i = 0
-		if j < (LED_1_COLORS_LENGTH - 1):
-			j = j + 1
-		elif j == (LED_1_COLORS_LENGTH - 1):
-			j = 0
-		if k < (LED_2_COLORS_LENGTH - 1):
-			k = k + 1
-		elif k == (LED_2_COLORS_LENGTH - 1):
-			k = 0
-		if m < (LED_2_COLORS_LENGTH - 1):
-			m = m + 1
-		elif m == (LED_2_COLORS_LENGTH - 1):
-			m = 0
-		
-		#print 'after'
-		#print i, j, k, m
-		#time.sleep(5)
-		#print LED_1_COLORS_LENGTH, LED_2_COLORS_LENGTH
-		#print currentRedVal1, currentRedVal2, currentBlueVal1, currentBlueVal2, currentGreenVal1, currentGreenVal2
-		#time.sleep(5)
-		print 'At end of one fade'
-		#print currentColors
-		#time.sleep(3)
-
+    print "Waiting for sensor to settle ..."
+    # Loop until users quits with CTRL-C
+    while True : 
+        i = 0
+        j = i + 1
+        k = 0
+        m = k + 1
+        #take a distance measurment
+        distance = rsDistance.measureAvg()
+        print "Average Distance : %.1f" % distance
+        #check which range we are in
+        #set initial LED colors fadeIn function will replace this when written
+        if distance >= ranges[0] and distance <= ranges[1]:
+            #setColor(GPIO_PINS_LED_1[0],RNG_1_LED_1[i][0])
+            LED.setColor(1,RNG_1_LED_1[0][0],RNG_1_LED_1[0][1],RNG_1_LED_1[0][2])
+            LED.setColor(2,RNG_1_LED_2[0][0],RNG_1_LED_2[0][1],RNG_1_LED_2[0][2])
+            #Holds all currently set colors.  This will be passed to fadeIn/Out functions
+            currentColors = [RNG_1_LED_1[0][0],RNG_1_LED_2[0][0],RNG_1_LED_1[0][1],RNG_1_LED_2[0][1],RNG_1_LED_1[0][2],RNG_1_LED_2[0][2]]
+            print 'In initial Color Define range'
+            #fadeInLed(currentColors)
+        #elif distance >= ranges[2] and distance <= ranges[3]:
+        #elif distance >= ranges[4] and distance <= ranges[5]:
+        rangeVal = 1;
+        while distance >= ranges[0] and distance <= ranges[1]:
+            print "------------Range 1-----------"
+            #determine the number of colors in each array
+            LED_1_COLORS_LENGTH = len(RNG_1_LED_1)
+            LED_2_COLORS_LENGTH = len(RNG_1_LED_2)
+            #measure distance again and exit loop if out of range
+            distance = rsDistance.measureAvg()
+            print "distance in loop: %.3f" % distance
+            if distance < ranges[0] or distance > ranges[1]:
+                LED.allOff()
+                #fadeOutLED(currentColors)
+                break
+            #fade red LEDs
+            if(rangeVal):
+                rangeVal, currentColors[0] = fadeLED(GPIO_PINS_LED_1[0],RNG_1_LED_1[i][0],RNG_1_LED_1[j][0],ranges[0],ranges[1])
+            if(rangeVal):
+                rangeVal, currentColors[1] = fadeLED(GPIO_PINS_LED_2[0],RNG_1_LED_2[k][0],RNG_1_LED_2[m][0],ranges[0],ranges[1])
+            #fade green LEDs
+            if(rangeVal):
+                rangeVal, currentColors[2] = fadeLED(GPIO_PINS_LED_1[1],RNG_1_LED_1[i][1],RNG_1_LED_1[j][1],ranges[0],ranges[1])
+            if(rangeVal):
+                rangeVal, currentColors[3] = fadeLED(GPIO_PINS_LED_2[1],RNG_1_LED_2[k][1],RNG_1_LED_2[m][1],ranges[0],ranges[1])	
+            #fade blue LEDs
+            if(rangeVal):
+                rangeVal, currentColors[4] = fadeLED(GPIO_PINS_LED_1[2],RNG_1_LED_1[i][2],RNG_1_LED_1[j][2],ranges[0],ranges[1])
+            if(rangeVal):
+                rangeVal, currentColors[5] = fadeLED(GPIO_PINS_LED_2[2],RNG_1_LED_2[k][2],RNG_1_LED_2[m][2],ranges[0],ranges[1])
+            #if out of range (i.e. rangeVal = 0) then fade out
+            if(rangeVal == 0):
+                LED.allOff()
+            #Color rotation logic
+            
+            if i < (LED_1_COLORS_LENGTH - 1):
+                i = i + 1
+            elif i == (LED_1_COLORS_LENGTH - 1):
+                i = 0
+            if j < (LED_1_COLORS_LENGTH - 1):
+                j = j + 1
+            elif j == (LED_1_COLORS_LENGTH - 1):
+                j = 0
+            if k < (LED_2_COLORS_LENGTH - 1):
+                k = k + 1
+            elif k == (LED_2_COLORS_LENGTH - 1):
+                k = 0
+            if m < (LED_2_COLORS_LENGTH - 1):
+                m = m + 1
+            elif m == (LED_2_COLORS_LENGTH - 1):
+                m = 0
+            
+            print 'At end of one fade'
+            print currentColors
+            time.sleep(3000)
 	'''
 	elif distance >= ranges[2] and distance <= ranges[3]:
 		print "------------Range 2-----------"
@@ -245,7 +216,7 @@ try:
 		print "not in range"
 	'''
 
-    # time between measurments
+    # time between measurements
     	time.sleep(0.01)
 
 except KeyboardInterrupt:
