@@ -10,6 +10,7 @@ getcontext().prec = 2
 
 GPIO_PINS_LED_1 = [2,5,7]
 GPIO_PINS_LED_2 = [1,4,6]
+ALL_GPIO_PINS = [2,1,5,4,7,6]
 
 def analogToDigital(analogColors):
 	'''
@@ -58,6 +59,7 @@ def fadeLED( gpio, startVal, stopVal, lower, upper, STEP, FADESPEED):
             os.system("echo \"{0}={1}\" > /dev/pi-blaster" .format(gpio,currentVal))
             currentVal = currentVal - STEP;
             time.sleep(FADESPEED)
+            print currentVal
             #take a distance measurement
             distance = rsDistance.measureAvg()
             #print "distance in loop subtracting loop: %.3f" % distance
@@ -67,6 +69,23 @@ def fadeLED( gpio, startVal, stopVal, lower, upper, STEP, FADESPEED):
     
     return rangeVal, currentVal;
 
+def fadeOutLED2(currentColors):
+	STEP = Decimal(0.01)
+	FADESPEED = Decimal(0.01)
+	for i in range(len(currentColors)):
+		#fadeLED(ALL_GPIO_PINS[i],currentColors[i],Decimal(0.00),0,200,Decimal(0.01),Decimal(0.00))
+		while currentColors[i] > Decimal(0.00):
+			os.system("echo \"{0}={1}\" > /dev/pi-blaster" .format(ALL_GPIO_PINS[i],currentColors[i]))
+			currentColors[i] -= Decimal(STEP);
+			#set to zero once it gets negative
+			if currentColors[i] < Decimal(0):
+				os.system("echo \"{0}=0\" > /dev/pi-blaster" .format(ALL_GPIO_PINS[i]))
+				#set current colors to zero before exiting loop
+				currentColors[i] = 0
+			#time.sleep(FADESPEED)
+			print currentColors[i]
+	allOff()
+	
 def fadeOutLED(currentColors):
 	"""
 	Function: Fade LED strips out from their current values
@@ -74,7 +93,7 @@ def fadeOutLED(currentColors):
 		- currentColors: An array of RGB values as follows (r1, r2, b1, b2, g1, g2)
 	"""
 	# number of steps to go from max to 0 for each color
-	STEPS = 20 
+	STEPS = 20
 	
 	#array of iterators 
 	iterators = [Decimal(x) / Decimal(STEPS) for x in currentColors]
@@ -99,11 +118,11 @@ def fadeOutLED(currentColors):
 		print "still printing even though you exited beyotch"
 		setColor(1,[currentColors[0],currentColors[2],currentColors[4]])
 		setColor(2,[currentColors[1],currentColors[3],currentColors[5]])
+		time.sleep(0.02)
 		#turn all the way off if reach the end
 		print "currentColors after iteration"
 		print currentColors
 		#time.sleep(10)
-		
 
 #def setColor(ledStripNum,R,G,B):
 def setColor(ledStripNum,RGB):

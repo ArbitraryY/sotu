@@ -61,7 +61,7 @@ print RNG_1_LED_1
 
 #define ranges
 #ranges=[10.0,16.0,17.0,47.0,48.0,70.0];
-ranges=[10.0,50.0];
+ranges=[25.0,50.0];
 
 #----------------------Funcs-----------------------------------------
 
@@ -70,6 +70,8 @@ ranges=[10.0,50.0];
 try:
     print "Waiting for sensor to settle ..."
     # Loop until users quits with CTRL-C
+    #turn off all LEDs when starts
+    LED.allOff()
     while True : 
         i = 0
         j = i + 1
@@ -122,7 +124,8 @@ try:
             #if out of range (i.e. rangeVal = 0) then fade out
             if(rangeVal == 0):
                 #LED.allOff()
-                LED.fadeOutLED(currentColors)
+                #LED.fadeOutLED(currentColors)
+                LED.fadeOutLED2(currentColors)
             
             #Color rotation logic
             if i < (LED_1_COLORS_LENGTH - 1):
