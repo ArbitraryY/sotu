@@ -81,8 +81,8 @@ try:
         #check which range we are in
         #set initial LED colors fadeIn function will replace this when written
         if distance >= ranges[0] and distance <= ranges[1]:
-            LED.setColor(1,RNG_1_LED_1[0][0],RNG_1_LED_1[0][1],RNG_1_LED_1[0][2])
-            LED.setColor(2,RNG_1_LED_2[0][0],RNG_1_LED_2[0][1],RNG_1_LED_2[0][2])
+            LED.setColor(1,RNG_1_LED_1[0])
+            LED.setColor(2,RNG_1_LED_2[0])
             #Holds all currently set colors.  This will be passed to fadeIn/Out functions
             currentColors = [RNG_1_LED_1[0][0],RNG_1_LED_2[0][0],RNG_1_LED_1[0][1],RNG_1_LED_2[0][1],RNG_1_LED_1[0][2],RNG_1_LED_2[0][2]]
             #fadeInLed(currentColors)

@@ -86,19 +86,18 @@ def fadeOutLED(currentColors):
 	if currentColors[5] > i:
 		currentColors[5] -= i
 		
-	setColor(1,currentColors[0],currentColors[2],currentColors[4])
-	setColor(2,currentColors[1],currentColors[3],currentColors[5])
+	setColor(1,[currentColors[0],currentColors[2],currentColors[4]])
+	setColor(2,[currentColors[1],currentColors[3],currentColors[5]])
 	print currentColors
-	time.sleep(10)
+	#time.sleep(10)
 
-def setColor(ledStripNum,R,G,B):
+#def setColor(ledStripNum,R,G,B):
+def setColor(ledStripNum,RGB):
 	"""
 	Set RGB color passed to it
 	LEDstrip: Which strip? (1|2)
-	R,G,B - color values to set
+	RGB - array of R, G, B values to set
 	"""
-	#Put RGB values into an array
-	RGB = [R,G,B]
 	#check which strip we want to do stuff to
 	if ledStripNum == 1:
 		gpioPinsList = GPIO_PINS_LED_1
@@ -107,12 +106,11 @@ def setColor(ledStripNum,R,G,B):
 	i = 0
 	for gpioVal in gpioPinsList:
 		os.system("echo \"{0}={1}\" > /dev/pi-blaster" .format(gpioVal, Decimal(RGB[i])))
-		#print gpioVal, Decimal(RGB[i])
 		i += 1
 
 def allOff():
 	"""
 	Turn all LEDs off
 	"""
-	setColor(1,0,0,0)
-	setColor(2,0,0,0)
+	setColor(1,[0,0,0])
+	setColor(2,[0,0,0])
