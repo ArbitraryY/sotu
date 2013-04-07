@@ -1,6 +1,5 @@
 #!/usr/bin/python
 
-#from __future__ import division
 from decimal import *
 import os
 import time
@@ -68,28 +67,43 @@ def fadeLED( gpio, startVal, stopVal, lower, upper, STEP, FADESPEED):
     
     return rangeVal, currentVal;
 
-def fadeOutLED(currentColors):	
-	print "Fading out here"
-	print currentColors
-#	i = 1/255
-	i = 0
-	if currentColors[0] > i:
-		currentColors[0] -= i
-	if currentColors[1] > i:
-		currentColors[1] -= i
-	if currentColors[2] > i:
-		currentColors[2] -= i
-	if currentColors[3] > i:
-		currentColors[3] -= i
-	if currentColors[4] > i:
-		currentColors[4] -= i
-	if currentColors[5] > i:
-		currentColors[5] -= i
+def fadeOutLED(currentColors):
+	"""
+	Function: Fade LED strips out from their current values
+	Arguments:
+		- currentColors: An array of RGB values as follows (r1, r2, b1, b2, g1, g2)
+	"""
+	# number of steps to go from max to 0 for each color
+	STEPS = 20 
+	
+	#array of iterators 
+	iterators = [Decimal(x) / Decimal(STEPS) for x in currentColors]
+	
+	for i in range(0,STEPS+1):
+		print i
+		if i == STEPS:
+			#set all current values to zero
+			for k in range(len(currentColors)):
+				currentColors[k] = Decimal(0.00)
+			allOff()
+			print "exiting loop"
+			return
+		j = 0
+		for j in range(len(currentColors)):
+			#decrease each color by its iterator value
+			currentColors[j] -= iterators[j]
+			#check if the value went negative and set to zero if so
+			if currentColors[j] < 0:
+				currentColors[j] = Decimal(0)
+		#set the new color
+		print "still printing even though you exited beyotch"
+		setColor(1,[currentColors[0],currentColors[2],currentColors[4]])
+		setColor(2,[currentColors[1],currentColors[3],currentColors[5]])
+		#turn all the way off if reach the end
+		print "currentColors after iteration"
+		print currentColors
+		#time.sleep(10)
 		
-	setColor(1,[currentColors[0],currentColors[2],currentColors[4]])
-	setColor(2,[currentColors[1],currentColors[3],currentColors[5]])
-	print currentColors
-	#time.sleep(10)
 
 #def setColor(ledStripNum,R,G,B):
 def setColor(ledStripNum,RGB):
