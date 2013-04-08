@@ -30,7 +30,7 @@ sub ledAction {
     #print "GPIO value: " . $ledGPIO{$color} . "\n";
 
     #write to device file
-    system("echo \"$ledGPIO{$color}=$oscValue\" > /dev/pi-blaster"); 
+    #system("echo \"$ledGPIO{$color}=$oscValue\" > /dev/pi-blaster"); 
 }
 
 my $server =

@@ -20,15 +20,16 @@ my $client = Net::OpenSoundControl::Client->new(
 #$client->send(["/ard/red" ,'i', 255,]);
 
 my $mesgVal = 0; #off
-for(;;){
+#for(;;){
 #for (1..1000000) {
-	if ($mesgVal == 0 ) {
- 		$mesgVal = 1;
-       } else {
-		$mesgVal = 0;
-	    }
-	    $mesg = "/ard/red";
-	$client->send(["$mesg" ,'i', $mesgVal]);
-	print $mesgVal . "\n";
-	sleep(1);
-}
+#	if ($mesgVal == 0 ) {
+# 		$mesgVal = 1;
+#       } else {
+#		$mesgVal = 0;
+#	    }
+	$mesg = '/live/play/clip';
+	#$client->send(["$mesg" ,'i', 1]);
+	$client->send(["/live/play/clip" ,'i', 1, 'i', 1]);
+	sleep(5);
+	$client->send(["/live/stop" ,'i', 1]);
+#}
