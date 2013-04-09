@@ -1,0 +1,60 @@
+#!/bin/bash
+#
+# /etc/rc.d/init.d/
+#
+# chkconfig: 2345 80 05
+# description: Range sensor init script 
+#
+
+# Source function library.
+. /etc/init.d/functions
+
+RS=/platoon/rangeSensor/rangeSensor.py
+RSPIDFILE=/var/run/rangeSensor.pid
+
+RETVAL=0
+start() {
+        echo -n "Starting : Range Sensor "
+
+        if [ -f $RSPIDFILE ]; then
+                PID=`cat $RSPIDFILE`
+                echo Range sensor is already running: $PID
+                exit 2;
+        else
+                sudo /platoon/rangeSensor/rangeSensor.py
+                $RETVAL=$?
+        fi
+        return $RETVAL
+}
+
+stop() {
+        echo -n "Shutting down : rangeSensor.py "
+        echo
+        killproc rangeSensor.py
+        RETVAL=$?
+        echo
+        return $RETVAL
+
+}
+
+case "$1" in
+    start)
+        start
+        ;;
+    stop)
+        stop
+        ;;
+    status)
+        status rangeSensor.py
+        ;;
+    restart)
+        stop
+        start
+        ;;
+    *)
+        echo "Usage: $0 [start|stop|restart|status]"
+        RETVAL=3
+        ;;
+esac
+
+exit $RETVAL

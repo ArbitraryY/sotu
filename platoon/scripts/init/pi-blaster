@@ -1,0 +1,60 @@
+#!/bin/bash
+#
+# /etc/rc.d/init.d/
+#
+# chkconfig: 2345 80 05
+# description: pi-blaster init script 
+#
+
+# Source function library.
+. /etc/init.d/functions
+
+PIB=/pi-blaster/pi-blaster
+PIBPIDFILE=/var/run/pi-blaster.pid
+
+RETVAL=0
+start() {
+        echo -n "Starting : pi-blaster "
+
+        if [ -f $PIBPIDFILE ]; then
+                PID=`cat $PIBPIDFILE`
+                echo pi-blaster already running: $PID
+                exit 2;
+        else
+                sudo /root/pi-blaster/pi-blaster
+                $RETVAL=$?
+        fi
+        return $RETVAL
+}
+
+stop() {
+        echo -n "Shutting down : pi-blaster "
+        echo
+        killproc pi-blaster
+        RETVAL=$?
+        echo
+        return $RETVAL
+
+}
+
+case "$1" in
+    start)
+        start
+        ;;
+    stop)
+        stop
+        ;;
+    status)
+        status pi-blaster
+        ;;
+    restart)
+        stop
+        start
+        ;;
+    *)
+        echo "Usage: $0 [start|stop|restart|status]"
+        RETVAL=3
+        ;;
+esac
+
+exit $RETVAL
