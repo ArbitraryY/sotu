@@ -14,9 +14,14 @@ APP_PATH=/home/pi/$NAME
 
 case "$1" in
   start)
-    sudo touch /var/lock/$NAME
-    echo "Starting $NAME"
-    sudo $PIBPATH/$NAME
+    if [ -e /var/lock/$NAME ]
+    then 
+  		echo "$NAME is already running"
+  	else
+  		sudo touch /var/lock/$NAME
+  		echo "Starting $NAME"
+  		sudo $APP_PATH/$NAME
+	fi
     ;;
   stop)
     echo "Stopping $NAME"
