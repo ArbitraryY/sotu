@@ -1,60 +1,40 @@
-#!/bin/bash
-#
-# /etc/rc.d/init.d/
-#
-# chkconfig: 2345 80 05
-# description: pi-blaster init script 
-#
+#!/bin/sh
+### BEGIN INIT INFO
+# Provides:          pi-blaster
+# Required-Start:    $syslog
+# Required-Stop:     $syslog
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# X-Interactive:     true
+# Short-Description: Start/stop pi-blaster software PWM for GPIO pins
+### END INIT INFO
 
-# Source function library.
-. /etc/init.d/functions
-
-PIB=/pi-blaster/pi-blaster
-PIBPIDFILE=/var/run/pi-blaster.pid
-
-RETVAL=0
-start() {
-        echo -n "Starting : pi-blaster "
-
-        if [ -f $PIBPIDFILE ]; then
-                PID=`cat $PIBPIDFILE`
-                echo pi-blaster already running: $PID
-                exit 2;
-        else
-                sudo /root/pi-blaster/pi-blaster
-                $RETVAL=$?
-        fi
-        return $RETVAL
-}
-
-stop() {
-        echo -n "Shutting down : pi-blaster "
-        echo
-        killproc pi-blaster
-        RETVAL=$?
-        echo
-        return $RETVAL
-
-}
+NAME=pi-blaster
+APP_PATH=/home/pi/$NAME
 
 case "$1" in
-    start)
-        start
-        ;;
-    stop)
-        stop
-        ;;
-    status)
-        status pi-blaster
-        ;;
-    restart)
-        stop
-        start
-        ;;
-    *)
-        echo "Usage: $0 [start|stop|restart|status]"
-        RETVAL=3
-        ;;
+  start)
+    sudo touch /var/lock/$NAME
+    echo "Starting $NAME"
+    sudo $PIBPATH/$NAME
+    ;;
+  stop)
+    echo "Stopping $NAME"
+    sudo rm /var/lock/$NAME
+    sudo killall $NAME
+    ;;
+  status)
+        if [ -e /var/lock/$NAME ]
+        then
+                echo "$NAME is running"
+        else
+                echo "$NAME is stopped"
+        fi
+    ;;
+  *)
+    echo "Usage: /etc/init.d/$NAME {start|stop|status}"
+    exit 1
+    ;;
 esac
 
-exit $RETVAL
+exit 0

@@ -1,60 +1,41 @@
-#!/bin/bash
-#
-# /etc/rc.d/init.d/
-#
-# chkconfig: 2345 80 05
-# description: Range sensor init script 
-#
+#!/bin/sh
+### BEGIN INIT INFO
+# Provides:          rangeSensor
+# Required-Start:    $syslog
+# Required-Stop:     $syslog
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# X-Interactive:     true
+# Short-Description: Start/stop rangeSensor software
+### END INIT INFO
 
-# Source function library.
-. /etc/init.d/functions
-
-RS=/platoon/rangeSensor/rangeSensor.py
-RSPIDFILE=/var/run/rangeSensor.pid
-
-RETVAL=0
-start() {
-        echo -n "Starting : Range Sensor "
-
-        if [ -f $RSPIDFILE ]; then
-                PID=`cat $RSPIDFILE`
-                echo Range sensor is already running: $PID
-                exit 2;
-        else
-                sudo /platoon/rangeSensor/rangeSensor.py
-                $RETVAL=$?
-        fi
-        return $RETVAL
-}
-
-stop() {
-        echo -n "Shutting down : rangeSensor.py "
-        echo
-        killproc rangeSensor.py
-        RETVAL=$?
-        echo
-        return $RETVAL
-
-}
+NAME=rangeSensor
+APP_NAME=rangeSensor.py
+APP_PATH=/home/pi/projects/platoon/$NAME
 
 case "$1" in
-    start)
-        start
-        ;;
-    stop)
-        stop
-        ;;
-    status)
-        status rangeSensor.py
-        ;;
-    restart)
-        stop
-        start
-        ;;
-    *)
-        echo "Usage: $0 [start|stop|restart|status]"
-        RETVAL=3
-        ;;
+  start)
+    sudo touch /var/lock/$NAME
+    echo "Starting $NAME"
+    sudo $APP_PATH/$APP_NAME
+    ;;
+  stop)
+    echo "Stopping $NAME"
+    sudo rm /var/lock/$NAME
+    sudo killall $APP_NAME
+    ;;
+  status)
+        if [ -e /var/lock/$NAME ]
+        then
+                echo "$NAME is running"
+        else
+                echo "$NAME is stopped"
+        fi
+    ;;
+  *)
+    echo "Usage: /etc/init.d/$NAME {start|stop|status}"
+    exit 1
+    ;;
 esac
 
-exit $RETVAL
+exit 0
