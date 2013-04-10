@@ -1,0 +1,46 @@
+#!/bin/sh
+### BEGIN INIT INFO
+# Provides:			 oscServer 
+# Required-Start:    $syslog
+# Required-Stop:     $syslog
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# X-Interactive:     true
+# Short-Description: Start/stop OSC Server
+### END INIT INFO
+
+NAME=OSCServer
+APP_NAME=OSCserver.pl
+APP_PATH=/home/pi/platoon/OSC
+
+case "$1" in
+  start)
+    if [ -e /var/lock/$NAME ]
+    then 
+  		echo "$NAME is already running"
+  	else
+  		sudo touch /var/lock/$NAME
+  		echo "Starting $NAME"
+  		perl $APP_PATH/$APP_NAME
+	fi
+    ;;
+  stop)
+    echo "Stopping $NAME"
+    sudo rm /var/lock/$NAME
+    sudo killall $APP_NAME
+    ;;
+  status)
+        if [ -e /var/lock/$NAME ]
+        then
+                echo "$NAME is running"
+        else
+                echo "$NAME is stopped"
+        fi
+    ;;
+  *)
+    echo "Usage: /etc/init.d/$NAME {start|stop|status}"
+    exit 1
+    ;;
+esac
+
+exit 0
