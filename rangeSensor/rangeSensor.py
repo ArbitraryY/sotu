@@ -10,6 +10,7 @@ import time
 import os
 import rsDistance
 import LED
+import thread
 
 #set Decimal precision to 2 places
 getcontext().prec = 2
@@ -106,6 +107,7 @@ try:
                 LED.fadeOutLED(currentColors)
                 break
             '''
+            
             #fade red LEDs
             if(rangeVal):
                 rangeVal, currentColors[0] = LED.fadeLED(GPIO_PINS_LED_1[0],RNG_1_LED_1[i][0],RNG_1_LED_1[j][0],ranges[0],ranges[1],STEP,FADESPEED)
@@ -121,6 +123,30 @@ try:
                 rangeVal, currentColors[4] = LED.fadeLED(GPIO_PINS_LED_1[2],RNG_1_LED_1[i][2],RNG_1_LED_1[j][2],ranges[0],ranges[1],STEP,FADESPEED)
             if(rangeVal):
                 rangeVal, currentColors[5] = LED.fadeLED(GPIO_PINS_LED_2[2],RNG_1_LED_2[k][2],RNG_1_LED_2[m][2],ranges[0],ranges[1],STEP,FADESPEED)
+            
+            if(rangeVal):
+                #fade red LEDs
+                '''
+                rangeVal, currentColors[0] = threading.Thread(LED.fadeLED, args = (GPIO_PINS_LED_1[0],RNG_1_LED_1[i][0],RNG_1_LED_1[j][0],ranges[0],ranges[1],STEP,FADESPEED))
+                rangeVal, currentColors[1] = threading.Thread(LED.fadeLED, args = (GPIO_PINS_LED_2[0],RNG_1_LED_2[k][0],RNG_1_LED_2[m][0],ranges[0],ranges[1],STEP,FADESPEED))
+                #fade green LEDs
+                rangeVal, currentColors[2] = thread.start_new_thread(LED.fadeLED(GPIO_PINS_LED_1[1],RNG_1_LED_1[i][1],RNG_1_LED_1[j][1],ranges[0],ranges[1],STEP,FADESPEED))
+                rangeVal, currentColors[3] = thread.start_new_thread(LED.fadeLED(GPIO_PINS_LED_2[1],RNG_1_LED_2[k][1],RNG_1_LED_2[m][1],ranges[0],ranges[1],STEP,FADESPEED))   
+                #fade blue LEDs
+                rangeVal, currentColors[4] = thread.start_new_thread(LED.fadeLED(GPIO_PINS_LED_1[2],RNG_1_LED_1[i][2],RNG_1_LED_1[j][2],ranges[0],ranges[1],STEP,FADESPEED))
+                rangeVal, currentColors[5] = thread.start_new_thread(LED.fadeLED(GPIO_PINS_LED_2[2],RNG_1_LED_2[k][2],RNG_1_LED_2[m][2],ranges[0],ranges[1],STEP,FADESPEED))
+                '''
+                '''
+                #fade red LEDs
+                rangeVal, currentColors[0] = thread.start_new_thread( LED.fadeLED, (GPIO_PINS_LED_1[0],RNG_1_LED_1[i][0],RNG_1_LED_1[j][0],ranges[0],ranges[1],STEP,FADESPEED, ))
+                rangeVal, currentColors[1] = thread.start_new_thread( LED.fadeLED, (GPIO_PINS_LED_2[0],RNG_1_LED_2[k][0],RNG_1_LED_2[m][0],ranges[0],ranges[1],STEP,FADESPEED, ))
+                #fade green LEDs
+                rangeVal, currentColors[2] = thread.start_new_thread( LED.fadeLED, (GPIO_PINS_LED_1[1],RNG_1_LED_1[i][1],RNG_1_LED_1[j][1],ranges[0],ranges[1],STEP,FADESPEED, ))
+                rangeVal, currentColors[3] = thread.start_new_thread( LED.fadeLED, (GPIO_PINS_LED_2[1],RNG_1_LED_2[k][1],RNG_1_LED_2[m][1],ranges[0],ranges[1],STEP,FADESPEED, ))   
+                #fade blue LEDs
+                rangeVal, currentColors[4] = thread.start_new_thread( LED.fadeLED, (GPIO_PINS_LED_1[2],RNG_1_LED_1[i][2],RNG_1_LED_1[j][2],ranges[0],ranges[1],STEP,FADESPEED, ))
+                rangeVal, currentColors[5] = thread.start_new_thread( LED.fadeLED, (GPIO_PINS_LED_2[2],RNG_1_LED_2[k][2],RNG_1_LED_2[m][2],ranges[0],ranges[1],STEP,FADESPEED, ))
+                '''
             #if out of range (i.e. rangeVal = 0) then fade out
             if(rangeVal == 0):
                 #LED.allOff()
