@@ -4,6 +4,7 @@ from decimal import *
 import os
 import time
 import rsDistance
+import threading 
 
 #set Decimal precision to 2 places
 getcontext().prec = 2
@@ -20,7 +21,7 @@ def analogToDigital(analogColors):
 	digitalColors = [[Decimal(x)/Decimal(255) for x in y] for y in analogColors]
 	return digitalColors
 
-def fadeLED( gpio, startVal, stopVal, lower, upper, STEP, FADESPEED):
+def fadeLED( gpio, startVal, stopVal, lower, upper, STEP, FADESPEED ):
     """This function takes the following arguments
     gpio: value of the RPi GPIO pin that will be updated
     startVal: RGB value that the fade will start from
@@ -37,39 +38,51 @@ def fadeLED( gpio, startVal, stopVal, lower, upper, STEP, FADESPEED):
     currentVal: Returns the value of the current RGB setting
     This is needed to fade out from whatever state the LEDs are currently at  
     """
-	#this variable will be returned as a check whether or not someone is in/out
-	#of range
-    rangeVal = 1;
+    rangeVal = 1
     #set the current LED values to the start value
     currentVal = startVal
     if startVal < stopVal:
         while currentVal < stopVal:
             os.system("echo \"{0}={1}\" > /dev/pi-blaster" .format(gpio,currentVal))
-            currentVal = currentVal + STEP;
+            currentVal += STEP;
             time.sleep(FADESPEED)
+            print "GPIO: {0}, Value = {1}" .format(gpio,currentVal)
             #take a distance measurement and check if out of range
             distance = rsDistance.measureAvg()
+            #print "\n\n this is the distance n fade loop: %f \n\n" % distance
+           
             if distance < lower or distance > upper:
-                rangeVal = 0;
                 #if user exits range return the current value to populate
                 #the currentColors array.  Need this for proper fade out
+                rangeVal = 0
                 return rangeVal, currentVal
+            else:
+            	rangeVal = 1
+    
     elif startVal > stopVal:
         while currentVal > stopVal:
             os.system("echo \"{0}={1}\" > /dev/pi-blaster" .format(gpio,currentVal))
-            currentVal = currentVal - STEP;
+            currentVal -= STEP;
             time.sleep(FADESPEED)
-            print currentVal
+            print "GPIO: {0}, Value = {1}" .format(gpio,currentVal)
             #take a distance measurement
             distance = rsDistance.measureAvg()
+            #print "\n\n this is the distance n fade loop: %f \n\n" % distance
+            #time.sleep(10)
             #print "distance in loop subtracting loop: %.3f" % distance
             if distance < lower or distance > upper:
-                rangeVal = 0;
+            	#print "this is the distance while in the subtracting fade loop: %f" % distance
+            	#time.sleep(5)
+                rangeVal = 0
                 return rangeVal, currentVal
+            else:
+            	rangeVal = 1
     
     return rangeVal, currentVal;
 
-def fadeOutLED2(currentColors):
+def fadeOutLED2(currentColors,distance):
+	print "distance when entering fade out loop: %f" % distance
+	#time.sleep(10) 
 	STEP = Decimal(0.01)
 	FADESPEED = Decimal(0.01)
 	for i in range(len(currentColors)):
@@ -83,8 +96,29 @@ def fadeOutLED2(currentColors):
 				#set current colors to zero before exiting loop
 				currentColors[i] = 0
 			#time.sleep(FADESPEED)
-			print currentColors[i]
+			print "in fade out loop: %f" % currentColors[i]
+	currentColors[i]=0
 	allOff()
+	
+def fadeOutLED3(gpioPinVal, currentVal):
+	'''
+	This function takes a GPIO pin value and a current LED color
+	value and fades it to 0
+	'''
+	print "hello from thread: %i" % gpioPinVal
+	print "fading out now"
+	STEP = Decimal(0.03)
+	FADESPEED = Decimal(0.00)
+	while currentVal > Decimal(0.00):
+		os.system("echo \"{0}={1}\" > /dev/pi-blaster" .format(gpioPinVal,currentVal))
+		currentVal -= Decimal(STEP);
+		#set to zero once it gets negative
+		if currentVal < Decimal(0):
+			os.system("echo \"{0}=0\" > /dev/pi-blaster" .format(gpioPinVal))
+			#set current colors to zero before exiting loop
+			currentVal = 0
+		#time.sleep(FADESPEED)
+		print "%0.2f" % currentVal
 	
 def fadeOutLED(currentColors):
 	"""
@@ -115,13 +149,12 @@ def fadeOutLED(currentColors):
 			if currentColors[j] < 0:
 				currentColors[j] = Decimal(0)
 		#set the new color
-		print "still printing even though you exited beyotch"
 		setColor(1,[currentColors[0],currentColors[2],currentColors[4]])
 		setColor(2,[currentColors[1],currentColors[3],currentColors[5]])
 		time.sleep(0.02)
 		#turn all the way off if reach the end
-		print "currentColors after iteration"
-		print currentColors
+		#print "currentColors after iteration"
+		#print currentColors
 		#time.sleep(10)
 
 #def setColor(ledStripNum,R,G,B):
@@ -147,3 +180,30 @@ def allOff():
 	"""
 	setColor(1,[0,0,0])
 	setColor(2,[0,0,0])
+	
+def dangerRange(distance,topOfRange):
+	'''
+	This function will flash red on/off while in the danger range
+	Args:
+	-- distance: the current range sensor distance
+	-- topOfRange: the top end of the range to flash in
+	'''
+	while distance < topOfRange:
+		FLASHSPEED = 0.01
+		#turn LEDs all red
+		t1 = threading.Thread(target=setColor,args=(1,[0,0,0]))
+		t1.start()
+		#t1.join()
+		t2 = threading.Thread(target=setColor,args=(2,[0,0,0]))
+		t2.start()
+		#t2.join()
+		time.sleep(FLASHSPEED)
+		#Turn all LEDs off
+		t1 = threading.Thread(target=setColor,args=(1,[1,0,0]))
+		t1.start()
+		#t1.join()
+		t2 = threading.Thread(target=setColor,args=(2,[1,0,0]))
+		t2.start()
+		#t2.join()
+		distance = rsDistance.measureAvg() 
+	return distance
