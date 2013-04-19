@@ -595,13 +595,13 @@ void setup()
 
   Firmata.begin(57600);
   systemResetCallback();  // reset to default config
-  //Ay+ Adding LCD stuff
+  //Platoon LCD Output
   // set up the LCD's number of columns and rows:
   lcd.begin(16, 2);
   // Print a message to the LCD.
-  lcd.print("  Vive l'esprit");
+  lcd.print("Big Bang: Birth ");
   lcd.setCursor(0, 1);
-  lcd.print("      Ay+       ");
+  lcd.print(" of the Universe");
 }
 
 /*==============================================================================
