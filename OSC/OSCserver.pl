@@ -19,7 +19,11 @@ sub ledAction {
     #parse color from OSC address
     $oscAddress =~ m/\/led\/(\w+)/;
     my $color = $1;
-    #print "Color: " . $color . "\n";
+
+	$oscAddress =~ m/\/osc\/(\w+)/;
+	my $oscCmd = $1;
+    
+   #print "Color: " . $color . "\n";
     #hash of colors and corresponding GPIO on RPi
     my %ledGPIO = (
 		red1   => "2", #GPIO 23
@@ -29,9 +33,40 @@ sub ledAction {
 		green2 => "4", #     24
 		blue2  => "6", #     24
 	       );
-    #print the GPIO color from hash map
-    #print "GPIO value: " . $ledGPIO{$color} . "\n";
-
+    
+    if ($color eq 'white') {
+    	my $colorPerc = 0.00001;
+		foreach my $key ( keys %ledGPIO )
+		{ 
+    		system("echo \"$ledGPIO{$key}=$colorPerc\" > /dev/pi-blaster"); 
+   		}	
+    }
+    if ($color eq 'ledOff') {
+		foreach my $key ( keys %ledGPIO )
+		{ 
+    		system("echo \"$ledGPIO{$key}=0\" > /dev/pi-blaster"); 
+   		}	
+    }
+    if ($oscCmd eq 'rPiOff') {
+		print "Shutting Down the Raspberry Pi";
+		for (my $i = 0; $i <= 5; $i++) {
+			print ".";
+			sleep (1);
+		}
+		my $shutdownCmd = 'sudo shutdown -h now';
+    	system $shutdownCmd;
+    }
+    if ($oscCmd eq 'rangeSensor') {
+    	my $cmd = '';
+    	if ($oscValue == 0){
+    		print "Shutting down the range sensor\n";
+    		$cmd = 'service rangeSensor stop';
+    	} elsif ($oscValue == 1) {
+    		$cmd = 'service rangeSensor start &';
+    	}
+	    system $cmd;
+    }
+    
     #write to device file
     system("echo \"$ledGPIO{$color}=$oscValue\" > /dev/pi-blaster"); 
 }
