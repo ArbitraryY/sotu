@@ -10,7 +10,7 @@
 ### END INIT INFO
 
 NAME=pi-blaster
-APP_PATH=/home/pi/$NAME
+APP_PATH=/usr/local/$NAME
 
 case "$1" in
   start)

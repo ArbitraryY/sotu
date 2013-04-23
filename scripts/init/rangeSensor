@@ -10,9 +10,9 @@
 ### END INIT INFO
 
 NAME=rangeSensor
-APP_NAME=rangeSensor.py
-PLATOON_ROOT=/home/pi/platoon
-APP_PATH=$PLATOON_ROOT/$NAME
+APP_NAME=rangeSensor.pyc
+PLTN_ROOT=/usr/local/pltn
+APP_PATH=$PLTN_ROOT/$NAME
 
 case "$1" in
   start)
@@ -22,13 +22,13 @@ case "$1" in
   	else
   		sudo touch /var/lock/$NAME
   		echo "Starting $NAME"
-  		sudo $APP_PATH/$APP_NAME
+  		sudo python $APP_PATH/$APP_NAME
 	fi
     ;;
   stop)
     echo "Stopping $NAME"
     sudo rm /var/lock/$NAME
-    $PLATOON_ROOT/scripts/initLEDOff.py
+    sudo python $PLTN_ROOT/scripts/initLEDOff.pyc
     sudo killall $APP_NAME
     ;;
   status)
