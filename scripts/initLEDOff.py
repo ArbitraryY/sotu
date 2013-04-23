@@ -1,7 +1,7 @@
 #!/usr/bin/python
 
 import sys
-sys.path.append("/home/pi/platoon/rangeSensor/")
+sys.path.append("/usr/local/pltn/rangeSensor/")
 from LED import allOff
 
 #turn all LEDs off
