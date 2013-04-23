@@ -173,6 +173,7 @@ def setColor(ledStripNum,RGB):
 	for gpioVal in gpioPinsList:
 		os.system("echo \"{0}={1}\" > /dev/pi-blaster" .format(gpioVal, Decimal(RGB[i])))
 		i += 1
+	return
 
 def allOff():
 	"""
@@ -180,6 +181,7 @@ def allOff():
 	"""
 	setColor(1,[0,0,0])
 	setColor(2,[0,0,0])
+	return
 	
 def dangerRange(distance,topOfRange):
 	'''
