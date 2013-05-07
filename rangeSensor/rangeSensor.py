@@ -58,10 +58,6 @@ RNG_1_LED_2 = LED.analogToDigital(RNG_1_LED_2_ANALOG)
 #ranges=[10.0,16.0,17.0,47.0,48.0,70.0];
 ranges=[20.0,100.0];
 
-#----------------------Funcs-----------------------------------------
-
-#-------------------End Funcs -----------------------------------------
-
 try:
     print "Waiting for sensor to settle ..."
     # Loop until users quits with CTRL-C
@@ -216,7 +212,7 @@ try:
     	time.sleep(0.01)
 
 except KeyboardInterrupt:
-	LED.allOff()
-	print "  Quit"
-  	# Reset GPIO settings
-  	GPIO.cleanup()
+    LED.allOff()
+    print "  Quit"
+    # Reset GPIO settings
+    GPIO.cleanup()

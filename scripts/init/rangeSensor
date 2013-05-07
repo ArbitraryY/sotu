@@ -29,7 +29,7 @@ case "$1" in
     echo "Stopping $NAME"
     sudo rm /var/lock/$NAME
     sudo pkill -9 -f $APP_NAME
-    sudo python $PLTN_ROOT/scripts/initLEDOff.pyc
+    sudo python $APP_PATH/allOff.pyc
     ;;
   status)
         if [ -e /var/lock/$NAME ]

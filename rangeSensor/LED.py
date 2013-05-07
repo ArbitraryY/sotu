@@ -4,14 +4,14 @@ from decimal import *
 import os
 import time
 import rsDistance
-import threading 
+import threading
 
 #set Decimal precision to 2 places
 getcontext().prec = 2
 
 GPIO_PINS_LED_1 = [2,5,7]
 GPIO_PINS_LED_2 = [1,4,6]
-ALL_GPIO_PINS = [2,1,5,4,7,6]
+ALL_GPIO_PINS   = [2,1,5,4,7,6]
 
 def analogToDigital(analogColors):
 	'''
@@ -157,7 +157,6 @@ def fadeOutLED(currentColors):
 		#print currentColors
 		#time.sleep(10)
 
-#def setColor(ledStripNum,R,G,B):
 def setColor(ledStripNum,RGB):
 	"""
 	Set RGB color passed to it
@@ -173,7 +172,7 @@ def setColor(ledStripNum,RGB):
 	for gpioVal in gpioPinsList:
 		os.system("echo \"{0}={1}\" > /dev/pi-blaster" .format(gpioVal, Decimal(RGB[i])))
 		i += 1
-	return
+	return;
 
 def allOff():
 	"""
@@ -181,8 +180,8 @@ def allOff():
 	"""
 	setColor(1,[0,0,0])
 	setColor(2,[0,0,0])
-	return
-	
+	return;
+
 def dangerRange(distance,topOfRange):
 	'''
 	This function will flash red on/off while in the danger range

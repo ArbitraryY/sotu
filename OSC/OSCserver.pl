@@ -20,10 +20,12 @@ sub ledAction {
     $oscAddress =~ m/\/led\/(\w+)/;
     my $color = $1;
 
-	$oscAddress =~ m/\/osc\/(\w+)/;
+	$oscAddress =~ m/\/rpi\/(\w+)/;
 	my $oscCmd = $1;
     
-   #print "Color: " . $color . "\n";
+	$oscAddress =~ m/\/pltn\/(\w+)/;
+	my $oscCmd = $1;
+	
     #hash of colors and corresponding GPIO on RPi
     my %ledGPIO = (
 		red1   => "2", #GPIO 23
@@ -41,13 +43,13 @@ sub ledAction {
     		system("echo \"$ledGPIO{$key}=$colorPerc\" > /dev/pi-blaster"); 
    		}	
     }
-    if ($color eq 'ledOff') {
+    if ($color eq 'allOff') {
 		foreach my $key ( keys %ledGPIO )
 		{ 
     		system("echo \"$ledGPIO{$key}=0\" > /dev/pi-blaster"); 
    		}	
     }
-    if ($oscCmd eq 'rPiOff') {
+    if ($oscCmd eq 'off') {
 		print "Shutting Down the Raspberry Pi";
 		for (my $i = 0; $i <= 5; $i++) {
 			print ".";
@@ -56,7 +58,7 @@ sub ledAction {
 		my $shutdownCmd = 'sudo shutdown -h now';
     	system $shutdownCmd;
     }
-    if ($oscCmd eq 'rangeSensor') {
+    if ($oscCmd eq 'rngSnsr') {
     	my $cmd = '';
     	if ($oscValue == 0){
     		print "Shutting down the range sensor\n";
