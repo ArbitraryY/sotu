@@ -1,15 +1,15 @@
 #!/bin/bash
 
-RELEASE_DIR=/usr/local/pltn
+RELEASE_DIR=/usr/local/pltn_test
 DEV_HOME=/home/pltn/platoon
 
 #Copy OSC related files
 echo
 echo "Copying OSC files to release directory" 
 echo
-cp $DEV_HOME/OSC/* $RELEASE_DIR/OSC
+sudo cp -r $DEV_HOME/OSC/* $RELEASE_DIR/OSC
 
-#Do rangeSensor stuffcompile .py files
+#Do rangeSensor stuff
 cd $DEV_HOME/rangeSensor
 echo
 echo "compiling rangeSensor Python Scripts"
@@ -18,5 +18,9 @@ python -m compileall .
 echo
 echo "Copying rangeSensor Python Scripts to release directory" 
 echo
-cp $DEV_HOME/*.pyc $RELEASE_DIR/rangeSensor
+sudo cp $DEV_HOME/rangeSensor/*.pyc $RELEASE_DIR/rangeSensor
+
+#Copy Scripts
+sudo cp $DEV_HOME/scripts/init/* $RELEASE_DIR/scripts
+
 
