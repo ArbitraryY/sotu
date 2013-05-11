@@ -95,8 +95,6 @@ sub ledAction {
     	#run the system command
    		system $sysCmd;
 	}  
-    #write to device file
-    
 }
 
 my $server =

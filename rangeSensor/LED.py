@@ -50,15 +50,25 @@ def fadeLED( gpio, startVal, stopVal, lower, upper, STEP, FADESPEED ):
             #take a distance measurement and check if out of range
             distance = rsDistance.measureAvg()
             #print "\n\n this is the distance n fade loop: %f \n\n" % distance
-           
-            if distance < lower or distance > upper:
-                #if user exits range return the current value to populate
-                #the currentColors array.  Need this for proper fade out
-                rangeVal = 0
-                return rangeVal, currentVal
+            if distance < lower:
+            	rangeVal = 0
+            	return rangeVal, currentVal
+            elif distance > upper:
+            	#print "this is the distance while in the subtracting fade loop: %f" % distance
+            	#time.sleep(5)
+            	rangeVal = 2
+            	return rangeVal, currentVal
+            else:
+				rangeVal = 1
+				"""
+			if distance < lower or distance > upper:
+				#if user exits range return the current value to populate
+				#the currentColors array.  Need this for proper fade out
+				rangeVal = 0
+				return rangeVal, currentVal
             else:
             	rangeVal = 1
-    
+			"""    
     elif startVal > stopVal:
         while currentVal > stopVal:
             os.system("echo \"{0}={1}\" > /dev/pi-blaster" .format(gpio,currentVal))
@@ -70,10 +80,14 @@ def fadeLED( gpio, startVal, stopVal, lower, upper, STEP, FADESPEED ):
             #print "\n\n this is the distance n fade loop: %f \n\n" % distance
             #time.sleep(10)
             #print "distance in loop subtracting loop: %.3f" % distance
-            if distance < lower or distance > upper:
+#            if distance < lower or distance > upper:
+            if distance < lower:
+                rangeVal = 0
+                return rangeVal, currentVal
+            elif distance > upper:
             	#print "this is the distance while in the subtracting fade loop: %f" % distance
             	#time.sleep(5)
-                rangeVal = 0
+                rangeVal = 2
                 return rangeVal, currentVal
             else:
             	rangeVal = 1

@@ -157,8 +157,8 @@ try:
                 print "blue 2:{0}, {1}" .format(rangeVal, currentColors[5]) 
             '''
             #if out of range (i.e. rangeVal = 0) then fade out
-            '''
             print "rangeVal32: %s" % rangeVal
+            '''
             if(rangeVal == 0):
                 for i in range(len(ALL_GPIO_PINS)):
                     #LED.fadeOutLED3(ALL_GPIO_PINS[i],currentColors[i])
@@ -168,6 +168,8 @@ try:
             '''
             if(rangeVal == 0):
                 LED.dangerRange(distance,ranges[0])
+            elif(rangeVal == 2):
+                LED.fadeOutLED2(currentColors,distance)
             '''
             if(rangeVal == 0):
                 #LED.fadeOutLED(currentColors)
