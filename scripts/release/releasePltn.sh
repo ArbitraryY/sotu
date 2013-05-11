@@ -1,6 +1,6 @@
 #!/bin/bash
 
-RELEASE_DIR=/usr/local/pltn_test
+RELEASE_DIR=/usr/local/pltn
 DEV_HOME=/home/pltn/platoon
 
 #Copy OSC related files
