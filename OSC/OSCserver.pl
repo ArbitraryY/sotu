@@ -48,7 +48,7 @@ sub ledAction {
     if ($oscAddress =~ 'led') {
     	#Set to all white
     	if ($color eq 'white') {
-    		my $colorPerc = 0.00001;
+    		my $colorPerc = 1;
 			foreach my $key ( keys %ledGPIO )
 			{ 
     			system("echo \"$ledGPIO{$key}=$colorPerc\" > /dev/pi-blaster"); 
