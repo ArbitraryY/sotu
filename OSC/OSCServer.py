@@ -2,9 +2,10 @@
 
 from OSC import OSCServer
 import sys
-sys.path.append("/home/nick/platoon/rangeSensor")
-#import LED
+sys.path.append("/usr/local/pltn/rangeSensor")
+import LED
 import re
+import time
 
 OSCPort = 4567
 OSCIP   = "0.0.0.0"
@@ -35,11 +36,25 @@ def srvcActn(path, tags, args, source):
 	print path
 	print args
 
+def tweet(path, tags, args, source):
+	print path 
+	print args[0]
+	colors=[1,1,1]
+	allColors = [1,1,1,1,1,1]
+	LED.setColor(1,colors)	
+	LED.setColor(2,colors)	
+	#time.sleep(3)
+	#pass stepSize
+	LED.fadeOutThreading(0.1)	
+	#LED.allOff()
+
 #Message Handlers and Callback functions
 oscSrv.addMsgHandler("/led",ledActn)
 oscSrv.addMsgHandler("/srvc",srvcActn)
 oscSrv.addMsgHandler("/pltn",pltnActn)
 oscSrv.addMsgHandler("/rpi",rpiActn)
+oscSrv.addMsgHandler("/led/tweet",tweet)
+
 
 print "listening on port" 
 print OSCPort
@@ -47,4 +62,7 @@ print OSCPort
 while True:
 	oscSrv.handle_request()
 
+#except KeyboardInterrupt:
+#	LED.allOff()
+#	print "Quit"
 oscSrv.close()

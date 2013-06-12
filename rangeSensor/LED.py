@@ -114,14 +114,14 @@ def fadeOutLED2(currentColors,distance):
 	currentColors[i]=0
 	allOff()
 	
-def fadeOutLED3(gpioPinVal, currentVal):
+def fadeOutLED3(gpioPinVal, currentVal, stepSize):
 	'''
 	This function takes a GPIO pin value and a current LED color
 	value and fades it to 0
 	'''
 	print "hello from thread: %i" % gpioPinVal
 	print "fading out now"
-	STEP = Decimal(0.03)
+	STEP = Decimal(stepSize)
 	FADESPEED = Decimal(0.00)
 	while currentVal > Decimal(0.00):
 		os.system("echo \"{0}={1}\" > /dev/pi-blaster" .format(gpioPinVal,currentVal))
@@ -223,3 +223,12 @@ def dangerRange(distance,topOfRange):
 		#t2.join()
 		distance = rsDistance.measureAvg() 
 	return distance
+
+def fadeOutThreading(stepSize):
+	for pin in ALL_GPIO_PINS:
+		print pin
+		t = threading.Thread(target=fadeOutLED3,args=(pin,1,stepSize))
+		t.start()
+		t.join
+	return	
+	
