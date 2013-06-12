@@ -12,11 +12,16 @@ OSCIP   = "0.0.0.0"
 oscSrv = OSCServer((OSCIP,OSCPort))
 
 def ledActn(path, tags, args, source):
-	print path
-	print args
-	m = re.match('\/led\/(\w+)', path)
-	print m.group(0)
-	# = split(path)
+	#print path
+	#print args
+	regex = re.compile("\/led\/(.*)")
+	r = regex.search(path)
+	print r
+	regex.match(path)
+	# <_sre.SRE_Match object at 0xa4a20754936448d0>
+	# List the groups found
+	print r.groups()
+	#print regex.findall(path)
 
 def rpiActn(path, tags, args, source):
 	print path
