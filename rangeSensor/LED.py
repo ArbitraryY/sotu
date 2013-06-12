@@ -134,14 +134,15 @@ def fadeOutLED3(gpioPinVal, currentVal):
 		#time.sleep(FADESPEED)
 		print "%0.2f" % currentVal
 	
-def fadeOutLED(currentColors):
+def fadeOutLED(currentColors,numSteps):
 	"""
 	Function: Fade LED strips out from their current values
 	Arguments:
 		- currentColors: An array of RGB values as follows (r1, r2, b1, b2, g1, g2)
+		- numSteps: number of steps to use when fading to 0.  More steps = longer fade time
 	"""
 	# number of steps to go from max to 0 for each color
-	STEPS = 20
+	STEPS = numSteps
 	
 	#array of iterators 
 	iterators = [Decimal(x) / Decimal(STEPS) for x in currentColors]
