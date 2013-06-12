@@ -45,7 +45,7 @@ def tweet(path, tags, args, source):
 	LED.setColor(2,colors)	
 	#time.sleep(3)
 	#pass stepSize
-	LED.fadeOutThreading(0.1)	
+	LED.fadeOutThreading(0.01)	
 	#LED.allOff()
 
 #Message Handlers and Callback functions

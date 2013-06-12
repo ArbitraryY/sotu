@@ -122,7 +122,7 @@ def fadeOutLED3(gpioPinVal, currentVal, stepSize):
 	print "hello from thread: %i" % gpioPinVal
 	print "fading out now"
 	STEP = Decimal(stepSize)
-	FADESPEED = Decimal(0.00)
+	FADESPEED = Decimal(0.01)
 	while currentVal > Decimal(0.00):
 		os.system("echo \"{0}={1}\" > /dev/pi-blaster" .format(gpioPinVal,currentVal))
 		currentVal -= Decimal(STEP);
