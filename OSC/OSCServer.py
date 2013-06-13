@@ -6,6 +6,7 @@ sys.path.append("/usr/local/pltn/rangeSensor")
 import LED
 import re
 import time
+import ledTwitter
 
 OSCPort = 4567
 OSCIP   = "0.0.0.0"
@@ -37,16 +38,13 @@ def srvcActn(path, tags, args, source):
 	print args
 
 def tweet(path, tags, args, source):
-	print path 
-	print args[0]
-	colors=[1,1,1]
-	allColors = [1,1,1,1,1,1]
-	LED.setColor(1,colors)	
-	LED.setColor(2,colors)	
-	#time.sleep(3)
-	#pass stepSize
-	LED.fadeOutThreading(0.01)	
-	#LED.allOff()
+	ledTwitter.fadeTweet()
+	#print path 
+	#colors=[1,1,1]
+	#allColors = [1,1,1,1,1,1]
+	#LED.setColor(1,colors)	
+	#LED.setColor(2,colors)	
+	#LED.fadeOutThreading(0.01)	
 
 #Message Handlers and Callback functions
 oscSrv.addMsgHandler("/led",ledActn)
