@@ -29,8 +29,8 @@ class gpioClass:
             GPIO.setup(gpioClass.gpioPinsList[i][1], GPIO.OUT)
             self.gpioPinsObjs.append(GPIO.PWM(gpioClass.gpioPinsList[i][1], gpioClass.HZ))
         #Set the duty cycle for each pin
-        for i in range(len(gpioClass.gpioPinsList)):
-            self.gpioPinsObjs[i].ChangeDutyCycle(gpioClass.DUTYCYCLE)
+        #for i in range(len(gpioClass.gpioPinsList)):
+         #   self.gpioPinsObjs[i].ChangeDutyCycle(gpioClass.DUTYCYCLE)
     
     def getGpioObj(self,pin):
         """

@@ -10,7 +10,7 @@ import time
 #PWM frequency
 HZ = 100
 #PWM Duty Cycle higher seems to smooth out fading
-DUTYCYCLE = 90
+#DUTYCYCLE = 90
 FADESPEED = 0.002
 
 GPIO.setmode(GPIO.BCM)
@@ -24,21 +24,24 @@ for i in range(len(gpioPinsList)):
     gpioPinsObjs.append(GPIO.PWM(gpioPinsList[i][1], HZ))
     
 #Set the duty cycle for each pin
-for i in range(len(gpioPinsList)):
-    gpioPinsObjs[i].ChangeDutyCycle(DUTYCYCLE)
+#for i in range(len(gpioPinsList)):
+#    gpioPinsObjs[i].ChangeDutyCycle(DUTYCYCLE)
 
 try:
+    for j in range(len(gpioPinsList)):
+        gpioPinsObjs[j].start(100)
+        time.sleep(FADESPEED)
     while True:
         #fade in
         for i in range(101):
             for j in range(len(gpioPinsList)):
-                gpioPinsObjs[j].start(0 + i) 
+                gpioPinsObjs[j].ChangeDutyCycle(0 + i) 
                 time.sleep(FADESPEED)
 
         #fade out
         for i in range(101):
             for j in range(len(gpioPinsList)):
-                gpioPinsObjs[j].start(100 - i) 
+                gpioPinsObjs[j].ChangeDutyCycle(100 - i) 
                 time.sleep(FADESPEED)
 
 except:
