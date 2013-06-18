@@ -10,6 +10,7 @@ import os
 import rsDistance
 import LED
 import threading
+import GPIO.gpioClass as gc
 
 #set Decimal precision to 2 places
 getcontext().prec = 2
@@ -17,12 +18,21 @@ getcontext().prec = 2
 # Define GPIO to use for range Sensor
 #GPIO_RS =4; 
 #define the GPIO pins for each strip
-GPIO_PINS_LED_1 = [2,5,7]
-GPIO_PINS_LED_2 = [1,4,6]
-ALL_GPIO_PINS   = [2,1,5,4,7,6]
+#GPIO_PINS_LED_1 = [2,5,7]
+#GPIO_PINS_LED_1 = [2,5,7]
+#GPIO_PINS_LED_2 = [1,4,6]
+#GPIO_PINS_LED_2 = [1,4,6]
+#r1,g1,b1,r2,g2,b2
+#ALL_GPIO_PINS   = [18,23,25,17,22,24]
+#ALL_GPIO_PINS   = [2,1,5,4,7,6]
+
+#instantiate the gpio PIn class
+gpioPinObjs = gc.gpioClass()
+#create the objects
+#gpioPinObjs.getGpioObjs()
 
 #set mode to BCM so PWM
-GPIO.setmode(GPIO.BCM)
+#GPIO.setmode(GPIO.BCM)
  
 # Set range sensor pin as an input. Need thisin order to overtake the setting
 # from pi-blaster which sets all GPIO pins to input
@@ -33,10 +43,12 @@ global FADESPEED
 global STEP
 
 #Increase to slow down LED color changes
-FADESPEED = Decimal(0.02)
+#FADESPEED = Decimal(0.02)
+FADESPEED = 0.005
 #step size to jump to the next RGB value when fading.
 #decreasing this will slow down the fade
-STEP = Decimal(0.01)
+#STEP = Decimal(0.01)
+STEP = 1 
 
 # define Analog LED RGB colors
 RNG_1_LED_1_ANALOG = [ [28,30,68],[40,93,144],[255,255,255],[40,93,144],[123,32,144],[67,47,103] ]
@@ -107,19 +119,25 @@ try:
             '''
             #fade red LEDs
             if(rangeVal):
-                rangeVal, currentColors[0] = LED.fadeLED(GPIO_PINS_LED_1[0],RNG_1_LED_1[i][0],RNG_1_LED_1[j][0],ranges[0],ranges[1],STEP,FADESPEED)
+#                rangeVal, currentColors[0] = LED.fadeLED(GPIO_PINS_LED_1[0],RNG_1_LED_1[i][0],RNG_1_LED_1[j][0],ranges[0],ranges[1],STEP,FADESPEED)
+                rangeVal, currentColors[0] = LED.fadeLED(gpioPinObjs.getGpioObj(0),RNG_1_LED_1[i][0],RNG_1_LED_1[j][0],ranges[0],ranges[1],STEP,FADESPEED)
             if(rangeVal):
-                rangeVal, currentColors[1] = LED.fadeLED(GPIO_PINS_LED_2[0],RNG_1_LED_2[k][0],RNG_1_LED_2[m][0],ranges[0],ranges[1],STEP,FADESPEED)
+#                rangeVal, currentColors[1] = LED.fadeLED(GPIO_PINS_LED_2[0],RNG_1_LED_2[k][0],RNG_1_LED_2[m][0],ranges[0],ranges[1],STEP,FADESPEED)
+                rangeVal, currentColors[1] = LED.fadeLED(gpioPinObjs.getGpioObj(3),RNG_1_LED_2[k][0],RNG_1_LED_2[m][0],ranges[0],ranges[1],STEP,FADESPEED)
             #fade green LEDs
             if(rangeVal):
-                rangeVal, currentColors[2] = LED.fadeLED(GPIO_PINS_LED_1[1],RNG_1_LED_1[i][1],RNG_1_LED_1[j][1],ranges[0],ranges[1],STEP,FADESPEED)
+#                rangeVal, currentColors[2] = LED.fadeLED(GPIO_PINS_LED_1[1],RNG_1_LED_1[i][1],RNG_1_LED_1[j][1],ranges[0],ranges[1],STEP,FADESPEED)
+                rangeVal, currentColors[2] = LED.fadeLED(gpioPinObjs.getGpioObj(1),RNG_1_LED_1[i][1],RNG_1_LED_1[j][1],ranges[0],ranges[1],STEP,FADESPEED)
             if(rangeVal):
-                rangeVal, currentColors[3] = LED.fadeLED(GPIO_PINS_LED_2[1],RNG_1_LED_2[k][1],RNG_1_LED_2[m][1],ranges[0],ranges[1],STEP,FADESPEED)	
+#                rangeVal, currentColors[3] = LED.fadeLED(GPIO_PINS_LED_2[1],RNG_1_LED_2[k][1],RNG_1_LED_2[m][1],ranges[0],ranges[1],STEP,FADESPEED)	
+                rangeVal, currentColors[3] = LED.fadeLED(gpioPinObjs.getGpioObj(4),RNG_1_LED_2[k][1],RNG_1_LED_2[m][1],ranges[0],ranges[1],STEP,FADESPEED)	
             #fade blue LEDs
             if(rangeVal):
-                rangeVal, currentColors[4] = LED.fadeLED(GPIO_PINS_LED_1[2],RNG_1_LED_1[i][2],RNG_1_LED_1[j][2],ranges[0],ranges[1],STEP,FADESPEED)
+#                rangeVal, currentColors[4] = LED.fadeLED(GPIO_PINS_LED_1[2],RNG_1_LED_1[i][2],RNG_1_LED_1[j][2],ranges[0],ranges[1],STEP,FADESPEED)
+                rangeVal, currentColors[4] = LED.fadeLED(gpioPinObjs.getGpioObj(2),RNG_1_LED_1[i][2],RNG_1_LED_1[j][2],ranges[0],ranges[1],STEP,FADESPEED)
             if(rangeVal):
-                rangeVal, currentColors[5] = LED.fadeLED(GPIO_PINS_LED_2[2],RNG_1_LED_2[k][2],RNG_1_LED_2[m][2],ranges[0],ranges[1],STEP,FADESPEED)
+#                rangeVal, currentColors[5] = LED.fadeLED(GPIO_PINS_LED_2[2],RNG_1_LED_2[k][2],RNG_1_LED_2[m][2],ranges[0],ranges[1],STEP,FADESPEED)
+                rangeVal, currentColors[5] = LED.fadeLED(gpioPinObjs.getGpioObj(5),RNG_1_LED_2[k][2],RNG_1_LED_2[m][2],ranges[0],ranges[1],STEP,FADESPEED)
             #print "This is the rangeVal after fade block: %i", rangeVal
             #print "This is the distance after fading LEDs: %f" % distance
             '''
@@ -217,4 +235,4 @@ except KeyboardInterrupt:
     LED.allOff()
     print "  Quit"
     # Reset GPIO settings
-    GPIO.cleanup()
+    gpioPinObjs.gpioClean()

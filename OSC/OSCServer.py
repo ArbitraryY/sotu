@@ -39,12 +39,14 @@ def srvcActn(path, tags, args, source):
 
 def tweet(path, tags, args, source):
 	ledTwitter.fadeTweet()
-	#print path 
-	#colors=[1,1,1]
-	#allColors = [1,1,1,1,1,1]
-	#LED.setColor(1,colors)	
-	#LED.setColor(2,colors)	
-	#LED.fadeOutThreading(0.01)	
+def red(path, tags, args, source):
+	ledTwitter.fadeRed()
+def green(path, tags, args, source):
+	ledTwitter.fadeGreen()
+def blue(path, tags, args, source):
+	ledTwitter.fadeBlue()
+def scatter(path, tags, args, source):
+	ledTwitter.scatter()
 
 #Message Handlers and Callback functions
 oscSrv.addMsgHandler("/led",ledActn)
@@ -52,15 +54,23 @@ oscSrv.addMsgHandler("/srvc",srvcActn)
 oscSrv.addMsgHandler("/pltn",pltnActn)
 oscSrv.addMsgHandler("/rpi",rpiActn)
 oscSrv.addMsgHandler("/led/tweet",tweet)
+oscSrv.addMsgHandler("/led/red",red)
+oscSrv.addMsgHandler("/led/green",green)
+oscSrv.addMsgHandler("/led/blue",blue)
+oscSrv.addMsgHandler("/led/scatter",scatter)
 
 
 print "listening on port" 
 print OSCPort
 
-while True:
-	oscSrv.handle_request()
+try: 
+	while True:
+		oscSrv.handle_request()
 
-#except KeyboardInterrupt:
+except KeyboardInterrupt:
 #	LED.allOff()
-#	print "Quit"
+	print "Quit"
+	ledTwitter.gpioClean()
+	pass
+
 oscSrv.close()

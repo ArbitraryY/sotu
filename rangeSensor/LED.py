@@ -1,24 +1,35 @@
 #!/usr/bin/python
 
+"""@package LED
+Documentation for this module
+"""
+
 from decimal import *
 import os
 import time
 import rsDistance
 import threading
+import GPIO.gpioClass as gc
+
+gpioPinObjs = gc.gpioClass()
 
 #set Decimal precision to 2 places
 getcontext().prec = 2
 
-GPIO_PINS_LED_1 = [2,5,7]
-GPIO_PINS_LED_2 = [1,4,6]
+#GPIO_PINS_LED_1 = [2,5,7]
+GPIO_PINS_LED_1 = [gpioPinObjs.getGpioObj(0),gpioPinObjs.getGpioObj(1),gpioPinObjs.getGpioObj(2)]
+#GPIO_PINS_LED_2 = [1,4,6]
+GPIO_PINS_LED_2 = [gpioPinObjs.getGpioObj(3),gpioPinObjs.getGpioObj(4),gpioPinObjs.getGpioObj(5)]
 ALL_GPIO_PINS   = [2,1,5,4,7,6]
+
+FADESPEED = 0.005
 
 def analogToDigital(analogColors):
 	'''
 	Accepts a 2D list of analog RGB values (analogColors) and converts them 	to digital.
 	Returns - 2D list of digital RGB values (digitalColors)
 	'''
-	digitalColors = [[Decimal(x)/Decimal(255) for x in y] for y in analogColors]
+	digitalColors = [[(Decimal(x)/Decimal(255))*100 for x in y] for y in analogColors]
 	return digitalColors
 
 def fadeLED( gpio, startVal, stopVal, lower, upper, STEP, FADESPEED ):
@@ -41,9 +52,11 @@ def fadeLED( gpio, startVal, stopVal, lower, upper, STEP, FADESPEED ):
     rangeVal = 1
     #set the current LED values to the start value
     currentVal = startVal
+    print currentVal
     if startVal < stopVal:
         while currentVal < stopVal:
-            os.system("echo \"{0}={1}\" > /dev/pi-blaster" .format(gpio,currentVal))
+            #os.system("echo \"{0}={1}\" > /dev/pi-blaster" .format(gpio,currentVal))
+            gpio.start(currentVal)
             currentVal += STEP;
             time.sleep(FADESPEED)
             print "GPIO: {0}, Value = {1}" .format(gpio,currentVal)
@@ -71,7 +84,8 @@ def fadeLED( gpio, startVal, stopVal, lower, upper, STEP, FADESPEED ):
 			"""    
     elif startVal > stopVal:
         while currentVal > stopVal:
-            os.system("echo \"{0}={1}\" > /dev/pi-blaster" .format(gpio,currentVal))
+            #os.system("echo \"{0}={1}\" > /dev/pi-blaster" .format(gpio,currentVal))
+            gpio.start(currentVal)
             currentVal -= STEP;
             time.sleep(FADESPEED)
             print "GPIO: {0}, Value = {1}" .format(gpio,currentVal)
@@ -185,7 +199,8 @@ def setColor(ledStripNum,RGB):
 		gpioPinsList = GPIO_PINS_LED_2
 	i = 0
 	for gpioVal in gpioPinsList:
-		os.system("echo \"{0}={1}\" > /dev/pi-blaster" .format(gpioVal, Decimal(RGB[i])))
+		gpioVal.start(Decimal(RGB[i]))
+        #os.system("echo \"{0}={1}\" > /dev/pi-blaster" .format(gpioVal, Decimal(RGB[i])))
 		i += 1
 	return;
 
