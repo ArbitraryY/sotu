@@ -6,39 +6,55 @@ sys.path.append("/usr/local/pltn/rangeSensor")
 import LED
 import re
 import time
-import ledTwitter
+#import ledTwitter
+
+gpioPins = {
+			'r1':2,
+			'g1':5,
+			'b1':7,
+			'r2':1,
+			'g2':4,
+			'b2':6,	
+		}
 
 OSCPort = 4567
 OSCIP   = "0.0.0.0"
 
 oscSrv = OSCServer((OSCIP,OSCPort))
 
-def ledActn(path, tags, args, source):
+def led(path, tags, args, source):
+	#path.split("/")
+	oscColor = args[0]
+	status = args[1]
+	#search gpioPins dict for pin value. Exit when found
+	for dictColor,gpioPin in gpioPins.iteritems():
+		if oscColor == dictColor:
+			break
+	
+	LED.pinOnOff(gpioPin,status)		
+	#print color
+	#print status
+	#strip = str(args[1])
+	#onOff = arg[2]
+	#print color+strip
+	#print "value: %i" % onOff	
 	#print path
 	#print args
-	regex = re.compile("\/led\/(.*)")
-	r = regex.search(path)
-	print r
-	regex.match(path)
-	# <_sre.SRE_Match object at 0xa4a20754936448d0>
-	# List the groups found
-	print r.groups()
-	#print regex.findall(path)
-
-def rpiActn(path, tags, args, source):
+	
+def rpi(path, tags, args, source):
 	print path
 	print args
 
-def pltnActn(path, tags, args, source):
+def pltn(path, tags, args, source):
 	print path
 	print args
 
-def srvcActn(path, tags, args, source):
+def srvc(path, tags, args, source):
 	print path
 	print args
 
-def tweet(path, tags, args, source):
-	ledTwitter.fadeTweet()
+#def tweet(path, tags, args, source):
+	#ledTwitter.fadeTweet()
 	#print path 
 	#colors=[1,1,1]
 	#allColors = [1,1,1,1,1,1]
@@ -47,20 +63,20 @@ def tweet(path, tags, args, source):
 	#LED.fadeOutThreading(0.01)	
 
 #Message Handlers and Callback functions
-oscSrv.addMsgHandler("/led",ledActn)
-oscSrv.addMsgHandler("/srvc",srvcActn)
-oscSrv.addMsgHandler("/pltn",pltnActn)
-oscSrv.addMsgHandler("/rpi",rpiActn)
-oscSrv.addMsgHandler("/led/tweet",tweet)
+oscSrv.addMsgHandler("/osc/led",led)
+oscSrv.addMsgHandler("/osc/srvc",srvc)
+oscSrv.addMsgHandler("/osc/pltn",pltn)
+oscSrv.addMsgHandler("/osc/rpi",rpi)
+#oscSrv.addMsgHandler("/led/tweet",tweet)
 
 
-print "listening on port" 
-print OSCPort
+print "listening on port: %i" % OSCPort
 
-while True:
-	oscSrv.handle_request()
+try:
+	while True:
+		oscSrv.handle_request()
 
-#except KeyboardInterrupt:
-#	LED.allOff()
-#	print "Quit"
-oscSrv.close()
+except KeyboardInterrupt:
+	LED.allOff()
+	print "Quit"
+	oscSrv.close()
