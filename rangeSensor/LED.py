@@ -5,13 +5,16 @@ import os
 import time
 import rsDistance
 import threading
-
+import Pblstr
 #set Decimal precision to 2 places
 getcontext().prec = 2
 
 GPIO_PINS_LED_1 = [2,5,7]
 GPIO_PINS_LED_2 = [1,4,6]
 ALL_GPIO_PINS   = [2,1,5,4,7,6]
+
+#create pblstr object. Use this for all writes to pi-Blaster device file
+pb = Pblstr.Pblstr()
 
 def analogToDigital(analogColors):
 	'''
@@ -196,7 +199,8 @@ def setPinValue(pin,value):
         pin = Pin number
         stauts = 0|1 (off|on)
     """
-    os.system("echo \"{0}={1}\" > /dev/pi-blaster" .format(pin,value))
+    pb.write(pin,value)
+    #os.system("echo \"{0}={1}\" > /dev/pi-blaster" .format(pin,value))
     
 def allOff():
 	"""

@@ -4,7 +4,6 @@ from OSC import OSCServer
 import sys
 sys.path.append("/usr/local/pltn/rangeSensor")
 import LED
-import re
 import time
 #import ledTwitter
 
@@ -23,24 +22,27 @@ OSCIP   = "0.0.0.0"
 oscSrv = OSCServer((OSCIP,OSCPort))
 
 def led(path, tags, args, source):
-	#path.split("/")
-	oscColor = args[0]
-	pinValue = args[1]
-	#search gpioPins dict for pin value. Exit when found
-	for dictColor,gpioPin in gpioPins.iteritems():
-		if oscColor == dictColor:
-			break
+	#pSplit = path.split("/")
+	#prog = pSplit[2]
+	oscProg = args[0]
+	pinValue = args[1]	
 	
-	LED.setPinValue(gpioPin,pinValue)		
-	#print color
-	#print status
-	#strip = str(args[1])
-	#onOff = arg[2]
-	#print color+strip
-	#print "value: %i" % onOff	
-	#print path
-	#print args
-	
+	if oscProg in gpioPins.keys():
+		#search gpioPins dict for pin value. Exit when found
+		for dictColor,gpioPin in gpioPins.iteritems():
+			if oscProg == dictColor:
+				break
+		#set the pin color
+		LED.setPinValue(gpioPin,pinValue)
+	elif oscProg == 'allOn':
+		LED.setColor(1,[1,1,1])
+		LED.setColor(2,[1,1,1])
+	elif oscProg == 'allOff':
+		LED.allOff()
+	else:
+		pass	
+		
+
 def rpi(path, tags, args, source):
 	print path
 	print args

@@ -27,5 +27,5 @@ python -m compileall .
 echo
 echo "Copying rangeSensor Python Scripts to $RELEASE_DIR" 
 echo "===================================="
-sudo cp $DEV_HOME/rangeSensor/*.pyc $RELEASE_DIR/rangeSensor
+sudo cp -R $DEV_HOME/rangeSensor/*.pyc $RELEASE_DIR/rangeSensor
 sudo chmod +x $RELEASE_DIR/rangeSensor/*.pyc
