@@ -189,14 +189,14 @@ def setColor(ledStripNum,RGB):
 		i += 1
 	return;
 
-def pinOnOff(pin,status):
+def setPinValue(pin,value):
     """
     Turn a pin high
     Input: 
         pin = Pin number
         stauts = 0|1 (off|on)
     """
-    os.system("echo \"{0}={1}\" > /dev/pi-blaster" .format(pin,status))
+    os.system("echo \"{0}={1}\" > /dev/pi-blaster" .format(pin,value))
     
 def allOff():
 	"""

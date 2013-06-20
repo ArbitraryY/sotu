@@ -25,13 +25,13 @@ oscSrv = OSCServer((OSCIP,OSCPort))
 def led(path, tags, args, source):
 	#path.split("/")
 	oscColor = args[0]
-	status = args[1]
+	pinValue = args[1]
 	#search gpioPins dict for pin value. Exit when found
 	for dictColor,gpioPin in gpioPins.iteritems():
 		if oscColor == dictColor:
 			break
 	
-	LED.pinOnOff(gpioPin,status)		
+	LED.setPinValue(gpioPin,pinValue)		
 	#print color
 	#print status
 	#strip = str(args[1])
