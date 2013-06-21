@@ -18,7 +18,7 @@ pb = Pblstr.Pblstr()
 
 def analogToDigital(analogColors):
 	'''
-	Accepts a 2D list of analog RGB values (analogColors) and converts them 	to digital.
+	Accepts a 2D list of analog RGB values (analogColors) and converts them to digital.
 	Returns - 2D list of digital RGB values (digitalColors)
 	'''
 	digitalColors = [[Decimal(x)/Decimal(255) for x in y] for y in analogColors]
@@ -46,7 +46,7 @@ def fadeLED( gpio, startVal, stopVal, lower, upper, STEP, FADESPEED ):
     currentVal = startVal
     if startVal < stopVal:
         while currentVal < stopVal:
-            os.system("echo \"{0}={1}\" > /dev/pi-blaster" .format(gpio,currentVal))
+            pb.write(gpio,currentVal)
             currentVal += STEP;
             time.sleep(FADESPEED)
             print "GPIO: {0}, Value = {1}" .format(gpio,currentVal)
@@ -74,8 +74,8 @@ def fadeLED( gpio, startVal, stopVal, lower, upper, STEP, FADESPEED ):
 			"""    
     elif startVal > stopVal:
         while currentVal > stopVal:
-            os.system("echo \"{0}={1}\" > /dev/pi-blaster" .format(gpio,currentVal))
-            currentVal -= STEP;
+            pb.write(gpio,currentVal)
+            currentVal -= STEP
             time.sleep(FADESPEED)
             print "GPIO: {0}, Value = {1}" .format(gpio,currentVal)
             #take a distance measurement
@@ -105,11 +105,11 @@ def fadeOutLED2(currentColors,distance):
 	for i in range(len(currentColors)):
 		#fadeLED(ALL_GPIO_PINS[i],currentColors[i],Decimal(0.00),0,200,Decimal(0.01),Decimal(0.00))
 		while currentColors[i] > Decimal(0.00):
-			os.system("echo \"{0}={1}\" > /dev/pi-blaster" .format(ALL_GPIO_PINS[i],currentColors[i]))
+			pb.write(ALL_GPIO_PINS[i],currentColors[i])
 			currentColors[i] -= Decimal(STEP);
 			#set to zero once it gets negative
 			if currentColors[i] < Decimal(0):
-				os.system("echo \"{0}=0\" > /dev/pi-blaster" .format(ALL_GPIO_PINS[i]))
+				pb.write(ALL_GPIO_PINS[i],0)
 				#set current colors to zero before exiting loop
 				currentColors[i] = 0
 			#time.sleep(FADESPEED)
@@ -127,11 +127,11 @@ def fadeOutLED3(gpioPinVal, currentVal, stepSize):
 	STEP = Decimal(stepSize)
 	FADESPEED = Decimal(0.01)
 	while currentVal > Decimal(0.00):
-		os.system("echo \"{0}={1}\" > /dev/pi-blaster" .format(gpioPinVal,currentVal))
+		pb.write(gpioPinVal,currentVal)
 		currentVal -= Decimal(STEP);
 		#set to zero once it gets negative
 		if currentVal < Decimal(0):
-			os.system("echo \"{0}=0\" > /dev/pi-blaster" .format(gpioPinVal))
+			pb.write(gpioPinVal,0)
 			#set current colors to zero before exiting loop
 			currentVal = 0
 		#time.sleep(FADESPEED)
@@ -188,7 +188,7 @@ def setColor(ledStripNum,RGB):
 		gpioPinsList = GPIO_PINS_LED_2
 	i = 0
 	for gpioVal in gpioPinsList:
-		os.system("echo \"{0}={1}\" > /dev/pi-blaster" .format(gpioVal, Decimal(RGB[i])))
+		pb.write(gpioVal, Decimal(RGB[i]))
 		i += 1
 	return;
 
@@ -200,7 +200,6 @@ def setPinValue(pin,value):
         stauts = 0|1 (off|on)
     """
     pb.write(pin,value)
-    #os.system("echo \"{0}={1}\" > /dev/pi-blaster" .format(pin,value))
     
 def allOff():
 	"""
