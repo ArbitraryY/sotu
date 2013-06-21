@@ -2,9 +2,11 @@
 
 from OSC import OSCServer
 import sys
-sys.path.append("/usr/local/pltn/rangeSensor")
+#sys.path.append("/usr/local/pltn/rangeSensor")
 import LED
 import time
+import subprocess
+import os
 #import ledTwitter
 
 gpioPins = {
@@ -22,11 +24,10 @@ OSCIP   = "0.0.0.0"
 oscSrv = OSCServer((OSCIP,OSCPort))
 
 def led(path, tags, args, source):
-	#pSplit = path.split("/")
-	#prog = pSplit[2]
 	oscProg = args[0]
 	pinValue = args[1]	
-	
+
+	#check if first argument is a pin value
 	if oscProg in gpioPins.keys():
 		#search gpioPins dict for pin value. Exit when found
 		for dictColor,gpioPin in gpioPins.iteritems():
@@ -34,22 +35,24 @@ def led(path, tags, args, source):
 				break
 		#set the pin color
 		LED.setPinValue(gpioPin,pinValue)
+	#Turn all LEDs on
 	elif oscProg == 'allOn':
 		LED.setColor(1,[1,1,1])
 		LED.setColor(2,[1,1,1])
+	#Turn all LEDs off
 	elif oscProg == 'allOff':
 		LED.allOff()
 	else:
 		pass	
 		
-
 def rpi(path, tags, args, source):
 	print path
 	print args
-
-def pltn(path, tags, args, source):
-	print path
-	print args
+	cmd = args[0]
+	if cmd == 'off':
+		os.system("sudo shutdown -h now")
+	else:
+		pass
 
 def srvc(path, tags, args, source):
 	print path
@@ -65,10 +68,9 @@ def srvc(path, tags, args, source):
 	#LED.fadeOutThreading(0.01)	
 
 #Message Handlers and Callback functions
-oscSrv.addMsgHandler("/osc/led",led)
-oscSrv.addMsgHandler("/osc/srvc",srvc)
-oscSrv.addMsgHandler("/osc/pltn",pltn)
-oscSrv.addMsgHandler("/osc/rpi",rpi)
+oscSrv.addMsgHandler("/pltn/led",led)
+oscSrv.addMsgHandler("/pltn/srvc",srvc)
+oscSrv.addMsgHandler("/pltn/rpi",rpi)
 #oscSrv.addMsgHandler("/led/tweet",tweet)
 
 
@@ -82,3 +84,4 @@ except KeyboardInterrupt:
 	LED.allOff()
 	print "Quit"
 	oscSrv.close()
+	
