@@ -28,7 +28,7 @@ case "$1" in
   stop)
     echo "Stopping $NAME"
     sudo rm /var/lock/$NAME
-    sudo killall $APP_NAME
+    sudo killall -r $APP_NAME
     ;;
   status)
         if [ -e /var/lock/$NAME ]

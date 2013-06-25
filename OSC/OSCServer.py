@@ -4,7 +4,6 @@ Documentation for this module
 """
 
 from OSC import OSCServer
-import sys
 import LED
 import time
 from subprocess import call
