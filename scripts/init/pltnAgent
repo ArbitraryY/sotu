@@ -1,0 +1,47 @@
+#!/bin/sh
+### BEGIN INIT INFO
+# Provides:			 pltnAgent 
+# Required-Start:    $syslog
+# Required-Stop:     $syslog
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# X-Interactive:     true
+# Short-Description: Start/stop Platoon Agent
+### END INIT INFO
+
+NAME=pltnAgent
+APP_NAME=pltnAgent.pyc
+APP_PATH=/usr/local/pltn/pltnAgent
+#export PYTHONPATH=/usr/local/pltn/rangeSensor:$PYTHONPATH
+
+case "$1" in
+  start)
+    if [ -e /var/lock/$NAME ]
+    then 
+  		echo "$NAME is already running"
+  	else
+  		sudo touch /var/lock/$NAME
+  		echo "Starting $NAME"
+  		python $APP_PATH/$APP_NAME
+	fi
+    ;;
+  stop)
+    echo "Stopping $NAME"
+    sudo rm /var/lock/$NAME
+    sudo pkill -9 -f $APP_NAME
+    ;;
+  status)
+        if [ -e /var/lock/$NAME ]
+        then
+                echo "$NAME is running"
+        else
+                echo "$NAME is stopped"
+        fi
+    ;;
+  *)
+    echo "Usage: /etc/init.d/$NAME {start|stop|status}"
+    exit 1
+    ;;
+esac
+
+exit 0

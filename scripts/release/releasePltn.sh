@@ -3,6 +3,16 @@
 RELEASE_DIR=/usr/local/pltn
 DEV_HOME=/home/pltn/platoon
 
+#Copy and Compile Agent
+cd $DEV_HOME/pltnAgent
+echo "Compiling Agent Python Scripts"
+echo "===================================="
+python -m compileall . 
+echo
+echo "Copying Agent files to $RELEASE_DIR" 
+echo "===================================="
+sudo cp -r $DEV_HOME/pltnAgent/*.pyc $RELEASE_DIR/pltnAgent
+
 #Copy OSC related files
 cd $DEV_HOME/OSC
 echo "Compiling OSC Python Scripts"
@@ -12,8 +22,6 @@ echo
 echo "Copying OSC files to $RELEASE_DIR" 
 echo "===================================="
 sudo cp -r $DEV_HOME/OSC/OSCServer.pyc $RELEASE_DIR/OSC
-dos2unix -q $RELEASE_DIR/OSC/*
-sudo chmod +x $RELEASE_DIR/OSC/*
 
 #Do rangeSensor stuff
 cd $DEV_HOME/rangeSensor
@@ -25,11 +33,16 @@ echo
 echo "Copying rangeSensor Python Scripts to $RELEASE_DIR" 
 echo "===================================="
 sudo cp -R $DEV_HOME/rangeSensor/*.pyc $RELEASE_DIR/rangeSensor
-sudo chmod +x $RELEASE_DIR/rangeSensor/*.pyc
 
 #Copy Scripts
 echo
 echo "Copying init scripts to $RELEASE_DIR" 
 echo "===================================="
 sudo cp $DEV_HOME/scripts/init/* $RELEASE_DIR/scripts
-dos2unix -q $RELEASE_DIR/scripts/init/*
+
+#Change all scripts to UNIX format and update to execute permissions
+echo
+echo "Updating Permissions"
+echo "===================================="
+dos2unix -q -R $RELEASE_DIR/*
+sudo chmod -R +x $RELEASE_DIR
