@@ -5,7 +5,6 @@ Documentation for this module
 
 from OSC import OSCServer
 import sys
-#sys.path.append("/usr/local/pltn/rangeSensor")
 import LED
 import time
 from subprocess import call
@@ -90,6 +89,17 @@ def srvc(path, tags, args, source):
 		call(["sudo", "service", srvcName, value])
 	else:
 		print "{0}: \"{1} {2} {3}\" Not allowed" .format(localtime,path,srvcName,value) 
+
+def heartbeat(path, tags, args, source):
+	"""
+	Callback function to process heartbeats from RPi. 
+	"""
+	print "---------------"
+	print path
+	print args[0]
+	print args[1]
+	print args[2]
+	print args[3]
 	
 #def tweet(path, tags, args, source):
 	#ledTwitter.fadeTweet()
@@ -98,6 +108,7 @@ def srvc(path, tags, args, source):
 oscSrv.addMsgHandler("/pltn/led",led)
 oscSrv.addMsgHandler("/pltn/srvc",srvc)
 oscSrv.addMsgHandler("/pltn/rpi",rpi)
+oscSrv.addMsgHandler("/pltn/heartbeat",heartbeat)
 #oscSrv.addMsgHandler("/led/tweet",tweet)
 
 print "\n listening on port: %i" % OSCPort

@@ -10,8 +10,9 @@
 ### END INIT INFO
 
 NAME=OSCServer
-APP_NAME=OSCserver.pl
+APP_NAME=OSCServer.pyc
 APP_PATH=/usr/local/pltn/OSC
+export PYTHONPATH=/usr/local/pltn/rangeSensor:$PYTHONPATH
 
 case "$1" in
   start)
@@ -21,7 +22,7 @@ case "$1" in
   	else
   		sudo touch /var/lock/$NAME
   		echo "Starting $NAME"
-  		perl $APP_PATH/$APP_NAME
+  		python $APP_PATH/$APP_NAME
 	fi
     ;;
   stop)
