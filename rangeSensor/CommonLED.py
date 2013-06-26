@@ -1,6 +1,10 @@
 #!/usr/local/python
+"""@package CommonLED
 
+This class holds all common LED methods
+"""
 import Pblstr
+from decimal import Decimal
 
 class CommonLED():
 	def __init__(self):
@@ -21,7 +25,8 @@ class CommonLED():
                 	gpioPinsList = self.GPIO_PINS_LED_2
         	i = 0
         	for gpioVal in gpioPinsList:
-                	pb.write(gpioVal, Decimal(RGB[i]))
+                	self.pb.write(gpioVal, Decimal(RGB[i]))
+                	#self.pb.write(gpioVal, RGB[i])
                 	i += 1
         	return
 
@@ -38,7 +43,7 @@ class CommonLED():
         	"""
         	Turn all LEDs off
         	"""
-        	setColor(1,[0,0,0])
-        	setColor(2,[0,0,0])
+        	self.setColor(1,[0,0,0])
+        	self.setColor(2,[0,0,0])
         	#return
 

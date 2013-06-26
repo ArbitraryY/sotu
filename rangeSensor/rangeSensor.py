@@ -1,15 +1,19 @@
 #!/usr/bin/python
 """@package rangeSensor
-Documentation for this module
 
+This module controls the rangeSensor LED programming
 """
-from decimal import *
+from decimal import Decimal
 import RPi.GPIO as GPIO
 import time
 import os
 import rsDistance
 import LED
 import threading
+import CommonLED
+
+#instantiate Common LED object
+cLED = CommonLED.CommonLED()
 
 #set Decimal precision to 2 places
 getcontext().prec = 2
@@ -60,9 +64,10 @@ ranges=[20.0,100.0];
 
 try:
     print "Waiting for sensor to settle ..."
+    time.sleep(0.1)
     # Loop until users quits with CTRL-C
     #turn off all LEDs when starts
-    LED.allOff()
+    cLED.allOff()
     while True : 
         i = 0
         j = i + 1
@@ -80,8 +85,8 @@ try:
         #set initial LED colors fadeIn function will replace this when written
         if distance >= ranges[0] and distance <= ranges[1]:
             rangeVal = 1;
-            LED.setColor(1,RNG_1_LED_1[0])
-            LED.setColor(2,RNG_1_LED_2[0])
+            cLED.setColor(1,RNG_1_LED_1[0])
+            cLED.setColor(2,RNG_1_LED_2[0])
             #Holds all currently set colors.  This will be passed to fadeIn/Out functions
             currentColors = [RNG_1_LED_1[0][0],RNG_1_LED_2[0][0],RNG_1_LED_1[0][1],RNG_1_LED_2[0][1],RNG_1_LED_1[0][2],RNG_1_LED_2[0][2]]
             #fadeInLed(currentColors)
@@ -214,7 +219,7 @@ try:
     	time.sleep(0.01)
 
 except KeyboardInterrupt:
-    LED.allOff()
+    cLED.allOff()
     print "  Quit"
     # Reset GPIO settings
     GPIO.cleanup()

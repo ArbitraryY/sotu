@@ -1,11 +1,15 @@
 #!/usr/bin/python
+"""@package LED
 
-from decimal import *
+This class holds all fancy LED effects mostly for rangeSensor
+"""
+from decimal import Decimal 
 import os
 import time
 import rsDistance
 import threading
 import Pblstr
+import CommonLED
 #set Decimal precision to 2 places
 getcontext().prec = 2
 
@@ -14,7 +18,9 @@ GPIO_PINS_LED_2 = [1,4,6]
 ALL_GPIO_PINS   = [2,1,5,4,7,6]
 
 #create pblstr object. Use this for all writes to pi-Blaster device file
-pb = Pblstr.Pblstr()
+pb   = Pblstr.Pblstr()
+#instantiate common LED object
+cLED = CommonLED.CommonLED()
 
 def analogToDigital(analogColors):
 	'''
@@ -103,7 +109,6 @@ def fadeOutLED2(currentColors,distance):
 	STEP = Decimal(0.01)
 	FADESPEED = Decimal(0.01)
 	for i in range(len(currentColors)):
-		#fadeLED(ALL_GPIO_PINS[i],currentColors[i],Decimal(0.00),0,200,Decimal(0.01),Decimal(0.00))
 		while currentColors[i] > Decimal(0.00):
 			pb.write(ALL_GPIO_PINS[i],currentColors[i])
 			currentColors[i] -= Decimal(STEP);
@@ -115,7 +120,7 @@ def fadeOutLED2(currentColors,distance):
 			#time.sleep(FADESPEED)
 			print "in fade out loop: %f" % currentColors[i]
 	currentColors[i]=0
-	allOff()
+	cLED.allOff()
 	
 def fadeOutLED3(gpioPinVal, currentVal, stepSize):
 	'''
@@ -156,7 +161,7 @@ def fadeOutLED(currentColors,numSteps):
 			#set all current values to zero
 			for k in range(len(currentColors)):
 				currentColors[k] = Decimal(0.00)
-			allOff()
+			cLED.allOff()
 			print "exiting loop"
 			return
 		j = 0
@@ -167,47 +172,13 @@ def fadeOutLED(currentColors,numSteps):
 			if currentColors[j] < 0:
 				currentColors[j] = Decimal(0)
 		#set the new color
-		setColor(1,[currentColors[0],currentColors[2],currentColors[4]])
-		setColor(2,[currentColors[1],currentColors[3],currentColors[5]])
+		cLED.setColor(1,[currentColors[0],currentColors[2],currentColors[4]])
+		cLED.setColor(2,[currentColors[1],currentColors[3],currentColors[5]])
 		time.sleep(0.02)
 		#turn all the way off if reach the end
 		#print "currentColors after iteration"
 		#print currentColors
 		#time.sleep(10)
-
-def setColor(ledStripNum,RGB):
-	"""
-	Set RGB color passed to it
-	LEDstrip: Which strip? (1|2)
-	RGB - array of R, G, B values to set
-	"""
-	#check which strip we want to do stuff to
-	if ledStripNum == 1:
-		gpioPinsList = GPIO_PINS_LED_1
-	elif ledStripNum == 2:
-		gpioPinsList = GPIO_PINS_LED_2
-	i = 0
-	for gpioVal in gpioPinsList:
-		pb.write(gpioVal, Decimal(RGB[i]))
-		i += 1
-	return;
-
-def setPinValue(pin,value):
-    """
-    Turn a pin high
-    Input: 
-        pin = Pin number
-        stauts = 0|1 (off|on)
-    """
-    pb.write(pin,value)
-    
-def allOff():
-	"""
-	Turn all LEDs off
-	"""
-	setColor(1,[0,0,0])
-	setColor(2,[0,0,0])
-	return;
 
 def dangerRange(distance,topOfRange):
 	'''
@@ -219,18 +190,18 @@ def dangerRange(distance,topOfRange):
 	while distance < topOfRange:
 		FLASHSPEED = 0.01
 		#turn LEDs all red
-		t1 = threading.Thread(target=setColor,args=(1,[0,0,0]))
+		t1 = threading.Thread(target=cLED.setColor,args=(1,[0,0,0]))
 		t1.start()
 		#t1.join()
-		t2 = threading.Thread(target=setColor,args=(2,[0,0,0]))
+		t2 = threading.Thread(target=cLED.setColor,args=(2,[0,0,0]))
 		t2.start()
 		#t2.join()
 		time.sleep(FLASHSPEED)
 		#Turn all LEDs off
-		t1 = threading.Thread(target=setColor,args=(1,[1,0,0]))
+		t1 = threading.Thread(target=cLED.setColor,args=(1,[1,0,0]))
 		t1.start()
 		#t1.join()
-		t2 = threading.Thread(target=setColor,args=(2,[1,0,0]))
+		t2 = threading.Thread(target=cLED.setColor,args=(2,[1,0,0]))
 		t2.start()
 		#t2.join()
 		distance = rsDistance.measureAvg() 
