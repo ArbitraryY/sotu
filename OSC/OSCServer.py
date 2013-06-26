@@ -4,7 +4,7 @@ Documentation for this module
 """
 
 from OSC import OSCServer
-import LED
+import CommonLED
 import time
 from subprocess import call
 import time
@@ -29,6 +29,8 @@ OSCIP   = "0.0.0.0"
 oscSrv = OSCServer((OSCIP,OSCPort))
 #instantiate time object
 localtime = time.asctime( time.localtime(time.time()) )
+#instantiate common LED object
+cLED = CommonLED.CommonLED()
 
 def led(path, tags, args, source):
 	"""
@@ -45,14 +47,14 @@ def led(path, tags, args, source):
 			if oscProg == dictColor:
 				break
 		#set the pin color
-		LED.setPinValue(gpioPin,pinValue)
+		cLED.setPinValue(gpioPin,pinValue)
 	#Turn all LEDs on
 	elif oscProg == 'allOn':
-		LED.setColor(1,[1,1,1])
-		LED.setColor(2,[1,1,1])
+		cLED.setColor(1,[1,1,1])
+		cLED.setColor(2,[1,1,1])
 	#Turn all LEDs off
 	elif oscProg == 'allOff':
-		LED.allOff()
+		cLED.allOff()
 	else:
 		pass	
 		
@@ -117,6 +119,6 @@ try:
 		oscSrv.handle_request()
 
 except KeyboardInterrupt:
-	LED.allOff()
+	cLED.allOff()
 	print "Quit"
 	oscSrv.close()
