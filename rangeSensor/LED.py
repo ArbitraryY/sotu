@@ -3,7 +3,7 @@
 
 This class holds all fancy LED effects mostly for rangeSensor
 """
-from decimal import Decimal 
+from decimal import Decimal,getcontext 
 import os
 import time
 import rsDistance

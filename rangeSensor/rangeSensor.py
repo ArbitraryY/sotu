@@ -3,7 +3,7 @@
 
 This module controls the rangeSensor LED programming
 """
-from decimal import Decimal
+from decimal import Decimal,getcontext
 import RPi.GPIO as GPIO
 import time
 import os
