@@ -11,7 +11,7 @@
 
 NAME=OSCServer
 APP_NAME=OSCServer.pyc
-APP_PATH=/usr/local/pltn/OSC
+APP_PATH=/usr/local/pltn
 export PYTHONPATH=/usr/local/pltn/rangeSensor:$PYTHONPATH
 
 case "$1" in
@@ -22,13 +22,14 @@ case "$1" in
   	else
   		sudo touch /var/lock/$NAME
   		echo "Starting $NAME"
-  		python $APP_PATH/$APP_NAME
+  		python $APP_PATH/OSC/$APP_NAME
 	fi
     ;;
   stop)
     echo "Stopping $NAME"
     sudo rm /var/lock/$NAME
     sudo pkill -9 -f $APP_NAME
+    python $APP_PATH/rangeSensor/allOff.pyc
     ;;
   status)
         if [ -e /var/lock/$NAME ]
