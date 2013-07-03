@@ -19,6 +19,7 @@ then
 	echo "-------- Staging Changes -------------------"
 	echo " "
 	git add *
+	git add -u *
 
 	echo "-------- Commiting to Git Repository -------------------"
 	echo " "
