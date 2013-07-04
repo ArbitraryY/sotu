@@ -58,7 +58,7 @@ def led(path, tags, args, source):
 			cLED.setPinValue(gpioPin,pinValue)
 		elif action == 'flashFade':
 			#cLED.ledFlashFade(gpioPin,1)
-			t = threading.Thread(target=cLED.ledFlashFade,args=(gpioPin,1))
+			t = threading.Thread(target=cLED.ledFlashFade,args=(gpioPin,pinValue))
 			t.start()
 			t.join
 		else:
@@ -98,7 +98,7 @@ def srvc(path, tags, args, source):
 	"""
 	#list of allowed services and values. Security to prevent rogue 
 	#msgs being sent and started
-	allowedSrvcs = ["pi-blaster","ssh","rangeSensor"]
+	allowedSrvcs = ["pi-blaster","ssh","rangeSensor","pltnAgent"]
 	allowedCmds  = ["start","stop","status"]
 	srvcName = args[0]
 	value    = args[1]
