@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+</head>
+<body>
+<script type="text/javascript" src="js/dat.gui.js"></script>
+<script type="text/javascript">
+  
+  var FizzyText = function() {
+  this.RPi = 'PLTN1';
+  this.R = 0;
+  this.G = 0;
+  this.B = 0;
+  this.ssh = 'off';
+  this.testText = 2;
+  //this.displayOutline = false;
+  // Define render logic ..
+};
+
+window.onload = function() {
+  //define values in FizzyText
+  var text = new FizzyText();
+  var gui = new dat.GUI();
+  gui.add(text, 'RPi');
+  
+  var f1 = gui.addFolder("LED Controls");
+  var R1 = f1.add(text, 'R', 0, 255).step(1);
+  f1.add(text, 'G', 0, 255).step(1);
+  f1.add(text, 'B', 0, 255).step(1);
+  
+  var f2 = gui.addFolder("Services");
+  f2.add(text, 'ssh');
+  //gui.add(text, 'displayOutline');
+
+  f1.open();
+  
+R1.onFinishChange(
+	function(value) {
+  		// Fires when a controller loses focus.
+  		alert("The new value is " + value);
+	}
+);
+
+
+};
+
+  </script>
+	<h1>Testing</h1>
+</body>
+</html>
+
