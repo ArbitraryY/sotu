@@ -8,6 +8,7 @@ import CommonLED
 import time
 from subprocess import call
 import time
+import threading
 
 #import ledTwitter
 
@@ -35,11 +36,17 @@ cLED = CommonLED.CommonLED()
 def led(path, tags, args, source):
 	"""
 	Callback function to handle all LED functions.
-		OSC Msg: /pltn/led <color+stripNum>|<LEDprogram> (0|1)
+		OSC Msg: /pltn/led <color+stripNum>|<LEDprogram> <action> (0|1)
+		Examples: /pltn/led r1 1 solid
+		          /pltn/led g1 1 flashFade
 	"""
 	oscProg  = args[0]
 	pinValue = args[1]	
-
+	action   = args[2]
+	print oscProg
+	print pinValue
+	print action
+	
 	#check if first argument is a pin value
 	if oscProg in gpioPins.keys():
 		#search gpioPins dict for pin value. Exit when found
@@ -47,7 +54,16 @@ def led(path, tags, args, source):
 			if oscProg == dictColor:
 				break
 		#set the pin color
-		cLED.setPinValue(gpioPin,pinValue)
+		if action == 'solid':
+			cLED.setPinValue(gpioPin,pinValue)
+		elif action == 'flashFade':
+			t = threading.Thread(target=cLED.ledFlashFade)
+			t.start()
+			t.join
+		else:
+			#not a valid option
+			pass			
+		
 	#Turn all LEDs on
 	elif oscProg == 'allOn':
 		cLED.setColor(1,[1,1,1])
@@ -94,6 +110,7 @@ def srvc(path, tags, args, source):
 def heartbeat(path, tags, args, source):
 	"""
 	Callback function to process heartbeats from RPi. 
+	Code here will send to OSC server on CC.pde 
 	"""
 	print "---------------"
 	print path
