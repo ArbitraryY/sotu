@@ -57,7 +57,8 @@ def led(path, tags, args, source):
 		if action == 'solid':
 			cLED.setPinValue(gpioPin,pinValue)
 		elif action == 'flashFade':
-			t = threading.Thread(target=cLED.ledFlashFade)
+			#cLED.ledFlashFade(gpioPin,1)
+			t = threading.Thread(target=cLED.ledFlashFade,args=(gpioPin,1))
 			t.start()
 			t.join
 		else:

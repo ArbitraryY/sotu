@@ -13,7 +13,7 @@ class CommonLED():
 		self.GPIO_PINS_LED_1 = [2,5,7]
 		self.GPIO_PINS_LED_2 = [1,4,6]
 		self.pb              = Pblstr.Pblstr()
-		self.stepSize        = Decimal(0.05) 
+		self.stepSize        = Decimal(0.05) #STEP Size for fading out 
 
 	def setColor(self,ledStripNum,RGB):
         	"""
@@ -49,9 +49,9 @@ class CommonLED():
         	self.setColor(1,[0,0,0])
         	self.setColor(2,[0,0,0])
 	
-	def ledFlashFade(self):
-		self.setPinValue(self.GPIO_PINS_LED_1[1],1)
-		self.fadeOutSinglePin(self.GPIO_PINS_LED_1[1],1,self.stepSize)
+	def ledFlashFade(self, pinValue, blah):
+		self.setPinValue(pinValue,1)
+		self.fadeOutSinglePin(pinValue,1,self.stepSize)
 	
 	def fadeOutSinglePin(self, gpioPinVal, currentVal, stepSize):
 		'''
