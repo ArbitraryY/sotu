@@ -34,10 +34,10 @@ localtime = time.asctime( time.localtime(time.time()) )
 cLED = CommonLED.CommonLED()
 
 def led(path, tags, args, source):
-	"""
-	Callback function to handle all LED functions.
+	"""Callback function to handle all LED functions.
 		OSC Msg: /pltn/led <color+stripNum>|<LEDprogram> <action> (0|1)
 		Examples: /pltn/led r1 1 solid
+		          /pltn/led b1 1 flash
 		          /pltn/led g1 1 flashFade
 	"""
 	oscProg  = args[0]
@@ -61,6 +61,8 @@ def led(path, tags, args, source):
 			t = threading.Thread(target=cLED.ledFlashFade,args=(gpioPin,pinValue))
 			t.start()
 			t.join
+		elif action =="flash":
+			cLED.flash(gpioPin)
 		else:
 			#not a valid option
 			pass			

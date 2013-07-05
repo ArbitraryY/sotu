@@ -5,6 +5,7 @@ This class holds all common LED methods
 """
 import Pblstr
 from decimal import Decimal,getcontext
+from time import sleep
 
 getcontext().prec = 2
 
@@ -51,9 +52,20 @@ class CommonLED():
         	self.setColor(2,[0,0,0])
 	
 	def ledFlashFade(self, gpioPin, pinValue):
-		#self.setPinValue(gpioPin, pinValue)
+		"""Turn an LED on then fade it out immediately
+			gpioPin: GPIO pin to turn on
+			pinValue: Value to set the pin to (per pi-blaster 0 - 1) 
+		"""
 		self.fadeOutSinglePin(gpioPin, pinValue,self.stepSize)
 	
+	def flash(self,gpioPin):
+		"""Turn an LED on then off immediately
+			gpioPin: GPIO pin to turn on then off
+		"""
+		self.setPinValue(gpioPin,1)
+		sleep(0.05)
+		self.setPinValue(gpioPin,0)
+			
 	def fadeOutSinglePin(self, gpioPinVal, currentVal, stepSize):
 		'''
 		This function takes a GPIO pin value and a current LED color
