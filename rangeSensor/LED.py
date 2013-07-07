@@ -122,26 +122,6 @@ def fadeOutLED2(currentColors,distance):
 	currentColors[i]=0
 	cLED.allOff()
 	
-def fadeOutLED3(gpioPinVal, currentVal, stepSize):
-	'''
-	This function takes a GPIO pin value and a current LED color
-	value and fades it to 0
-	'''
-	print "hello from thread: %i" % gpioPinVal
-	print "fading out now"
-	STEP = Decimal(stepSize)
-	FADESPEED = Decimal(0.01)
-	while currentVal > Decimal(0.00):
-		pb.write(gpioPinVal,currentVal)
-		currentVal -= Decimal(STEP);
-		#set to zero once it gets negative
-		if currentVal < Decimal(0):
-			pb.write(gpioPinVal,0)
-			#set current colors to zero before exiting loop
-			currentVal = 0
-		#time.sleep(FADESPEED)
-		print "%0.2f" % currentVal
-	
 def fadeOutLED(currentColors,numSteps):
 	"""
 	Function: Fade LED strips out from their current values
@@ -208,9 +188,11 @@ def dangerRange(distance,topOfRange):
 	return distance
 
 def fadeOutThreading(stepSize):
+	'''Fade all pins out using Threading
+	'''
 	for pin in ALL_GPIO_PINS:
 		print pin
-		t = threading.Thread(target=fadeOutLED3,args=(pin,1,stepSize))
+		t = threading.Thread(target=cLED.fadeOutSinglePin,args=(pin,1,stepSize))
 		t.start()
 		t.join
 	return	
