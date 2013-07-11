@@ -3,8 +3,10 @@
 Documentation for this module
 """
 
+import sys
+sys.path.append("/usr/local/pltn/Modules")
 from OSC import OSCServer
-import CommonLED
+import LED.CommonLED as CommonLED
 import time
 from subprocess import call
 import time

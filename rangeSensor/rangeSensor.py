@@ -3,14 +3,18 @@
 
 This module controls the rangeSensor LED programming
 """
+import sys
+sys.path.append("/usr/local/pltn/Modules")
+
 from decimal import Decimal,getcontext
 import RPi.GPIO as GPIO
-import time
+from time import sleep
 import os
-import rsDistance
-import LED
+from rsDistance import rsDistance
+#import CommonLED as CommonLED
+from LED import LED
+from LED import CommonLED
 import threading
-import CommonLED
 
 #instantiate Common LED object
 cLED = CommonLED.CommonLED()
@@ -64,7 +68,7 @@ ranges=[20.0,100.0];
 
 try:
     print "Waiting for sensor to settle ..."
-    time.sleep(0.1)
+    sleep(0.1)
     # Loop until users quits with CTRL-C
     #turn off all LEDs when starts
     cLED.allOff()
@@ -216,7 +220,7 @@ try:
 	'''
 
     # time between measurements
-    	time.sleep(0.01)
+    	sleep(0.01)
 
 except KeyboardInterrupt:
     cLED.allOff()

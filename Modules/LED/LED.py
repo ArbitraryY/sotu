@@ -3,12 +3,15 @@
 
 This class holds all fancy LED effects mostly for rangeSensor
 """
+import sys
+sys.path.append("/usr/local/pltn/Modules")
+
 from decimal import Decimal,getcontext 
 import os
 import time
-import rsDistance
+from rsDistance import rsDistance
 import threading
-import Pblstr
+from Pblstr import Pblstr
 import CommonLED
 #set Decimal precision to 2 places
 getcontext().prec = 2
@@ -18,7 +21,7 @@ GPIO_PINS_LED_2 = [1,4,6]
 ALL_GPIO_PINS   = [2,1,5,4,7,6]
 
 #create pblstr object. Use this for all writes to pi-Blaster device file
-pb   = Pblstr.Pblstr()
+pb = Pblstr.Pblstr()
 #instantiate common LED object
 cLED = CommonLED.CommonLED()
 

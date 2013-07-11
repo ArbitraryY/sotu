@@ -12,6 +12,7 @@
 NAME=rangeSensor
 APP_NAME=rangeSensor.pyc
 PLTN_ROOT=/usr/local/pltn
+ALL_OFF_PATH=$PLTN_ROOT/Modules/LED
 APP_PATH=$PLTN_ROOT/$NAME
 
 case "$1" in
@@ -29,7 +30,7 @@ case "$1" in
     echo "Stopping $NAME"
     sudo rm /var/lock/$NAME
     sudo pkill -9 -f $APP_NAME
-    sudo python $APP_PATH/allOff.pyc
+    sudo python $ALL_OFF_PATH/allOff.pyc
     ;;
   status)
         if [ -e /var/lock/$NAME ]

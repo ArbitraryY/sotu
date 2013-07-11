@@ -3,7 +3,6 @@
 from os import system
 
 class Pblstr:
-    #devFile = '/dev/pi-blaster'
     def __init__(self):
         #specify the Pi-Blaster device file
         self.devFile = '/dev/pi-blaster'

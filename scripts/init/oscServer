@@ -12,7 +12,8 @@
 NAME=OSCServer
 APP_NAME=OSCServer.pyc
 APP_PATH=/usr/local/pltn
-export PYTHONPATH=/usr/local/pltn/rangeSensor:$PYTHONPATH
+ALL_OFF_PATH=/usr/local/pltn/Modules/LED
+export PYTHONPATH=/usr/local/pltn/Modules
 
 case "$1" in
   start)
@@ -29,7 +30,7 @@ case "$1" in
     echo "Stopping $NAME"
     sudo rm /var/lock/$NAME
     sudo pkill -9 -f $APP_NAME
-    python $APP_PATH/rangeSensor/allOff.pyc
+    python $ALL_OFF_PATH/allOff.pyc
     ;;
   status)
         if [ -e /var/lock/$NAME ]
