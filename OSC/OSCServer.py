@@ -9,20 +9,14 @@ from OSC import OSCServer
 import LED.CommonLED as CommonLED
 import time
 from subprocess import call
-import time
 import threading
+from pltnGpio import pltnGpio
 
 #import ledTwitter
 
 #dict for GPIO pins
-gpioPins = {
-			'r1':2,
-			'g1':5,
-			'b1':7,
-			'r2':1,
-			'g2':4,
-			'b2':6,	
-		}
+pg = pltnGpio.pltnGpio()
+gpioPins = pg.getAllPins('asDict')
 
 #Define OSC server port and traceback IP
 OSCPort = 4567
