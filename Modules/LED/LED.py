@@ -13,17 +13,21 @@ from rsDistance import rsDistance
 import threading
 from Pblstr import Pblstr
 import CommonLED
+from pltnGpio import pltnGpio
+
 #set Decimal precision to 2 places
 getcontext().prec = 2
-
-GPIO_PINS_LED_1 = [2,5,7]
-GPIO_PINS_LED_2 = [1,4,6]
-ALL_GPIO_PINS   = [2,1,5,4,7,6]
-
-#create pblstr object. Use this for all writes to pi-Blaster device file
+#Instantiate objects
 pb = Pblstr.Pblstr()
-#instantiate common LED object
 cLED = CommonLED.CommonLED()
+pg = pltnGpio.pltnGpio()
+
+GPIO_PINS_LED_1 = pg.getStripPins(1)
+GPIO_PINS_LED_2 = pg.getStripPins(2)
+# r1,r2,g1,g2,b1,b2
+#ALL_GPIO_PINS   = [2,1,5,4,7,6]
+ALL_GPIO_PINS   = pg.getAllPins('asList')
+
 
 def analogToDigital(analogColors):
 	'''
@@ -35,20 +39,21 @@ def analogToDigital(analogColors):
 
 def fadeLED( gpio, startVal, stopVal, lower, upper, STEP, FADESPEED ):
     """This function takes the following arguments
-    gpio: value of the RPi GPIO pin that will be updated
-    startVal: RGB value that the fade will start from
-    stopVal: RGB value that the fade will stop at
-    lower: Lower bound of the current range
-    upper: Upper bound of the current range
-    STEP: step size between LED transitions
-    FADESPEED: decrease to slow fading must be 2 digit Decimal data type
+    	Input:
+    		gpio: value of the RPi GPIO pin that will be updated
+    		startVal: RGB value that the fade will start from
+    		stopVal: RGB value that the fade will stop at
+    		lower: Lower bound of the current range
+    		upper: Upper bound of the current range
+    		STEP: step size between LED transitions
+    		FADESPEED: decrease to slow fading must be 2 digit Decimal data type
+    	Return:
+    		rangeVal: (0|1) if user is out/in range
+    		currentVal: Returns the value of the current RGB setting
+    		These are needed to fade out from whatever state the LEDs are currently in  
         
-    If the stop value is higher need to increment to get there.
-    If the stop value is lower need to decrement to get there
-    
-    Returns rangeVal: (0|1) if user is out/in range
-    currentVal: Returns the value of the current RGB setting
-    This is needed to fade out from whatever state the LEDs are currently at  
+    	If the stop value is higher need to increment to get there.
+    	If the stop value is lower need to decrement to get there
     """
     rangeVal = 1
     #set the current LED values to the start value
@@ -126,11 +131,11 @@ def fadeOutLED2(currentColors,distance):
 	cLED.allOff()
 	
 def fadeOutLED(currentColors,numSteps):
-	"""
-	Function: Fade LED strips out from their current values
-	Arguments:
-		- currentColors: An array of RGB values as follows (r1, r2, b1, b2, g1, g2)
-		- numSteps: number of steps to use when fading to 0.  More steps = longer fade time
+	"""Fade LED strips out from their current values using iterators
+	   Input:
+	   		currentColors: An array of RGB values as follows (r1, r2, b1, b2, g1, g2)
+			numSteps: number of steps to use when fading to 0.  More steps = longer fade time
+		Return: None
 	"""
 	# number of steps to go from max to 0 for each color
 	STEPS = numSteps
@@ -158,10 +163,6 @@ def fadeOutLED(currentColors,numSteps):
 		cLED.setColor(1,[currentColors[0],currentColors[2],currentColors[4]])
 		cLED.setColor(2,[currentColors[1],currentColors[3],currentColors[5]])
 		time.sleep(0.02)
-		#turn all the way off if reach the end
-		#print "currentColors after iteration"
-		#print currentColors
-		#time.sleep(10)
 
 def dangerRange(distance,topOfRange):
 	'''

@@ -3,11 +3,13 @@
 import sys
 sys.path.append("/usr/local/pltn/Modules")
 from Pblstr import Pblstr
+from pltnGpio import pltnGpio
 
-ALL_GPIO_PINS   = [2,1,5,4,7,6]
-
-#Instantiate a Pblstr object
+#instantiate objects
+pg = pltnGpio.pltnGpio()
 pb = Pblstr.Pblstr()
+
+ALL_GPIO_PINS = pg.getAllPins('asList')
 
 """
 set all GPIO to off
