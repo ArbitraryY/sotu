@@ -9,10 +9,10 @@ MODULES_DIR         = DEV_HOME+"/Modules"
 WEBAPP_DIR          = DEV_HOME+"/webapp"
 INIT_SCRIPTS_DIR    = DEV_HOME+"/scripts/init"
 
-#core pltn files
+#core pltn files to compile and copy to the release dir
 core_dirs   = ["pltnAgent", "OSC", "rangeSensor"]
-#PLTN modules
-module_dirs = ["LED","GPIO","Pblstr","rsDistance"]
+#PLTN modules to compile and copy to the release dir
+module_dirs = ["LED","pltnGpio","Pblstr","rsDistance"]
 #Other dirs to copy
 other_dirs  = ["webapp","scripts"]
 
@@ -43,10 +43,14 @@ print "Releasing webapp"
 webRsyncCmd = "rsync -r --exclude=archive "+WEBAPP_DIR+"/* "+CORE_RELEASE_DIR+"/webapp"
 system(webRsyncCmd)
 
+# Copying init scripts
 initRsyncCmd = "rsync -r "+INIT_SCRIPTS_DIR+"/* "+CORE_RELEASE_DIR+"/scripts"
 system(initRsyncCmd)
-    
+
+# Converting to Unix format
 d2uCmd = "dos2unix -q -R "+CORE_RELEASE_DIR
 system(d2uCmd)
+
+# Updating permissions
 chmodCmd = "sudo chmod -R +x "+CORE_RELEASE_DIR 
 system(chmodCmd)   

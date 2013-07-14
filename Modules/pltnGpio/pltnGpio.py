@@ -57,14 +57,16 @@ class pltnGpio():
         
         return [self.gpioPins[pinOne],self.gpioPins[pinTwo]]
     
-    def getAllPins(self):
+    def getAllPins(self,option):
         """Get all of the GPIO pins
             Input: None
             Return:
                 pins = All GPIO pins
         """
         #return list of all GPIO pins
-        return self.gpioPins.keys()
-         
-#    def gpioClean(self):
-#        GPIO.cleanup()
+        if option == 'asList':
+            return self.gpioPins.values()
+        elif option == 'asDict':
+            return self.gpioPins
+        else:
+            print "not a valid option"

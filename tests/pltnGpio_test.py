@@ -13,8 +13,9 @@ print pg.getPin('r1')
 
 print pg.getStripPins(2)
 
-print pg.getAllPins()
+print pg.getAllPins('asList')
 
 print pg.getPinBothStrips('r')
 print pg.getPinBothStrips('g')
 print pg.getPinBothStrips('b')
+
