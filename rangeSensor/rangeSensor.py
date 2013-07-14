@@ -6,31 +6,29 @@ This module controls the rangeSensor LED programming
 import sys
 sys.path.append("/usr/local/pltn/Modules")
 
+import threading
 from decimal import Decimal,getcontext
-import RPi.GPIO as GPIO
+#import RPi.GPIO as GPIO
 from time import sleep
 import os
 from rsDistance import rsDistance
-#import CommonLED as CommonLED
 from LED import LED
 from LED import CommonLED
-import threading
+from pltnGpio import pltnGpio
 
-#instantiate Common LED object
+#instantiate objects
 cLED = CommonLED.CommonLED()
-
+pg = pltnGpio.pltnGpio()
 #set Decimal precision to 2 places
 getcontext().prec = 2
 
-# Define GPIO to use for range Sensor
-#GPIO_RS =4; 
 #define the GPIO pins for each strip
-GPIO_PINS_LED_1 = [2,5,7]
-GPIO_PINS_LED_2 = [1,4,6]
-ALL_GPIO_PINS   = [2,1,5,4,7,6]
+GPIO_PINS_LED_1 = pg.getStripPins(1)
+GPIO_PINS_LED_2 = pg.getStripPins(2)
+#ALL_GPIO_PINS   = [2,1,5,4,7,6]
 
 #set mode to BCM so PWM
-GPIO.setmode(GPIO.BCM)
+#GPIO.setmode(GPIO.BCM)
  
 # Set range sensor pin as an input. Need thisin order to overtake the setting
 # from pi-blaster which sets all GPIO pins to input
@@ -226,4 +224,4 @@ except KeyboardInterrupt:
     cLED.allOff()
     print "  Quit"
     # Reset GPIO settings
-    GPIO.cleanup()
+    #GPIO.cleanup()
