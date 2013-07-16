@@ -20,19 +20,29 @@ class effects():
 		self.cLED			 = CommonLED.CommonLED()
 
 	def fadeUp(self,startColor,endColor,stepSize,fadeSpeed):
+		"""This function fades up from one color to another
+			Input:
+				startColor: List of RGB values to start the fade from
+				endColor: List of RGB values to stop the fade at
+				stepSize: The size of the step between colors
+			Return: None
+		"""
 		endR = endColor[0]
 		endG = endColor[1]
 		endB = endColor[2]
 		stR = startColor[0]
 		stG = startColor[1]
 		stB = startColor[2]
-		rFlag,gFlag,bFlag = 'start'
+		rFlag = gFlag = bFlag = 'start'
 		
-		while rFlag != 'stop' and gFlag != 'stop' and bFlag !='stop':
+		while rFlag != 'stop' or gFlag != 'stop' or bFlag !='stop':
 			print "-----------------"
 			print stR
 			print stG
 			print stB
+			print rFlag
+			print gFlag
+			print bFlag
 			print "-----------------"
 			if stR < endR:
 				stR += stepSize;
@@ -46,7 +56,27 @@ class effects():
 				stB += stepSize;
 			else:
 				bFlag = 'stop'
-			sleep(fadeSpeed)
+			
+			#self.cLED.setColor(1,[stR,stG,stB])
+			#self.cLED.setColor(2,[stR,stG,stB])
+			self.cLED.setPinValue(self.pg.getPin('r1'),stR)
+			self.cLED.setPinValue(self.pg.getPin('r2'),stR)
+			#sleep(pulseInc)
+			self.cLED.setPinValue(self.pg.getPin('g1'),stG)
+			self.cLED.setPinValue(self.pg.getPin('g2'),stG)
+			#sleep(pulseInc)
+			self.cLED.setPinValue(self.pg.getPin('b1'),stB)
+			self.cLED.setPinValue(self.pg.getPin('b2'),stB)
+			print "-----------------"
+			print stR
+			print stG
+			print stB
+			print "-----------------"
+			print rFlag
+			print gFlag
+			print bFlag
+			print "-----------------"
+			#sleep(fadeSpeed)
 	
 	def pulse(self,RGB,pulseInc,pulseTime,steps,stepSize):
 		"""Pulses the LEDs
