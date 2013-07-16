@@ -28,15 +28,6 @@ GPIO_PINS_LED_2 = pg.getStripPins(2)
 #ALL_GPIO_PINS   = [2,1,5,4,7,6]
 ALL_GPIO_PINS   = pg.getAllPins('asList')
 
-
-def analogToDigital(analogColors):
-	'''
-	Accepts a 2D list of analog RGB values (analogColors) and converts them to digital.
-	Returns - 2D list of digital RGB values (digitalColors)
-	'''
-	digitalColors = [[Decimal(x)/Decimal(255) for x in y] for y in analogColors]
-	return digitalColors
-
 def fadeLED( gpio, startVal, stopVal, lower, upper, STEP, FADESPEED ):
     """This function takes the following arguments
     	Input:

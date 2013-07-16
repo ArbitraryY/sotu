@@ -18,6 +18,15 @@ class CommonLED():
 		self.pg              = pltnGpio.pltnGpio() 
 		self.pb              = Pblstr.Pblstr()
 		self.stepSize        = 0.05 #STEP Size for fading out 
+		
+	def analogToDigital(self,analogColors):
+		"""Converts RGB analog values to Digital for pi-blaster
+			Input: 
+				analogColors: 2D list of analog RGB valueslors) and converts them to digital.
+			Return: 2D list of digital RGB values (digitalColors)
+		"""
+		digitalColors = [[Decimal(x)/Decimal(255) for x in y] for y in analogColors]
+		return digitalColors
 
 	def setColor(self,ledStripNum,RGB):
         	"""Set RGB color passed to it

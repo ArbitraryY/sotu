@@ -53,8 +53,8 @@ RNG_1_LED_2_ANALOG = [ [150,44,37],[32,69,97],[121,65,137],[121,65,137],[238,68,
 #RNG_3_LED_2_ANALOG = [ [150,44,37],[32,69,97],[121,65,137],[121,65,137],[238,68,79] ]
 
 #Convert Analog RGB values to Digital
-RNG_1_LED_1 = LED.analogToDigital(RNG_1_LED_1_ANALOG)
-RNG_1_LED_2 = LED.analogToDigital(RNG_1_LED_2_ANALOG)
+RNG_1_LED_1 = cLED.analogToDigital(RNG_1_LED_1_ANALOG)
+RNG_1_LED_2 = cLED.analogToDigital(RNG_1_LED_2_ANALOG)
 #RNG_2_LED_1 = analogToDigital(RNG_1_LED_2_ANALOG)
 #RNG_2_LED_2 = analogToDigital(RNG_1_LED_2_ANALOG)
 #RNG_3_LED_1 = analogToDigital(RNG_1_LED_2_ANALOG)
