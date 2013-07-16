@@ -18,8 +18,36 @@ class effects():
 	def __init__(self):
 		self.pg              = pltnGpio.pltnGpio()
 		self.cLED			 = CommonLED.CommonLED()
-		#self.pb              = Pblstr.Pblstr()
 
+	def fadeUp(self,startColor,endColor,stepSize,fadeSpeed):
+		endR = endColor[0]
+		endG = endColor[1]
+		endB = endColor[2]
+		stR = startColor[0]
+		stG = startColor[1]
+		stB = startColor[2]
+		rFlag,gFlag,bFlag = 'start'
+		
+		while rFlag != 'stop' and gFlag != 'stop' and bFlag !='stop':
+			print "-----------------"
+			print stR
+			print stG
+			print stB
+			print "-----------------"
+			if stR < endR:
+				stR += stepSize;
+			else:
+				rFlag = 'stop'
+			if stG < endG:
+				stG += stepSize;
+			else:
+				gFlag = 'stop'
+			if stB < endB:
+				stB += stepSize;
+			else:
+				bFlag = 'stop'
+			sleep(fadeSpeed)
+	
 	def pulse(self,RGB,pulseInc,pulseTime,steps,stepSize):
 		"""Pulses the LEDs
 			Input: 
@@ -55,14 +83,14 @@ class effects():
 				self.cLED.setPinValue(self.pg.getPin('b1'),cB)
 				self.cLED.setPinValue(self.pg.getPin('b2'),cB)
 				#sleep(pulseInc)
-				cR = cR - stepSize
-				cG = cG - stepSize
-				cB = cB - stepSize
-				print "================="				
-				print cR
-				print cG
-				print cB
-				print "================="				
+				cR -= stepSize
+				cG -= stepSize
+				cB -= stepSize
+				#print "================="				
+				#print cR
+				#print cG
+				#print cB
+				#print "================="				
 			sleep(pulseInc)
 			
 			for x in range(0,steps):
@@ -75,9 +103,9 @@ class effects():
 				self.cLED.setPinValue(self.pg.getPin('b1'),cB)
 				self.cLED.setPinValue(self.pg.getPin('b2'),cB)
 			#	sleep(pulseInc)
-				cR = cR + stepSize
-				cG = cG + stepSize
-				cB = cB + stepSize
+				cR += stepSize
+				cG += stepSize
+				cB += stepSize
 			#	print "-----------------"				
 			#	print cR
 			#	print cG
