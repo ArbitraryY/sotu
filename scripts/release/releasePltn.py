@@ -33,7 +33,12 @@ for dir in module_dirs:
     print "Compiling: "+srcDir
     compileCmd = "python -m compileall "+srcDir
     system(compileCmd)
+    #Create directory if it doesn't exist
+    mkDirCmd = "mkdir -p "+srcDir
+    print mkDirCmd
+    system(mkDirCmd)
     rsyncCmd = "sudo rsync -r --exclude=*.py "+srcDir+" "+MODULES_RELEASE_DIR
+    print(rsyncCmd)
     system(rsyncCmd)
     print "\n"
     print "--------------------------------------"
