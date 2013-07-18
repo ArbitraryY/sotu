@@ -34,6 +34,12 @@ class CommonLED():
 			Return: 2D list of digital RGB values (digitalColors)
 		"""
 		digitalColors = [[Decimal(x)/Decimal(255) for x in y] for y in analogColors]
+			
+		return digitalColors
+	
+	def aToDList(self, analogColors):
+		digitalColors = [Decimal(x)/Decimal(255) for x in analogColors]
+		
 		return digitalColors
 
 	def setColor(self,ledStripNum,RGB):

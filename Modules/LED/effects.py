@@ -147,56 +147,58 @@ class effects():
 						- steps*stepSize < Lowest value in RGB
 			Return: None				
 		"""
-		self.cLED.setColor(1,RGB)
-		self.cLED.setColor(2,RGB)
+		dRGB = self.cLED.aToDList(RGB)
+		
+		self.cLED.setColor(1,dRGB)
+		self.cLED.setColor(2,dRGB)
 		#stepSize = 0.01
 		while pulseTime > 0:
 			cR = RGB[0]
 			cG = RGB[1]
 			cB = RGB[2]
-			#print "++++++++++++++++++"				
-			#print cR
-			#print cG
-			#print cB
-			#print "++++++++++++++++++"
+			print "++++++++++++++++++"				
+			print cR
+			print cG
+			print cB
+			print "++++++++++++++++++"
 			for x in range(0,steps):
-				self.cLED.setPinValue(self.pg.getPin('r1'),cR)
-				self.cLED.setPinValue(self.pg.getPin('r2'),cR)
+				self.cLED.setPinValue(self.pg.getPin('r1'),self.cLED.aToD(cR))
+				self.cLED.setPinValue(self.pg.getPin('r2'),self.cLED.aToD(cR))
 				#sleep(pulseInc)
-				self.cLED.setPinValue(self.pg.getPin('g1'),cG)
-				self.cLED.setPinValue(self.pg.getPin('g2'),cG)
+				self.cLED.setPinValue(self.pg.getPin('g1'),self.cLED.aToD(cG))
+				self.cLED.setPinValue(self.pg.getPin('g2'),self.cLED.aToD(cG))
 				#sleep(pulseInc)
-				self.cLED.setPinValue(self.pg.getPin('b1'),cB)
-				self.cLED.setPinValue(self.pg.getPin('b2'),cB)
+				self.cLED.setPinValue(self.pg.getPin('b1'),self.cLED.aToD(cB))
+				self.cLED.setPinValue(self.pg.getPin('b2'),self.cLED.aToD(cB))
 				#sleep(pulseInc)
 				cR -= stepSize
 				cG -= stepSize
 				cB -= stepSize
-				#print "================="				
-				#print cR
-				#print cG
-				#print cB
-				#print "================="				
+				print "================="				
+				print cR
+				print cG
+				print cB
+				print "================="				
 			sleep(pulseInc)
 			
 			for x in range(0,steps):
-				self.cLED.setPinValue(self.pg.getPin('r1'),cR)
-				self.cLED.setPinValue(self.pg.getPin('r2'),cR)
+				self.cLED.setPinValue(self.pg.getPin('r1'),self.cLED.aToD(cR))
+				self.cLED.setPinValue(self.pg.getPin('r2'),self.cLED.aToD(cR))
 			#	sleep(pulseInc)
-				self.cLED.setPinValue(self.pg.getPin('g1'),cG)
-				self.cLED.setPinValue(self.pg.getPin('g2'),cG)
+				self.cLED.setPinValue(self.pg.getPin('g1'),self.cLED.aToD(cG))
+				self.cLED.setPinValue(self.pg.getPin('g2'),self.cLED.aToD(cG))
 			#	sleep(pulseInc)
-				self.cLED.setPinValue(self.pg.getPin('b1'),cB)
-				self.cLED.setPinValue(self.pg.getPin('b2'),cB)
+				self.cLED.setPinValue(self.pg.getPin('b1'),self.cLED.aToD(cB))
+				self.cLED.setPinValue(self.pg.getPin('b2'),self.cLED.aToD(cB))
 			#	sleep(pulseInc)
 				cR += stepSize
 				cG += stepSize
 				cB += stepSize
-			#	print "-----------------"				
-			#	print cR
-			#	print cG
-			#	print cB
-			#	print "-----------------"				
+				print "-----------------"				
+				print cR
+				print cG
+				print cB
+				print "-----------------"				
 			sleep(pulseInc)
 			
 			pulseTime = pulseTime - 1
