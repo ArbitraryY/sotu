@@ -219,9 +219,9 @@ class effects():
 				gpioPin: GPIO pin to turn on then off
 			Return: None
 		"""
-		self.setPinValue(gpioPin,1)
+		self.cLED.setPinValue(gpioPin,1)
 		sleep(sleepTime)
-		self.setPinValue(gpioPin,0)
+		self.cLED.setPinValue(gpioPin,0)
 			
 	def fadeOutSinglePin(self, gpioPinVal, currentVal, stepSize):
 		'''This function takes a GPIO pin value and a current LED color

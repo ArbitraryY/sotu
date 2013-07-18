@@ -6,7 +6,8 @@ Documentation for this module
 import sys
 sys.path.append("/usr/local/pltn/Modules")
 from OSC import OSCServer
-import LED.CommonLED as CommonLED
+from LED import CommonLED
+from LED import effects
 import time
 from subprocess import call
 import threading
@@ -17,6 +18,7 @@ from pltnGpio import pltnGpio
 #dict for GPIO pins
 pg = pltnGpio.pltnGpio()
 gpioPins = pg.getAllPins('asDict')
+ef = effects.effects()
 
 #Define OSC server port and traceback IP
 OSCPort = 4567
@@ -54,11 +56,11 @@ def led(path, tags, args, source):
 			cLED.setPinValue(gpioPin,pinValue)
 		elif action == 'flashFade':
 			#cLED.ledFlashFade(gpioPin,1)
-			t = threading.Thread(target=cLED.ledFlashFade,args=(gpioPin,pinValue))
+			t = threading.Thread(target=ef.ledFlashFade,args=(gpioPin,pinValue))
 			t.start()
 			t.join
 		elif action =="flash":
-			cLED.flash(gpioPin)
+			ef.flash(gpioPin,0.1)
 		else:
 			#not a valid option
 			pass			
