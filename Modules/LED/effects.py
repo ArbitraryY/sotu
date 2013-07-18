@@ -42,13 +42,15 @@ class effects():
 				i += 1
 			else:
 				i = 0
+			#Check if last color has been faded to. If so that counts
+			#as an iteration through
+			if j == numColors-1:
+				iter += 1
 			if j < numColors - 1:
 				j += 1
 			else:
 				j = 0
 				
-			if j == numColors-1:
-				iter += 1
 				
 		
 			
@@ -94,7 +96,6 @@ class effects():
 			"""	
 				
 		while rFlag != 'stop' or gFlag != 'stop' or bFlag !='stop':
-			'''
 			#fade each pin one increment at a time
 			if stR < endR:
 				stR += stepSize;
@@ -114,7 +115,6 @@ class effects():
 				stB -= stepSize
 			else:
 				bFlag = 'stop'
-			'''
 			self.cLED.setColor(1,[self.cLED.aToD(stR),self.cLED.aToD(stG),self.cLED.aToD(stB)])
 			self.cLED.setColor(2,[self.cLED.aToD(stR),self.cLED.aToD(stG),self.cLED.aToD(stB)])
 			#self.cLED.setPinValue(self.pg.getPin('r1'),self.cLED.aToD(stR))
