@@ -204,14 +204,14 @@ class effects():
 			pulseTime = pulseTime - 1
 			print pulseTime
 								
-	def ledFlashFade(self, gpioPin, pinValue):
+	def ledFlashFade(self, gpioPin, pinValue,stepSize):
 		"""Turn an LED on then fade it out immediately
 			Input:
 				gpioPin: GPIO pin to turn on
 				pinValue: Value to set the pin to (per pi-blaster 0 - 1)
 			Return: None 
 		"""
-		self.fadeOutSinglePin(gpioPin, pinValue,self.stepSize)
+		self.fadeOutSinglePin(gpioPin, pinValue,stepSize)
 	
 	def flash(self,gpioPin,sleepTime):
 		"""Turn an LED on then off immediately
@@ -233,11 +233,11 @@ class effects():
 	   		Return: None 
 		'''
 		while currentVal > 0.00:
-			self.pb.write(gpioPinVal,currentVal)
+			self.cLED.setPinValue(gpioPinVal,currentVal)
 			currentVal -= stepSize;
 			#set to zero once it gets negative
 			if currentVal < 0.00:
-				self.pb.write(gpioPinVal,0)
+				self.cLED.setPinValue(gpioPinVal,0)
 				#set current colors to zero before exiting loop
 				currentVal = 0.00
 			print "%0.2f" % currentVal
