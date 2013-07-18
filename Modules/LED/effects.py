@@ -16,15 +16,28 @@ getcontext().prec = 2
 
 class effects():
 	def __init__(self):
-		self.pg              = pltnGpio.pltnGpio()
-		self.cLED			 = CommonLED.CommonLED()
+		self.pg   = pltnGpio.pltnGpio()
+		self.cLED = CommonLED.CommonLED()
 
-	def fadeUp(self,startColor,endColor,stepSize,fadeSpeed):
-		"""This function fades up from one color to another
+	def rotateColors(self,analogColors,numRots,stepSize,fadeSpeed):
+		"""This function rotates the LEDs between a predefined list of colors
+			Input: 
+				colors: 2D list of RGB colors as [(r,g,b),(r,g,b)] in analog values
+				numRots: Int - Number of times to rotate through colors
+				stepSize: The size of the step between colors
+				fadeSpeed: Controls the speed of the fade (higher = slower fading)
+			Return: None 
+		"""
+		digitalColors = cLED.analogToDigital(analogColors)
+		
+			
+	def fadeColor(self,startColor,endColor,stepSize,fadeSpeed):
+		"""This function fades up or down from one color to another
 			Input:
 				startColor: List of RGB values to start the fade from
 				endColor: List of RGB values to stop the fade at
 				stepSize: The size of the step between colors
+				fadeSpeed: Controls the speed of the fade (higher = slower fading)
 			Return: None
 		"""
 		endR = endColor[0]
@@ -33,40 +46,59 @@ class effects():
 		stR = startColor[0]
 		stG = startColor[1]
 		stB = startColor[2]
-		rFlag = gFlag = bFlag = 'start'
 		
+		rFlag = gFlag = bFlag = 'start'
+		"""
+		currentRGB = [startColor[0],startColor[1],startColor[2]]
+		RGBFlags   = ['on','on','on']
+		
+		while RGBFlags[0] != 'stop' or RGBFlags[1] != 'stop' or RGBFlags[2] != 'stop':
+			#2 is the Length of RGB array
+			for i in range(3):
+				if startColor[i] < endColor[i]:
+					currentRGB[i] += stepSize
+				elif startColor[i] > endColor[i]:
+					currentRGB[i] -= stepSize
+				elif startColor[i] == endColor[i]:
+					RGBFlags[i] = 'stop'
+					
+			print '----------------------'
+			for i in range(3):
+				print "{0},{1},{2}" .format(i,self.cLED.aToD(currentRGB[i]),RGBFlags[i])
+			
+			print '----------------------'
+			
+			self.cLED.setColor(1,[self.cLED.aToD(currentRGB[0]),self.cLED.aToD(currentRGB[1]),self.cLED.aToD(currentRGB[2])])
+			self.cLED.setColor(2,[self.cLED.aToD(currentRGB[0]),self.cLED.aToD(currentRGB[1]),self.cLED.aToD(currentRGB[2])])
+			"""	
+				
 		while rFlag != 'stop' or gFlag != 'stop' or bFlag !='stop':
-			print "-----------------"
-			print stR
-			print stG
-			print stB
-			print rFlag
-			print gFlag
-			print bFlag
-			print "-----------------"
 			if stR < endR:
 				stR += stepSize;
+			elif stR > endR:
+				stR -= stepSize
 			else:
 				rFlag = 'stop'
 			if stG < endG:
 				stG += stepSize;
+			elif stG > endG:
+				stG -= stepSize
 			else:
 				gFlag = 'stop'
 			if stB < endB:
 				stB += stepSize;
+			elif stB > endB:
+				stB -= stepSize
 			else:
 				bFlag = 'stop'
-			
-			#self.cLED.setColor(1,[stR,stG,stB])
-			#self.cLED.setColor(2,[stR,stG,stB])
-			self.cLED.setPinValue(self.pg.getPin('r1'),stR)
-			self.cLED.setPinValue(self.pg.getPin('r2'),stR)
-			#sleep(pulseInc)
-			self.cLED.setPinValue(self.pg.getPin('g1'),stG)
-			self.cLED.setPinValue(self.pg.getPin('g2'),stG)
-			#sleep(pulseInc)
-			self.cLED.setPinValue(self.pg.getPin('b1'),stB)
-			self.cLED.setPinValue(self.pg.getPin('b2'),stB)
+			self.cLED.setColor(1,[self.cLED.aToD(stR),self.cLED.aToD(stG),self.cLED.aToD(stB)])
+			self.cLED.setColor(2,[self.cLED.aToD(stR),self.cLED.aToD(stG),self.cLED.aToD(stB)])
+			#self.cLED.setPinValue(self.pg.getPin('r1'),self.cLED.aToD(stR))
+			#self.cLED.setPinValue(self.pg.getPin('r2'),self.cLED.aToD(stR))
+			#self.cLED.setPinValue(self.pg.getPin('g1'),self.cLED.aToD(stG))
+			#self.cLED.setPinValue(self.pg.getPin('g2'),self.cLED.aToD(stG))
+			#self.cLED.setPinValue(self.pg.getPin('b1'),self.cLED.aToD(stB))
+			#self.cLED.setPinValue(self.pg.getPin('b2'),self.cLED.aToD(stB))
 			print "-----------------"
 			print stR
 			print stG

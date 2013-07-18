@@ -15,9 +15,18 @@ getcontext().prec = 2
 
 class CommonLED():
 	def __init__(self):
-		self.pg              = pltnGpio.pltnGpio() 
-		self.pb              = Pblstr.Pblstr()
+		self.pg = pltnGpio.pltnGpio() 
+		self.pb = Pblstr.Pblstr()
 		
+	def aToD(self,analogColor):
+		"""This function takes an RGB analog value and converts it to digital
+			Input:
+				analogColor(int): An analog color value (0 - 255)
+			Return:
+				Digital color value to two decimal places (0.00 - 1.00) 
+		"""
+		return Decimal(analogColor)/Decimal(255)
+	
 	def analogToDigital(self,analogColors):
 		"""Converts RGB analog values to Digital for pi-blaster
 			Input: 
