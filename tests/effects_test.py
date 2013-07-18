@@ -16,6 +16,8 @@ cLED = CommonLED.CommonLED()
 
 #print "%.2f" % cLED.aToD(137)
 
-ef.fadeColor([255,0,137],[0,0,24],1,0.001)
-
-sys.exit()
+#ef.fadeColor([255,0,137],[0,0,24],1,0.001)
+#ef.rotateColors([[28,30,68],[40,93,144],[255,255,255],[40,93,144],[123,32,144],[67,47,103]],1,1,0.001)
+ef.rotateColors([[28,30,68],[40,93,144],[67,47,103]],1,1,0.001)
+sleep(5)
+cLED.allOff()

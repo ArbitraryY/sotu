@@ -18,6 +18,7 @@ class effects():
 	def __init__(self):
 		self.pg   = pltnGpio.pltnGpio()
 		self.cLED = CommonLED.CommonLED()
+		self.RGBLength = 3
 
 	def rotateColors(self,analogColors,numRots,stepSize,fadeSpeed):
 		"""This function rotates the LEDs between a predefined list of colors
@@ -28,7 +29,27 @@ class effects():
 				fadeSpeed: Controls the speed of the fade (higher = slower fading)
 			Return: None 
 		"""
-		digitalColors = cLED.analogToDigital(analogColors)
+		iter = 0
+		i = 0
+		j = i + 1
+		#the number of colors passed to rotate between
+		numColors = len(analogColors)
+		while iter != numRots:
+			self.fadeColor(analogColors[i],analogColors[j],stepSize,fadeSpeed)
+			
+			#fade logic	
+			if i < numColors - 1:
+				i += 1
+			else:
+				i = 0
+			if j < numColors - 1:
+				j += 1
+			else:
+				j = 0
+				
+			if j == numColors-1:
+				iter += 1
+				
 		
 			
 	def fadeColor(self,startColor,endColor,stepSize,fadeSpeed):
@@ -73,6 +94,8 @@ class effects():
 			"""	
 				
 		while rFlag != 'stop' or gFlag != 'stop' or bFlag !='stop':
+			'''
+			#fade each pin one increment at a time
 			if stR < endR:
 				stR += stepSize;
 			elif stR > endR:
@@ -91,6 +114,7 @@ class effects():
 				stB -= stepSize
 			else:
 				bFlag = 'stop'
+			'''
 			self.cLED.setColor(1,[self.cLED.aToD(stR),self.cLED.aToD(stG),self.cLED.aToD(stB)])
 			self.cLED.setColor(2,[self.cLED.aToD(stR),self.cLED.aToD(stG),self.cLED.aToD(stB)])
 			#self.cLED.setPinValue(self.pg.getPin('r1'),self.cLED.aToD(stR))
