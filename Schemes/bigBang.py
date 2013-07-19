@@ -4,38 +4,50 @@ import sys
 sys.path.append("/home/pltn/platoon/Modules")
 from time import sleep
 from LED import effects
+from rsDistance import rsDistance
 
 ef = effects.effects()
 
 allOff     = [0,0,0]
 startColor = [10,10,10]
 endColor   = [255,255,255]
-universeColors = [[28,30,68],[40,93,144],[255,255,255],[40,93,144],[123,32,144],[67,47,103]]
+universeColors = [[28,30,68],[40,93,144],[123,32,144],[67,47,103]]
+actionZone = [10,30]
 
-#fade in to brew
-ef.fadeColor(allOff,startColor,1,0)
+while True:
+    distance = rsDistance.measureAvg()
+    print distance 
+    
+    if actionZone[0] <= distance <= actionZone[-1]:
 
-#pulse at brewing period
-ef.pulse(startColor,0.2,5,5,1)
+        """fade in to brew
+        """
+        ef.fadeColor(allOff,startColor,1,0)
 
-#pause before expansion
-sleep(5)
+        """pulse at brewing period
+        """
+        ef.pulse(startColor,0.2,5,5,1)
 
-#accelerate to height
-ef.fadeColor(startColor,endColor,49,0.01)
+        """pause before expansion
+        """
+        sleep(2)
 
-#pause after expansion
-sleep(5)
+        """accelerate to height
+        """
+        ef.fadeColor(startColor,endColor,49,0.01)
 
-#Fade to the universe colors after expansion
-ef.fadeColor(endColor,universeColors[0],1,0.05)
+        """pause after expansion
+        """
+        sleep(5)
 
-#Rotate through universe colors
-ef.rotateColors(universeColors,1,1,0.001)
-sleep(10)
+        #Fade to the universe colors after expansion
+        ef.fadeColor(endColor,universeColors[0],1,0.05)
 
-#Fade out from the last color in the universe array
-ef.fadeColor(universeColors[-1],allOff,1,0)
+        #Rotate through universe colors
+        ef.rotateColors(universeColors,1,1,0.001)
 
-#Pulse after height of explosion
-#ef.pulse(endColor,0.1,10,10,0.04)
+        #Fade out from the last color in the universe array
+        ef.fadeColor(universeColors[-1],allOff,1,0)
+   
+        #measure distance again to see if should run playback again 
+        distance = rsDistance.measureAvg()
