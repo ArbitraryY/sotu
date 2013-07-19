@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>Parser</key>
+	<string>PayPal</string>
+	<key>LicenseeName</key>
+	<string>Nicholas Squires</string>
+	<key>LicenseeEmail</key>
+	<string>roenick55@yahoo.com</string>
+	<key>Postal</key>
+	<string>10692 OAK st, Los Alamitos, CA 90720, United States</string>
+	<key>PaymentAmount</key>
+	<string>19.00</string>
+	<key>Quantity</key>
+	<string>1</string>
+	<key>TotalAmount</key>
+	<string>19.00</string>
+	<key>PaymentTransID</key>
+	<string>4VU24851B72510408</string>
+	<key>PaymentMethod</key>
+	<string>PayPal</string>
+	<key>Currency</key>
+	<string>USD</string>
+	<key>ServerIP</key>
+	<string>173.0.81.1</string>
+	<key>Version</key>
+	<string>OSCulator 2.x</string>
+	<key>DateIssued</key>
+	<string>13:02:47 Apr 16, 2013 PDT</string>
+	<key>Signature</key>
+	<data>r+az2RePfYiGwcixoq6Je9aUg1C5Vy7OLfH4le8MBYCBmM4vwBzuWHo1hUHhnGXejrloNqwzFJYH
+5OYWp4wu10RBvc5C88hZlq8LdWwR/8JIR46qtDBc0CSwty+CIw4tCbqXebKto9MFfKm9cdqEiwKV
+dguZ/3kufn4H6Nxiw8Q=
+</data>
+</dict>
+</plist>
