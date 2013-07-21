@@ -1,43 +1,22 @@
 import controlP5.*;
 import oscP5.*;
-import netP5.*;  
-import java.util.Map;
-import ccObjs;
+import netP5.*;
 
-
-Accordion accordion;
+PltnHosts pHosts = new PltnHosts();
 
 void setup() {
+  //Size of the window
   size(1200, 400);
- // noStroke();
   //draw the CC layout
-  drawRegions();    
-  
+
   frameRate(25);
   /* start oscP5, listening for incoming messages at port 12000 */
   //oscP5 = new OscP5(this,12000);
-  //create array of pltn ips
-  HashMap<String,String> pltnIps = new HashMap<String,String>();
-  pltnIps.put("PLTN1","192.168.1.71");
-  pltnIps.put("PLTN2","192.168.1.72");
-  pltnIps.put("PLTN3","192.168.1.73");
-  pltnIps.put("PLTN4","192.168.1.74");
-  pltnIps.put("PLTN5","192.168.1.75");
-  pltnIps.put("PLTN6","192.168.1.76");
-
   //oscServer = new NetAddress("127.0.0.1",12000);
- 
-  // Using an enhanced loop to interate over each entry
-  for (Map.Entry ip : pltnIps.entrySet()) {
-    print(ip.getKey() + " is ");
-    println(ip.getValue());
-  }
-}
+ }
 
 void draw() {
-  background(#545454);
-  fill(#cecece);
-  rect(5,40,160,300);
+  drawLayout();
   //background(cPick1.getColorValue());
 }
 /*
@@ -55,11 +34,11 @@ public void controlEvent(ControlEvent c) {
 }
 */
 // color information from ColorPicker 'picker' are forwarded to the picker(int) function
-void picker(int col) {
+/*void picker(int col) {
   println("picker\talpha:"+alpha(col)+"\tred:"+red(col)+"\tgreen:"+green(col)+"\tblue:"+blue(col)+"\tcol"+col);
-}
-/*
-void keyPressed() {
+}*/
+
+/*void keyPressed() {
   switch(key) {
     case('1'):
     // method A to change color
@@ -72,33 +51,6 @@ void keyPressed() {
   }
 }*/
 
-void drawRegions() {
-  cp1 = new ControlP5(this); 
-  cp2 = new ControlP5(this);
-  cp3 = new ControlP5(this); 
-  cp4 = new ControlP5(this); 
-  cp5 = new ControlP5(this); 
-  cp6 = new ControlP5(this);
-  
-  hostname = cp1.addTextlabel("label")
-                    .setText("PLTN1")
-                    .setPosition(10,30)
-                    .setColorValue(#000000)
-                    .setFont(createFont("Courier New",12))
-                    ;
-  hostname = cp2.addTextlabel("label")
-                    .setText("PLTN2")
-                    .setPosition(170,30)
-                    .setColorValue(#000000)
-                    .setFont(createFont("Courier New",12))
-                    ;
-  cPick1 = cp1.addColorPicker("picker",10,50,150,10)
-          .setColorValue(color(0, 0, 0))
-          ;
-  cPick2 = cp2.addColorPicker("picker",170,50,150,10)
-          .setColorValue(color(0, 0, 0))
-          ;
-}
 
 /*
  Format:
