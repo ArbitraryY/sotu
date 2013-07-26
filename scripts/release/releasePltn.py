@@ -1,6 +1,7 @@
 #!/usr/bin/python
 
 from os import system
+import datetime
 
 CORE_RELEASE_DIR    = "/usr/local/pltn"
 MODULES_RELEASE_DIR = CORE_RELEASE_DIR+"/Modules"
@@ -15,6 +16,12 @@ core_dirs   = ["pltnAgent", "OSC", "rangeSensor"]
 module_dirs = ["LED","pltnGpio","Pblstr","rsDistance"]
 #Other dirs to copy
 other_dirs  = ["webapp","scripts"]
+
+#Write PLTN release version to file
+fo = open(CORE_RELEASE_DIR + "/VERSION","w")
+now = datetime.datetime.now().strftime("%Y-%m-%d-%H:%M")
+fo.write(now)
+fo.close
 
 #compile and release core PLTN scripts
 for dir in core_dirs:
