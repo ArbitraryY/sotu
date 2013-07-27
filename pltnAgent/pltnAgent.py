@@ -17,8 +17,8 @@ from OSC import OSCClient, OSCMessage
 srvcs       = ["ssh","pi-blaster","oscServer","pltnAgent","rangeSensor"]
 pgrepOutput = []
 queryTime   = 3 #Number of seconds between heartbeat check
-OSCPort = 4567
-OSCIP   = "localhost"
+OSCPort = 12000
+OSCIP   = "192.168.1.80"
 
 statusAddr = "/pltn/heartbeat" #heartbeat OSC address
 
