@@ -2,21 +2,28 @@ import controlP5.*;
 import oscP5.*;
 import netP5.*;
 
+int numPis = 6;
+ControlP5[] cp5 = new ControlP5[numPis];
+ColorPicker[] cPick = new ColorPicker[numPis];
+Textlabel[] hostname = new Textlabel[numPis];
 PltnHosts pHosts = new PltnHosts();
 
 void setup() {
   //Size of the window
-  size(1200, 400);
-  //draw the CC layout
-
+  size(1020, 400);
+  //create all objects used
+  createObjs();
+  //draw the CC layout 
+  drawLayout();
   frameRate(25);
+ 
+ 
   /* start oscP5, listening for incoming messages at port 12000 */
   //oscP5 = new OscP5(this,12000);
   //oscServer = new NetAddress("127.0.0.1",12000);
  }
 
 void draw() {
-  drawLayout();
   //background(cPick1.getColorValue());
 }
 /*

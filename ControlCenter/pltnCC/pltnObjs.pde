@@ -1,31 +1,21 @@
+//Textlabel hostname;
 
-int numPis = 6;
-
-//Control P5 Objects for each unit
-ControlP5[] cp = new ControlP5[numPis];
-
-//println ("test");
-/*
-for (int i=0 ; i <= numPis ; i++) {
-  cp[i] = new ControlP5();
-}*/
-/*
-ControlP5 cp1;
-ControlP5 cp2;
-ControlP5 cp3;
-ControlP5 cp4;
-ControlP5 cp5;
-ControlP5 cp6;*/
-
-Textlabel hostname;
+//create ControlP5 objects
+void createObjs(){
+  for (int i=0 ; i < numPis ; i++) {
+    cp5[i]   = new ControlP5(this);
+    //cPick[i] = new ColorPicker();
+  } 
+  
+}
 
 //ColorPicker objects for each unit
-ColorPicker cPick1;
+/*ColorPicker cPick1;
 ColorPicker cPick2;
 ColorPicker cPick3;
 ColorPicker cPick4;
 ColorPicker cPick5;
-ColorPicker cPick6;
+ColorPicker cPick6;*/
 
 //OSC objects for each unit
 OscP5 osc1;

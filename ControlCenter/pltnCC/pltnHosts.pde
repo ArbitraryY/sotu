@@ -1,10 +1,10 @@
-import java.util.Map;
+//import java.util.Map;
 
 class PltnHosts {
   HashMap<String,String> hosts = new HashMap<String,String>();
+  //Hashmap of pltn ips
   
-  PltnHosts(){
-    //Hashmap of pltn ips
+  PltnHosts(){ //the constructor
     hosts.put("PLTN1","192.168.1.71");
     hosts.put("PLTN2","192.168.1.72");
     hosts.put("PLTN3","192.168.1.73");
