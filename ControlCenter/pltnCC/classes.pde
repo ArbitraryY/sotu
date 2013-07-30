@@ -23,3 +23,20 @@ class PltnHosts {
 ///    print(ip.getKey() + " is ");
 //    println(ip.getValue());
 //  }
+
+class DrawRegions{
+  //This class draws the regions behind each Color Picker
+  int rWidth = 160;
+  int rStart = 5; 
+  DrawRegions(){
+    int test;
+    //The constructor
+  }
+  void drawIt(int i){
+    int xPos = i*rWidth + rStart;
+    background(#545454);
+    fill(#cecece);
+    rect(xPos,40,rWidth,300);
+  }
+}
+
