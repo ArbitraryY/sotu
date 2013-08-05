@@ -6,9 +6,12 @@ int numPis = 2;
 ControlP5[] cp5 = new ControlP5[numPis];
 ColorPicker[] cPick = new ColorPicker[numPis];
 Textlabel[] hostname = new Textlabel[numPis];
-DrawRegions[] region = new DrawRegions[numPis];
 PltnHosts pHosts = new PltnHosts();
+//OSC Server location objects
 NetAddress[] oscRpi = new NetAddress[numPis];
+//OSC message objects
+OscMessage[] sendOscMsg = new OscMessage[numPis];
+//Local OSC Server object
 OscP5 ccOscServer;
 
 void setup() {
@@ -32,19 +35,18 @@ void draw() {
   //background(cPick1.getColorValue());
 }
 
+/*
 void oscEvent(OscMessage theOscMessage) {
-  /* print the address pattern and the typetag of the received OscMessage */
-  fill(0);
-  String mesg = "hello";
-  text(mesg,50,150);
   print("### received an osc message.");
   print(" addrpattern: "+theOscMessage.addrPattern());
-  println(" value: "+theOscMessage.get(0).intValue());
+  println(" value: "+theOscMessage.get(0).stringValue());
+  fill(255);
+  //text(theOscMessage.get(0).stringValue(),30,325);
   
  if(theOscMessage.isPlugged()==false) {
-   /* print the address pattern and the typetag of the received OscMessage */
+   print the address pattern and the typetag of the received OscMessage
    println("### received an osc message.");
    println("### addrpattern\t"+theOscMessage.addrPattern());
    println("### typetag\t"+theOscMessage.typetag());
  }
-}
+}*/
