@@ -9,25 +9,23 @@ void drawLayout() {
   int statusHeadingYPos = 185;
   for (int i = 0 ; i < numPis ; i++) {
     //Draw color Pickers     
-    cPick[i] = cp5[i].addColorPicker("picker"+i,xPos+(i*pWidth)+(i*xPos),yPos,pWidth,pHeight)
-                     .setColorValue(color(0, 0, 0))
+    cPick[i] = cp5[i].addColorPicker("picker",xPos+(i*pWidth)+(i*xPos),yPos,pWidth,pHeight)
+                     //.setColorValue(color(0, 0, 0))
+                     .setId(i)
                      ;
+    println(cPick[i].getId());
     //Draw labels
     String host = "PLTN"+str(i+1);
     hostname[i] = cp5[i].addTextlabel("label")
                         .setText(host+"  ( "+pHosts.getIp(host)+" )")
                         .setPosition(xPos+(i*pWidth)+(i*xPos),labelYPos)
                         .setColorValue(#ffffff)
-                        //.setFont(createFont("Courier New",12))
                         ;
-    //Draw Backgrounds
-    //region[i].drawIt(i);
-    
     //draw buttons
     cp5[i].addBang("shutdown")
        .setPosition(xPos+2+(i*pWidth)+(i*xPos), 130)
        .setSize(pWidth-10, 20)
-       .setId(i)
+       //.setId(i)
        ;
     //Status panel
     fill(#ffffff);
@@ -41,15 +39,3 @@ void drawLayout() {
     //rect(xPos+(i*pWidth)+(i*xPos), yPos+130, pWidth, 100);
   }
 }
-
-/*void picker1(int col) {
-  println("picker\talpha:"+alpha(col)+"\tred:"+red(col)+"\tgreen:"+green(col)+"\tblue:"+blue(col)+"\tcol"+col);
-}*/
-
-/*public void controlEvent(ControlEvent theEvent) {
-  for (int i=0;i<col.length;i++) {
-    if (theEvent.getController().getName().equals("bang"+i)) {
-      col[i] = color(random(255));
-    }
-  }
-}*/

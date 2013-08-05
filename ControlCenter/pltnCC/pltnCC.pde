@@ -4,6 +4,7 @@ import netP5.*;
 
 int numPis = 2;
 ControlP5[] cp5 = new ControlP5[numPis];
+//Color picker objects
 ColorPicker[] cPick = new ColorPicker[numPis];
 Textlabel[] hostname = new Textlabel[numPis];
 PltnHosts pHosts = new PltnHosts();

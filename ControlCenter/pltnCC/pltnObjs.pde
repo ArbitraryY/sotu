@@ -7,6 +7,6 @@ void createObjs(){
     //region[i] = new DrawRegions();
     //OSC server objects for each RPi
     oscRpi[i] = new NetAddress(pHosts.getIp("PLTN"+str(i+1)),4567);//remote RPi IP and port
-    //sendOscMsg[i] = new OscMessage("");
+    sendOscMsg[i] = new OscMessage("");
   } 
 }

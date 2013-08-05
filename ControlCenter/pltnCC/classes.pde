@@ -7,7 +7,8 @@ class PltnHosts {
   PltnHosts(){ //the constructor
     //hosts.put("PLTN1","192.168.1.71");
     hosts.put("PLTN1","localhost");
-    hosts.put("PLTN2","192.168.1.72");
+    //hosts.put("PLTN2","192.168.1.72");
+    hosts.put("PLTN2","localhost");
     hosts.put("PLTN3","192.168.1.73");
     hosts.put("PLTN4","192.168.1.74");
     hosts.put("PLTN5","192.168.1.75");
