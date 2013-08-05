@@ -10,12 +10,13 @@ sub ledAction {
     my $oscMsgRef  = $_[1]; #assign OSC msg reference to var
     my $oscAddress = "@{ $oscMsgRef }[0]";
     my $oscType    = "@{ $oscMsgRef }[1]";
-    my $oscValue   = "@{ $oscMsgRef }[2]";
+    my $hostname   = "@{ $oscMsgRef }[2]";
+    my $status   = "@{ $oscMsgRef }[4]";
     #print Dumper $oscMsgRef;
     print "Address:" . "$oscAddress\n" ;
     print "Type:" . "$oscType\n" ;
-    print "Value:" . "$oscValue\n\n";
-   
+    print "Value:" . "$hostname\n\n";
+    print "service:" . "$status\n\n"; 
 }
 
 my $server =

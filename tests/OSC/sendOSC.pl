@@ -16,21 +16,14 @@ my $client = Net::OpenSoundControl::Client->new(
 		Host => $server_ip, Port => $port)
 		or die "could not start client: $@\n";
 
-#Send test OSC messages
-#$client->send(["/ard/red" ,'i', 255,]);
-
 my $mesg = "/pltn/heartbeat";
 my $hostname = "PLTN1";
 my $onOff = "1";
 my $pid = "23546";
+my $i = 0;
 for(;;){
-	#if ($mesgVal == 0 ) {
-	#	$mesgVal = 1;
-	#} else {
-	#	$mesgVal = 0;
-	#    }
-	#    $mesg = "/ard/red";
-	$client->send(["$mesg" ,'s', $hostname,'i',$onOff,'i',$pid]);
-	print $mesgVal . "\n";
+	print $mesg . " " . $hostname . " " . $i . "\n";
+	$client->send(["$mesg" ,'s', $hostname." ".$i,'i',$onOff,'i',$pid+$i]);
 	sleep(5);
+	$i++;
 }
