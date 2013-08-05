@@ -19,16 +19,18 @@ my $client = Net::OpenSoundControl::Client->new(
 #Send test OSC messages
 #$client->send(["/ard/red" ,'i', 255,]);
 
-my $mesgVal = 0; #off
+my $mesg = "/pltn/heartbeat";
+my $hostname = "PLTN1";
+my $onOff = "1";
+my $pid = "23546";
 for(;;){
-#for (1..1000000) {
-	if ($mesgVal == 0 ) {
- 		$mesgVal = 1;
-       } else {
-		$mesgVal = 0;
-	    }
-	    $mesg = "/ard/red";
-	$client->send(["$mesg" ,'i', $mesgVal]);
+	#if ($mesgVal == 0 ) {
+	#	$mesgVal = 1;
+	#} else {
+	#	$mesgVal = 0;
+	#    }
+	#    $mesg = "/ard/red";
+	$client->send(["$mesg" ,'s', $hostname,'i',$onOff,'i',$pid]);
 	print $mesgVal . "\n";
-	sleep(1);
+	sleep(5);
 }

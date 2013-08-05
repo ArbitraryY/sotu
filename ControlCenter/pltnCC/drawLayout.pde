@@ -16,11 +16,19 @@ void drawLayout() {
     hostname[i] = cp5[i].addTextlabel("label")
                         .setText(host+"-"+pHosts.getIp(host))
                         .setPosition(xPos+(i*pWidth)+(i*xPos),labelYPos)
-                        .setColorValue(#000000)
+                        .setColorValue(#ffffff)
                         .setFont(createFont("Courier New",12))
                         ;
     //Draw Backgrounds
-    region[i].drawIt(i);
+    //region[i].drawIt(i);
+    stroke(2);
+    rect(xPos+(i*pWidth)+(i*xPos), yPos, pWidth, 200);
+    //draw buttons
+    cp5[i].addBang("shutdown")
+       .setPosition(xPos+5+(i*pWidth)+(i*xPos), 130)
+       .setSize(pWidth-10, 20)
+       .setId(i)
+       ;
     //r.drawIt(2);
   }
 }
