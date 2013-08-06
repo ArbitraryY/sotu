@@ -16,7 +16,7 @@ sub ledAction {
     my $status2    = "@{ $oscMsgRef }[5]";
     my $program    = "@{ $oscMsgRef }[6]";
     #print Dumper $oscMsgRef;
-    print "-----------------------------";
+    print "-----------------------------\n";
     print "Address:" . "$oscAddress\n" ;
     #print "type:" . "$oscType\n" ;
     print "LED:" . "$hostname\n";

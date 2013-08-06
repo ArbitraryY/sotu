@@ -58,5 +58,18 @@ public void controlEvent(ControlEvent c) {
   }
   else if (c.getName() == "shutdown"){
     println(c.getId());
+    //get the id of the button that was pressed
+    int shutdownId = c.getId();
+    //construct the shutdown message
+    sendOscMsg[shutdownId].setAddrPattern("/pltn/rpi");
+    sendOscMsg[shutdownId].add("off");
+    sendOscMsg[shutdownId].add(rpiAuthKey);
+    println(rpiAuthKey);
+    //Send thee shutdown message
+    ccOscServer.send(sendOscMsg[shutdownId],oscRpi[shutdownId]);
+    sendOscMsg[shutdownId].clear();
+  }
+  else {
+    //not a monitored control event
   }
 }
