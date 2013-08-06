@@ -18,9 +18,22 @@ public void controlEvent(ControlEvent c) {
     sendOscMsg[pickId].add("solid");
     ccOscServer.send(sendOscMsg[pickId],oscRpi[pickId]);
     sendOscMsg[pickId].clear();
+    sendOscMsg[pickId].setAddrPattern("/pltn/led");
+    sendOscMsg[pickId].add("r2");
+    sendOscMsg[pickId].add(r);
+    sendOscMsg[pickId].add("solid");
+    ccOscServer.send(sendOscMsg[pickId],oscRpi[pickId]);
+    sendOscMsg[pickId].clear();
     //Construct the green LED message
     sendOscMsg[pickId].setAddrPattern("/pltn/led");
     sendOscMsg[pickId].add("g1");
+    sendOscMsg[pickId].add(g);
+    sendOscMsg[pickId].add("solid");
+    //send to RPi OSC server
+    ccOscServer.send(sendOscMsg[pickId],oscRpi[pickId]);
+    sendOscMsg[pickId].clear();
+    sendOscMsg[pickId].setAddrPattern("/pltn/led");
+    sendOscMsg[pickId].add("g2");
     sendOscMsg[pickId].add(g);
     sendOscMsg[pickId].add("solid");
     //send to RPi OSC server
@@ -34,6 +47,16 @@ public void controlEvent(ControlEvent c) {
     //send to RPi OSC server
     ccOscServer.send(sendOscMsg[pickId],oscRpi[pickId]);
     sendOscMsg[pickId].clear();
+    sendOscMsg[pickId].setAddrPattern("/pltn/led");
+    sendOscMsg[pickId].add("b2");
+    sendOscMsg[pickId].add(b);
+    sendOscMsg[pickId].add("solid");
+    //send to RPi OSC server
+    ccOscServer.send(sendOscMsg[pickId],oscRpi[pickId]);
+    sendOscMsg[pickId].clear();
     println("event\tred:"+r+"\tgreen:"+g+"\tblue:"+b);
+  }
+  else if (c.getName() == "shutdown"){
+    println(c.getId());
   }
 }

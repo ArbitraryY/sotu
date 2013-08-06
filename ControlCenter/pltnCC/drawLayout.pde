@@ -6,6 +6,7 @@ void drawLayout() {
   int pWidth    = 150;
   int pHeight   = 10;
   int labelYPos = 25;
+  int bangIdSeed = 10;
   int statusHeadingYPos = 185;
   for (int i = 0 ; i < numPis ; i++) {
     //Draw color Pickers     
@@ -21,11 +22,11 @@ void drawLayout() {
                         .setPosition(xPos+(i*pWidth)+(i*xPos),labelYPos)
                         .setColorValue(#ffffff)
                         ;
-    //draw buttons
+    //draw shutdown buttons
     cp5[i].addBang("shutdown")
        .setPosition(xPos+2+(i*pWidth)+(i*xPos), 130)
        .setSize(pWidth-10, 20)
-       //.setId(i)
+       .setId(i)
        ;
     //Status panel
     fill(#ffffff);

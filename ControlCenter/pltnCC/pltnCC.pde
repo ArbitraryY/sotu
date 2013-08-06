@@ -36,7 +36,7 @@ void draw() {
   //background(cPick1.getColorValue());
 }
 
-/*
+
 void oscEvent(OscMessage theOscMessage) {
   print("### received an osc message.");
   print(" addrpattern: "+theOscMessage.addrPattern());
@@ -45,9 +45,9 @@ void oscEvent(OscMessage theOscMessage) {
   //text(theOscMessage.get(0).stringValue(),30,325);
   
  if(theOscMessage.isPlugged()==false) {
-   print the address pattern and the typetag of the received OscMessage
+  // print the address pattern and the typetag of the received OscMessage
    println("### received an osc message.");
    println("### addrpattern\t"+theOscMessage.addrPattern());
    println("### typetag\t"+theOscMessage.typetag());
  }
-}*/
+}
