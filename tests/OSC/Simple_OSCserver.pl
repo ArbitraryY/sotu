@@ -11,12 +11,19 @@ sub ledAction {
     my $oscAddress = "@{ $oscMsgRef }[0]";
     my $oscType    = "@{ $oscMsgRef }[1]";
     my $hostname   = "@{ $oscMsgRef }[2]";
-    my $status   = "@{ $oscMsgRef }[4]";
+    my $status     = "@{ $oscMsgRef }[3]";
+    my $value     = "@{ $oscMsgRef }[4]";
+    my $status2    = "@{ $oscMsgRef }[5]";
+    my $program    = "@{ $oscMsgRef }[6]";
     #print Dumper $oscMsgRef;
+    print "-----------------------------";
     print "Address:" . "$oscAddress\n" ;
-    print "Type:" . "$oscType\n" ;
-    print "Value:" . "$hostname\n\n";
-    print "service:" . "$status\n\n"; 
+    #print "type:" . "$oscType\n" ;
+    print "LED:" . "$hostname\n";
+    #print "service:" . "$status\n\n"; 
+    print "value:" . "$value\n"; 
+    #print "service2:" . "$status2\n\n"; 
+    print "program:" . "$program\n\n"; 
 }
 
 my $server =

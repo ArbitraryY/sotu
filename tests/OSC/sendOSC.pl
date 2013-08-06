@@ -18,12 +18,13 @@ my $client = Net::OpenSoundControl::Client->new(
 
 my $mesg = "/pltn/heartbeat";
 my $hostname = "PLTN1";
+my $serviceName = "oscServer";
 my $onOff = "1";
 my $pid = "23546";
 my $i = 0;
 for(;;){
 	print $mesg . " " . $hostname . " " . $i . "\n";
-	$client->send(["$mesg" ,'s', $hostname." ".$i,'i',$onOff,'i',$pid+$i]);
+	$client->send(["$mesg" ,'s', $hostname." ".$i, 's', "$serviceName", 'i',$onOff,'i',$pid+$i]);
 	sleep(5);
 	$i++;
 }
