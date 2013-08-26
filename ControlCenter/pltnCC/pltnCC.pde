@@ -2,7 +2,7 @@ import controlP5.*;
 import oscP5.*;
 import netP5.*;
 
-int numPis = 2;
+int numPis = 3;//number of RPis
 ControlP5[] cp5 = new ControlP5[numPis];
 //Color picker objects
 ColorPicker[] cPick = new ColorPicker[numPis];
@@ -18,7 +18,7 @@ OscP5 ccOscServer;
 void setup() {
    background(#000000);
   //Size of the window
-  size(400, 350);
+  size(numPis*165, 350);
   //create all objects used
   createObjs();
   //draw the CC layout 
