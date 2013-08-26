@@ -1,10 +1,7 @@
 public void controlEvent(ControlEvent c) {
   //find where the control event is coming from
   if (c.getName() == "picker"){
-    //OscBundle myBundle = new OscBundle();
-    //int r = int(c.getArrayValue(0));
-    //int g = int(c.getArrayValue(1));
-    //int b = int(c.getArrayValue(2));
+    //scale values down for pi-blaster needs 0 - 1
     float r = c.getArrayValue(0)/255.0;
     float g = c.getArrayValue(1)/255.0;
     float b = c.getArrayValue(2)/255.0;
@@ -77,6 +74,15 @@ public void controlEvent(ControlEvent c) {
     int id = c.getId();
     sendOscMsg[id].setAddrPattern("/pltn/led");
     sendOscMsg[id].add("allOff");
+    //Send the message
+    ccOscServer.send(sendOscMsg[id],oscRpi[id]);
+    sendOscMsg[id].clear();
+  } else if (c.getName() == "allOn"){
+    println(c.getId());
+    //get the id of the button that was pressed
+    int id = c.getId();
+    sendOscMsg[id].setAddrPattern("/pltn/led");
+    sendOscMsg[id].add("allOn");
     //Send the message
     ccOscServer.send(sendOscMsg[id],oscRpi[id]);
     sendOscMsg[id].clear();

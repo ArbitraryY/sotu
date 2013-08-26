@@ -23,13 +23,18 @@ void drawLayout() {
                         .setColorValue(#ffffff)
                         ;
     //draw shutdown buttons
-     cp5[i].addBang("allOff")
+     cp5[i].addBang("allOn")
        .setPosition(xPos+2+(i*pWidth)+(i*xPos), 120)
        .setSize(pWidth-5, 20)
        .setId(i)
        ;
-    cp5[i].addBang("shutdown")
+     cp5[i].addBang("allOff")
        .setPosition(xPos+2+(i*pWidth)+(i*xPos), 160)
+       .setSize(pWidth-5, 20)
+       .setId(i)
+       ;
+    cp5[i].addBang("shutdown")
+       .setPosition(xPos+2+(i*pWidth)+(i*xPos), 200)
        .setSize(pWidth-5, 20)
        .setId(i)
        ;

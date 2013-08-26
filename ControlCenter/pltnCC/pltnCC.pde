@@ -2,7 +2,7 @@ import controlP5.*;
 import oscP5.*;
 import netP5.*;
 
-int numPis = 3;//number of RPis
+int numPis = 1;//number of RPis
 ControlP5[] cp5 = new ControlP5[numPis];
 //Color picker objects
 ColorPicker[] cPick = new ColorPicker[numPis];
