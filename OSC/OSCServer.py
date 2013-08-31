@@ -39,21 +39,24 @@ def led(path, tags, args, source):
 		          /pltn/led g1 1 flashFade
 	"""
 	oscProg  = args[0]
-	pinValue = args[1]	
-	action   = args[2]
+	#pinValue = args[1]	
+	#action   = args[2]
 	print oscProg
-	print pinValue
-	print action
+	#print pinValue
+	#print action
 	
 	#check if first argument is a pin value
 	if oscProg in gpioPins.keys():
+		pinValue = args[1]
+		action   = args[2]
 		#search gpioPins dict for pin value. Exit when found
 		for dictColor,gpioPin in gpioPins.iteritems():
 			if oscProg == dictColor:
 				break
 		#set the pin color
 		if action == 'solid':
-			cLED.setPinValue(gpioPin,pinValue,0.01)
+			#cLED.setPinValue(gpioPin,pinValue,0.01)
+			cLED.setPinValue(gpioPin,pinValue)
 		elif action == 'flashFade':
 			#cLED.ledFlashFade(gpioPin,1)
 			t = threading.Thread(target=ef.ledFlashFade,args=(gpioPin,pinValue,0.01))
