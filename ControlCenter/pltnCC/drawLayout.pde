@@ -23,19 +23,29 @@ void drawLayout() {
                         .setColorValue(#ffffff)
                         ;
     //draw shutdown buttons
+     cp5[i].addBang("allOn")
+       .setPosition(xPos+2+(i*pWidth)+(i*xPos), 120)
+       .setSize(pWidth-5, 20)
+       .setId(i)
+       ;
+     cp5[i].addBang("allOff")
+       .setPosition(xPos+2+(i*pWidth)+(i*xPos), 160)
+       .setSize(pWidth-5, 20)
+       .setId(i)
+       ;
     cp5[i].addBang("shutdown")
-       .setPosition(xPos+2+(i*pWidth)+(i*xPos), 130)
-       .setSize(pWidth-10, 20)
+       .setPosition(xPos+2+(i*pWidth)+(i*xPos), 200)
+       .setSize(pWidth-5, 20)
        .setId(i)
        ;
     //Status panel
-    fill(#ffffff);
+    /*fill(#ffffff);
     text("status",xPos+2+(i*pWidth)+(i*xPos),statusHeadingYPos);
     text("osc:",xPos+2+(i*pWidth)+(i*xPos),statusHeadingYPos+15);
     text("ssh:",xPos+2+(i*pWidth)+(i*xPos),statusHeadingYPos+30);
     text("http:",xPos+2+(i*pWidth)+(i*xPos),statusHeadingYPos+45);
     text("agent:",xPos+2+(i*pWidth)+(i*xPos),statusHeadingYPos+60);
-    text("scheme:",xPos+2+(i*pWidth)+(i*xPos),statusHeadingYPos+75);
+    text("scheme:",xPos+2+(i*pWidth)+(i*xPos),statusHeadingYPos+75);*/
     //fill(#521FED);
     //rect(xPos+(i*pWidth)+(i*xPos), yPos+130, pWidth, 100);
   }

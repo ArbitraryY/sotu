@@ -2,7 +2,9 @@ import controlP5.*;
 import oscP5.*;
 import netP5.*;
 
-int numPis = 2;
+int numPis   = 1;//number of RPis
+int ccHeight = 350;
+int ccWidth  = numPis*165;
 ControlP5[] cp5 = new ControlP5[numPis];
 //Color picker objects
 ColorPicker[] cPick = new ColorPicker[numPis];
@@ -18,7 +20,7 @@ OscP5 ccOscServer;
 void setup() {
    background(#000000);
   //Size of the window
-  size(400, 350);
+  size(ccWidth, ccHeight);
   //create all objects used
   createObjs();
   //draw the CC layout 
@@ -36,12 +38,11 @@ void draw() {
   //background(cPick1.getColorValue());
 }
 
-
 void oscEvent(OscMessage theOscMessage) {
-  print("### received an osc message.");
-  print(" addrpattern: "+theOscMessage.addrPattern());
-  println(" value: "+theOscMessage.get(0).stringValue());
-  fill(255);
+  //print("### received an osc message.");
+  //print(" addrpattern: "+theOscMessage.addrPattern());
+  //println(" value: "+theOscMessage.get(0).stringValue());
+  //fill(255);
   //text(theOscMessage.get(0).stringValue(),30,325);
   
  if(theOscMessage.isPlugged()==false) {
