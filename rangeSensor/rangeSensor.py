@@ -62,7 +62,7 @@ RNG_1_LED_2 = cLED.analogToDigital(RNG_1_LED_2_ANALOG)
 
 #define ranges
 #ranges=[10.0,16.0,17.0,47.0,48.0,70.0];
-ranges=[20.0,50.0];
+ranges=[10.0,30.0];
 
 try:
     print "Waiting for sensor to settle ..."
@@ -176,7 +176,8 @@ try:
             if(rangeVal == 0):
                 LED.dangerRange(distance,ranges[0])
             elif(rangeVal == 2):
-                LED.fadeOutLED2(currentColors,distance)
+                #LED.fadeOutLED2(currentColors,distance)
+                cLED.allOff()
             '''
             if(rangeVal == 0):
                 #LED.fadeOutLED(currentColors)

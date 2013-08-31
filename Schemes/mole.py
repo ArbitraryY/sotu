@@ -7,7 +7,7 @@ from LED import effects
 from rsDistance import rsDistance
 from pltnGpio import pltnGpio
 
-startColor = [255,0,0]
+startColor = [0,0,255]
 endColor   = [0,0,0]
 
 ef = effects.effects()
@@ -21,4 +21,5 @@ while True:
     print distance 
     
     if actionZone[0] <= distance <= actionZone[-1]:
-        ef.ledFlashFade(pg.getPin("g1"), 1, 0.05);
+        ef.ledFlashFade(pg.getPin("b1"), 1, 0.05);
+        ef.ledFlashFade(pg.getPin("b2"), 1, 0.05);
