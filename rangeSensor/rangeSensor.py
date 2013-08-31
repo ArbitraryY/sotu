@@ -81,6 +81,8 @@ try:
         #check which range we are in
         while distance < ranges[0]:
            distance = LED.dangerRange(distance,ranges[0])
+           if distance > ranges[-1]:
+              cLED.allOff() 
            #print "distance  in dangerRange: %.2f" % distance
            #time.sleep(10)          
             
