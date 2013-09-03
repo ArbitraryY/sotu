@@ -3,14 +3,14 @@
 import sys
 sys.path.append("/home/pltn/platoon/Modules")
 from time import sleep
-from LED import effects
+from Effects import Effects
 from rsDistance import rsDistance
 from pltnGpio import pltnGpio
 
 startColor = [0,0,255]
 endColor   = [0,0,0]
 
-ef = effects.effects()
+ef = Effects.Effects()
 pg = pltnGpio.pltnGpio()
 
 #distance to activate scheme

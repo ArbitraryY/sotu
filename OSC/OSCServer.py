@@ -6,8 +6,8 @@ Documentation for this module
 import sys
 sys.path.append("/usr/local/pltn/Modules")
 from OSC import OSCServer
-from LED import CommonLED
-from LED import effects
+from CommonLED import CommonLED
+from Effects import Effects
 import time
 from subprocess import call
 import threading
@@ -18,7 +18,7 @@ from pltnGpio import pltnGpio
 #dict for GPIO pins
 pg = pltnGpio.pltnGpio()
 gpioPins = pg.getAllPins('asDict')
-ef = effects.effects()
+ef = Effects.Effects()
 
 #Define OSC server port and traceback IP
 OSCPort = 4567

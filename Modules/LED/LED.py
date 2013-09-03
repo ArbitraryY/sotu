@@ -12,7 +12,7 @@ import time
 from rsDistance import rsDistance
 import threading
 from Pblstr import Pblstr
-import CommonLED
+from CommonLED import CommonLED
 from pltnGpio import pltnGpio
 
 #set Decimal precision to 2 places

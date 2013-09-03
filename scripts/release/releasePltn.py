@@ -13,7 +13,7 @@ INIT_SCRIPTS_DIR    = DEV_HOME+"/scripts/init"
 #core pltn files to compile and copy to the release dir
 core_dirs   = ["pltnAgent", "OSC", "rangeSensor","Schemes"]
 #PLTN modules to compile and copy to the release dir
-module_dirs = ["LED","pltnGpio","Pblstr","rsDistance"]
+module_dirs = ["LED","pltnGpio","Pblstr","rsDistance","CommonLED","Effects"]
 #Other dirs to copy
 other_dirs  = ["webapp","scripts"]
 

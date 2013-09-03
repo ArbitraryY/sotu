@@ -13,7 +13,7 @@ from time import sleep
 import os
 from rsDistance import rsDistance
 from LED import LED
-from LED import CommonLED
+from CommonLED import CommonLED
 from pltnGpio import pltnGpio
 
 #instantiate objects

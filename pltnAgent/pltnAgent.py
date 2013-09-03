@@ -13,7 +13,6 @@ from time import sleep
 from OSC import OSCClient, OSCMessage
 
 #List of PLTN dependent services
-#srvcs       = ["ssh","pi-blaster","oscServer","agent","rangeSensor"]
 srvcs       = ["ssh","pi-blaster","oscServer","pltnAgent","rangeSensor","apache2"]
 pgrepOutput = []
 queryTime   = 3 #Number of seconds between heartbeat check
