@@ -4,6 +4,7 @@
 This class holds all fancy LED effects mostly for rangeSensor
 """
 import sys
+#sys.path.append("/home/pltn/platoon/Modules")
 sys.path.append("/usr/local/pltn/Modules")
 
 from decimal import Decimal,getcontext 
@@ -12,7 +13,7 @@ import time
 from rsDistance import rsDistance
 import threading
 from Pblstr import Pblstr
-from CommonLED import CommonLED
+import CommonLED
 from pltnGpio import pltnGpio
 
 #set Decimal precision to 2 places

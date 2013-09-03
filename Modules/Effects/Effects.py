@@ -1,5 +1,5 @@
 #!/usr/local/python
-"""@package effects
+"""@package Effects
 
 This class holds all LED effects
 """
