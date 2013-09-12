@@ -25,6 +25,7 @@ avgType = 'median'
 #the number of measurements to take for averaging
 global numMeasures
 numMeasures = 10
+#numMeasures = 4
 
 # Set up the RPi to read the analog values from pin 0 on the Arduino
 pin0=board.get_pin('a:0:i') 

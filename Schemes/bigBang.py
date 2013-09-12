@@ -3,10 +3,10 @@
 import sys
 sys.path.append("/home/pltn/platoon/Modules")
 from time import sleep
-from LED import effects
+from Effects import Effects
 from rsDistance import rsDistance
 
-ef = effects.effects()
+ef = Effects.Effects()
 
 allOff     = [0,0,0]
 startColor = [10,10,10]

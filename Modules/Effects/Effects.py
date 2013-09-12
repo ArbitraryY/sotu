@@ -1,5 +1,5 @@
 #!/usr/local/python
-"""@package effects
+"""@package Effects
 
 This class holds all LED effects
 """
@@ -10,11 +10,11 @@ sys.path.append("/usr/local/pltn/Modules")
 from decimal import Decimal,getcontext
 from time import sleep
 from pltnGpio import pltnGpio
-from LED import CommonLED
+from CommonLED import CommonLED
 
 getcontext().prec = 2
 
-class effects():
+class Effects():
 	def __init__(self):
 		self.pg   = pltnGpio.pltnGpio()
 		self.cLED = CommonLED.CommonLED()

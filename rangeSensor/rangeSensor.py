@@ -13,7 +13,7 @@ from time import sleep
 import os
 from rsDistance import rsDistance
 from LED import LED
-from LED import CommonLED
+from CommonLED import CommonLED
 from pltnGpio import pltnGpio
 
 #instantiate objects
@@ -81,6 +81,8 @@ try:
         #check which range we are in
         while distance < ranges[0]:
            distance = LED.dangerRange(distance,ranges[0])
+           if distance > ranges[-1]:
+              cLED.allOff() 
            #print "distance  in dangerRange: %.2f" % distance
            #time.sleep(10)          
             

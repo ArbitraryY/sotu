@@ -4,6 +4,7 @@
 This class holds all fancy LED effects mostly for rangeSensor
 """
 import sys
+#sys.path.append("/home/pltn/platoon/Modules")
 sys.path.append("/usr/local/pltn/Modules")
 
 from decimal import Decimal,getcontext 
