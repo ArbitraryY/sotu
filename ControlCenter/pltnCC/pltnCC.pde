@@ -2,7 +2,7 @@ import controlP5.*;
 import oscP5.*;
 import netP5.*;
 
-int numPis   = 1;//number of RPis
+int numPis   = 6;//number of RPis
 int ccHeight = 350;
 int ccWidth  = numPis*165;
 ControlP5[] cp5 = new ControlP5[numPis];

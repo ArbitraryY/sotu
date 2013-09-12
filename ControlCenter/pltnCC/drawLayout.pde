@@ -11,7 +11,7 @@ void drawLayout() {
   for (int i = 0 ; i < numPis ; i++) {
     //Draw color Pickers     
     cPick[i] = cp5[i].addColorPicker("picker",xPos+(i*pWidth)+(i*xPos),yPos,pWidth,pHeight)
-                     //.setColorValue(color(0, 0, 0))
+                     //.setColorValue(color(1.0, 1.0, 1.0))
                      .setId(i)
                      ;
     println(cPick[i].getId());
