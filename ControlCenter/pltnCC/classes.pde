@@ -5,7 +5,7 @@ class PltnHosts {
   //Hashmap of pltn ips
   
   PltnHosts(){ //the constructor
-    hosts.put("PLTN1","192.168.1.71");
+    hosts.put("PLTN1","192.168.1.155");
     hosts.put("PLTN2","192.168.1.72");
     hosts.put("PLTN3","192.168.1.73");
     hosts.put("PLTN4","192.168.1.74");
