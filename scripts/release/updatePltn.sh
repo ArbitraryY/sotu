@@ -5,7 +5,7 @@ OPT=$1
 
 if [ $# != 1 ]
 then
-	echo "usage: $0 (push|pull)"
+	echo "usa`ge: $0 (push|pull)"
 	echo "    push - /usr/local/pltn to pltn.git"
 	echo "    pull - from pltn.git to /usr/local/pltn" 
 	exit
